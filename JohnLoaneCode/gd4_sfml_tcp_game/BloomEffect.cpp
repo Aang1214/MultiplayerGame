@@ -1,6 +1,7 @@
 #include "BloomEffect.hpp"
 #include "ShaderTypes.hpp"
-
+//***********************************************TrailBloom Effect*****************************************************
+// Bloom effect is a post-processing effect that adds a glow to the bright areas of the scene.
 BloomEffect::BloomEffect()
 {
 	m_shaders.Load(ShaderTypes::kBrightnessPass, "Media/Shaders/Fullpass.vert", "Media/Shaders/Brightness.frag");

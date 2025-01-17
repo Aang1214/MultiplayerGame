@@ -6,8 +6,12 @@
 #include "SettingsState.hpp"
 #include "GameOverState.hpp"
 
+//***************************************      Main      **********************************************
+
+//frame rate
 const sf::Time Application::kTimePerFrame = sf::seconds(1.f/60.f);
 
+//constructor (size of screen, title of window)
 Application::Application() : m_window(sf::VideoMode(1024, 768), "States", sf::Style::Close)
 	, m_stack(State::Context(m_window, m_textures, m_fonts, m_player, m_music, m_sound))
 {
@@ -23,6 +27,7 @@ Application::Application() : m_window(sf::VideoMode(1024, 768), "States", sf::St
 	m_stack.PushState(StateID::kTitle);
 }
 
+//run the game
 void Application::Run()
 {
 	sf::Clock clock;

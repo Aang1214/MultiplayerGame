@@ -16,7 +16,7 @@ Projectile::Projectile(ProjectileType type, const TextureHolder& textures)
     Utility::CentreOrigin(m_sprite);
 
     //Add particle system for missiles
-    if (IsGuided())
+    if (IsGuided()) //could be a power up in future
     {
         std::unique_ptr<EmitterNode> smoke(new EmitterNode(ParticleType::kSmoke));
         smoke->setPosition(0.f, GetBoundingRect().height / 2.f);

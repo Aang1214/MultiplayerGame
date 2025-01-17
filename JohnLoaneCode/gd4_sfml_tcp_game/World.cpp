@@ -25,7 +25,7 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 
 void World::Update(sf::Time dt)
 {
-	//Scroll the world
+	//Scroll the world (remove this if you want to stop scrolling)
 	m_camera.move(0, m_scrollspeed * dt.asSeconds());
 	
 	m_player_aircraft->SetVelocity(0.f, 0.f);
@@ -77,11 +77,13 @@ bool World::HasAlivePlayer() const
 	return !m_player_aircraft->IsMarkedForRemoval();
 }
 
+//remove
 bool World::HasPlayerReachedEnd() const
 {
 	return !m_world_bounds.contains(m_player_aircraft->getPosition());
 }
 
+// change/add textures
 void World::LoadTextures()
 {
 	m_textures.Load(TextureID::kEagle, "Media/Textures/Eagle.png");
@@ -161,6 +163,7 @@ void World::BuildScene()
 	m_player_aircraft->AttachChild(std::move(right_escort));*/
 }
 
+//************************************************
 void World::AdaptPlayerPosition()
 {
 	//keep the player on the screen
@@ -179,15 +182,16 @@ void World::AdaptPlayerVelocity()
 {
 	sf::Vector2f velocity = m_player_aircraft->GetVelocity();
 
-	//If they are moving diagonally divide by sqrt 2
+	//If they are moving diagonally divide by sqrt 2 (remove)
 	if (velocity.x != 0.f && velocity.y != 0.f)
 	{
 		m_player_aircraft->SetVelocity(velocity / std::sqrt(2.f));
 	}
-	//Add scrolling velocity
+	//Add scrolling velocity (remove
 	m_player_aircraft->Accelerate(0.f, m_scrollspeed);
 }
 
+//chamge to spawn meteors
 void World::SpawnEnemies()
 {
 	//Spawn an enemy when it is relevant i.e when it is in the Battlefieldboudns
@@ -202,6 +206,7 @@ void World::SpawnEnemies()
 	}
 }
 
+//change to spawn meteors
 void World::AddEnemies()
 {
 	AddEnemy(AircraftType::kRaptor, 0.f, 500.f);
@@ -231,6 +236,7 @@ sf::FloatRect World::GetViewBounds() const
 	return sf::FloatRect(m_camera.getCenter() - m_camera.getSize()/2.f, m_camera.getSize());
 }
 
+//change for meteors
 sf::FloatRect World::GetBattleFieldBounds() const
 {
 	//Return camera bounds + a small area at the top where enemies spawn
@@ -257,6 +263,7 @@ void World::DestroyEntitiesOutsideView()
 	m_command_queue.Push(command);
 }
 
+// keep maybe
 void World::GuideMissiles()
 {
 	//Target the closest enemy in the world
@@ -322,7 +329,7 @@ bool MatchesCategories(SceneNode::Pair& colliders, ReceiverCategories type1, Rec
 	}
 }
 
-
+// change to knockback/damage
 void World::HandleCollisions()
 {
 	std::set<SceneNode::Pair> collision_pairs;

@@ -1,4 +1,5 @@
 #include "EmitterNode.hpp"
+//******************************************Particle effects*********************************************
 
 EmitterNode::EmitterNode(ParticleType type)
 	:SceneNode()

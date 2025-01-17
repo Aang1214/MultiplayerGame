@@ -14,15 +14,16 @@ struct AircraftMover
     sf::Vector2f velocity;
 };
 
+//controls - add P2 
 Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
 {
     //Set initial key bindings
-    m_key_binding[sf::Keyboard::A] = Action::kMoveLeft;
-    m_key_binding[sf::Keyboard::D] = Action::kMoveRight;
-    m_key_binding[sf::Keyboard::W] = Action::kMoveUp;
-    m_key_binding[sf::Keyboard::S] = Action::kMoveDown;
-    m_key_binding[sf::Keyboard::M] = Action::kMissileFire;
-    m_key_binding[sf::Keyboard::Space] = Action::kBulletFire;
+    m_key_binding[sf::Keyboard::A] = Action::kMoveLeft; //P2 = J
+    m_key_binding[sf::Keyboard::D] = Action::kMoveRight; //P2 = L
+    m_key_binding[sf::Keyboard::W] = Action::kMoveUp; //P2 = I
+    m_key_binding[sf::Keyboard::S] = Action::kMoveDown; //remove
+    m_key_binding[sf::Keyboard::M] = Action::kMissileFire; //p1 = C , p2 = n
+    m_key_binding[sf::Keyboard::Space] = Action::kBulletFire; //remove or temp meteor spawn
 
     //Set initial action bindings
     InitialiseActions();
@@ -99,12 +100,13 @@ MissionStatus Player::GetMissionStatus() const
 
 void Player::InitialiseActions()
 {
+    //add p2
     const float kPlayerSpeed = 200.f;
-    m_action_binding[Action::kMoveLeft].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed, 0.f));
-    m_action_binding[Action::kMoveRight].action = DerivedAction<Aircraft>(AircraftMover(kPlayerSpeed, 0.f));
+    m_action_binding[Action::kMoveLeft].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed, 0.f)); //change to rotation
+    m_action_binding[Action::kMoveRight].action = DerivedAction<Aircraft>(AircraftMover(kPlayerSpeed, 0.f)); //change to rotation
     m_action_binding[Action::kMoveUp].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerSpeed));
     m_action_binding[Action::kMoveDown].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerSpeed));
-    m_action_binding[Action::kBulletFire].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
+    m_action_binding[Action::kBulletFire].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt) //remove
         {
             a.Fire();
         }
@@ -122,11 +124,12 @@ bool Player::IsRealTimeAction(Action action)
 {
     switch (action)
     {
+        //add for P2
     case Action::kMoveLeft:
     case Action::kMoveRight:
-    case Action::kMoveDown:
+    case Action::kMoveDown: // remove
     case Action::kMoveUp:
-    case Action::kBulletFire:
+    case Action::kBulletFire: //remove
         return true;
     default:
         return false;
