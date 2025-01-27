@@ -2,6 +2,19 @@
 #include "ReceiverCategories.hpp"
 #include "Aircraft.hpp"
 
+struct AircraftRotater
+{
+    AircraftRotater(float rotation) :m_rotation(rotation)
+	{}
+    void operator()(Aircraft& aircraft, sf::Time) const
+    {
+		aircraft.rotate(m_rotation);
+	}
+
+	float m_rotation;
+};
+
+//struct AircraftMover
 struct AircraftMover
 {
     AircraftMover(float vx, float vy) :velocity(vx, vy)
@@ -14,16 +27,22 @@ struct AircraftMover
     sf::Vector2f velocity;
 };
 
-//controls - add P2 
+//controls
 Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
 {
     //Set initial key bindings
-    m_key_binding[sf::Keyboard::A] = Action::kMoveLeft; //P2 = J
-    m_key_binding[sf::Keyboard::D] = Action::kMoveRight; //P2 = L
-    m_key_binding[sf::Keyboard::W] = Action::kMoveUp; //P2 = I
-    m_key_binding[sf::Keyboard::S] = Action::kMoveDown; //remove
-    m_key_binding[sf::Keyboard::M] = Action::kMissileFire; //p1 = C , p2 = n
-    m_key_binding[sf::Keyboard::Space] = Action::kBulletFire; //remove or temp meteor spawn
+    //P1
+    m_key_binding[sf::Keyboard::A] = Action::kP1TiltLeft; 
+    m_key_binding[sf::Keyboard::D] = Action::kP1TiltRight; 
+    m_key_binding[sf::Keyboard::W] = Action::kP1MoveUp; 
+    m_key_binding[sf::Keyboard::C] = Action::kP1UsePowerUp;
+    //P2
+    m_key_binding[sf::Keyboard::J] = Action::kP2TiltLeft;
+    m_key_binding[sf::Keyboard::L] = Action::kP2TiltRight;
+    m_key_binding[sf::Keyboard::I] = Action::kP2MoveUp;
+    m_key_binding[sf::Keyboard::M] = Action::kP2UsePowerUp;
+
+    m_key_binding[sf::Keyboard::Space] = Action::kMeteorSpawn; //remove or temp meteor spawn
 
     //Set initial action bindings
     InitialiseActions();
@@ -102,17 +121,19 @@ void Player::InitialiseActions()
 {
     //add p2
     const float kPlayerSpeed = 200.f;
-    m_action_binding[Action::kMoveLeft].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed, 0.f)); //change to rotation
-    m_action_binding[Action::kMoveRight].action = DerivedAction<Aircraft>(AircraftMover(kPlayerSpeed, 0.f)); //change to rotation
-    m_action_binding[Action::kMoveUp].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerSpeed));
-    m_action_binding[Action::kMoveDown].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerSpeed));
-    m_action_binding[Action::kBulletFire].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt) //remove
+    const float kPlayerRotation = 1.f;
+    m_action_binding[Action::kP1TiltLeft].action =  DerivedAction<Aircraft>(AircraftRotater(-kPlayerRotation));
+    m_action_binding[Action::kP1TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(kPlayerRotation));
+
+    m_action_binding[Action::kP1MoveUp].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerSpeed));
+
+    m_action_binding[Action::kMeteorSpawn].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
         {
             a.Fire();
         }
     );
 
-    m_action_binding[Action::kMissileFire].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
+    m_action_binding[Action::kP1UsePowerUp].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
         {
             a.LaunchMissile();
         }
@@ -125,11 +146,11 @@ bool Player::IsRealTimeAction(Action action)
     switch (action)
     {
         //add for P2
-    case Action::kMoveLeft:
-    case Action::kMoveRight:
-    case Action::kMoveDown: // remove
-    case Action::kMoveUp:
-    case Action::kBulletFire: //remove
+    case Action::kP1TiltLeft:
+    case Action::kP1TiltRight:
+    case Action::kP1MoveUp:
+
+    case Action::kMeteorSpawn:
         return true;
     default:
         return false;
