@@ -10,7 +10,6 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 
 	//Build key binding buttons and labels
 	AddButtonLabel(Action::kP1MoveUp, 150.f, "Move Up", context);
-	AddButtonLabel(Action::kMoveDown, 200.f, "Move Down", context);
 	AddButtonLabel(Action::kP1TiltRight, 250.f, "Move Right", context);
 	AddButtonLabel(Action::kP1TiltLeft, 300.f, "Move Left", context);
 	AddButtonLabel(Action::kMeteorSpawn, 350.f, "Fire", context);

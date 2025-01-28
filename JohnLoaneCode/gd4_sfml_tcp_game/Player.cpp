@@ -2,29 +2,63 @@
 #include "ReceiverCategories.hpp"
 #include "Aircraft.hpp"
 
+float mP1Rotation = 90.0f;
+float mP2Rotation = 90.0f;
+
+//struct AircraftRotater (accepts and playerID and a float of rotation)
+//update mP1Rotation or mP2Rotation based on playerID
 struct AircraftRotater
 {
-    AircraftRotater(float rotation) :m_rotation(rotation)
-	{}
+    // Constructor takes an additional ID parameter
+    AircraftRotater(int id, float rotation) : m_id(id), m_rotation(rotation)
+    {}
+
     void operator()(Aircraft& aircraft, sf::Time) const
     {
-		aircraft.rotate(m_rotation);
-	}
+        // Update the rotation of the aircraft
+        aircraft.rotate(m_rotation);
 
-	float m_rotation;
+        // Update the appropriate rotation variable based on the ID
+        if (m_id == 1)
+        {
+            mP1Rotation += m_rotation;
+        }
+        else if (m_id == 2)
+        {
+            mP2Rotation += m_rotation;
+        }
+    }
+
+    int m_id; // ID to differentiate between different entities, like player 1 or player 2
+    float m_rotation;
 };
+
+
 
 //struct AircraftMover
 struct AircraftMover
 {
-    AircraftMover(float vx, float vy) :velocity(vx, vy)
+    // Constructor takes an ID and a speed
+    AircraftMover(int id, float speed) : m_id(id), m_speed(speed)
     {}
+
     void operator()(Aircraft& aircraft, sf::Time) const
     {
+        // Select the correct rotation based on the ID
+        float rotation = (m_id == 1) ? mP1Rotation : mP2Rotation;
+
+        // Convert degrees to radians for trigonometric functions
+        float radian = rotation * 3.14159265f / 180.0f;
+
+        // Calculate the forward velocity based on the angle
+        sf::Vector2f velocity(std::cos(radian) * m_speed, std::sin(radian) * m_speed);
+
+        // Move the aircraft by this velocity
         aircraft.Accelerate(velocity);
     }
 
-    sf::Vector2f velocity;
+    int m_id;
+    float m_speed;
 };
 
 //controls
@@ -35,6 +69,7 @@ Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
     m_key_binding[sf::Keyboard::A] = Action::kP1TiltLeft; 
     m_key_binding[sf::Keyboard::D] = Action::kP1TiltRight; 
     m_key_binding[sf::Keyboard::W] = Action::kP1MoveUp; 
+
     m_key_binding[sf::Keyboard::C] = Action::kP1UsePowerUp;
     //P2
     m_key_binding[sf::Keyboard::J] = Action::kP2TiltLeft;
@@ -122,10 +157,10 @@ void Player::InitialiseActions()
     //add p2
     const float kPlayerSpeed = 200.f;
     const float kPlayerRotation = 1.f;
-    m_action_binding[Action::kP1TiltLeft].action =  DerivedAction<Aircraft>(AircraftRotater(-kPlayerRotation));
-    m_action_binding[Action::kP1TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(kPlayerRotation));
+    m_action_binding[Action::kP1TiltLeft].action =  DerivedAction<Aircraft>(AircraftRotater(1,-kPlayerRotation));
+    m_action_binding[Action::kP1TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(1,kPlayerRotation));
 
-    m_action_binding[Action::kP1MoveUp].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerSpeed));
+    m_action_binding[Action::kP1MoveUp].action = DerivedAction<Aircraft>(AircraftMover(1,-kPlayerSpeed));
 
     m_action_binding[Action::kMeteorSpawn].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
         {
