@@ -8,4 +8,7 @@ enum class StateID
 	kPause,
 	kSettings,
 	kGameOver,
+	kAudioSettings,
+	kVideoSettings,
+	kKeySettings
 };

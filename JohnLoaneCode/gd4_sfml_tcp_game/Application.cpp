@@ -3,8 +3,11 @@
 #include "TitleState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
-#include "SettingsState.hpp"
+#include "KeySettingsState.hpp"
 #include "GameOverState.hpp"
+#include "VideoSettingsState.hpp"
+#include "SettingsState.hpp"
+#include "AudioSettingsState.hpp"
 
 //***************************************      Main      **********************************************
 
@@ -83,6 +86,9 @@ void Application::RegisterStates()
 	m_stack.RegisterState<MenuState>(StateID::kMenu);
 	m_stack.RegisterState<GameState>(StateID::kGame);
 	m_stack.RegisterState<PauseState>(StateID::kPause);
-	m_stack.RegisterState<SettingsState>(StateID::kSettings);
+	m_stack.RegisterState<KeySettingsState>(StateID::kKeySettings);
 	m_stack.RegisterState<GameOverState>(StateID::kGameOver);
+	m_stack.RegisterState<SettingsState>(StateID::kSettings);
+	//m_stack.RegisterState<VideoSettingsState>(StateID::kVideoSettings);
+	//m_stack.RegisterState<AudioSettingsState>(StateID::kAudioSettings);
 }
