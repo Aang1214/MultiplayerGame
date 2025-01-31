@@ -9,6 +9,8 @@ public:
 	void SetVelocity(sf::Vector2f velocity);
 	void SetVelocity(float vx, float vy);
 	sf::Vector2f GetVelocity() const;
+	void SetRotation(float angle);
+	float GetRotation() const;
 	void Accelerate(sf::Vector2f velocity);
 	void Accelerate(float vx, float vy);
 
@@ -24,5 +26,6 @@ public:
 private:
 	sf::Vector2f m_velocity;
 	int m_hitpoints;
+	float m_rotation;
 };
 

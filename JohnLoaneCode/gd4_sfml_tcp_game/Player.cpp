@@ -2,37 +2,23 @@
 #include "ReceiverCategories.hpp"
 #include "Aircraft.hpp"
 
-float mP1Rotation = 90.0f;
-float mP2Rotation = 90.0f;
-
-void ResetPlayerRotations()
-{
-	mP1Rotation = 90.0f;
-	mP2Rotation = 90.0f;
-}
 
 //struct AircraftRotater (accepts and playerID and a float of rotation)
 //update mP1Rotation or mP2Rotation based on playerID
 struct AircraftRotater
 {
     // Constructor takes an additional ID parameter
-    AircraftRotater(int id, float rotation) : m_id(id), m_rotation(rotation)
+    AircraftRotater(float rotation) : m_rotation(rotation)
     {}
-
+    
     void operator()(Aircraft& aircraft, sf::Time) const
     {
+        // get the current rotation of the aircraft
+        float rot = aircraft.GetRotation();
         // Update the rotation of the aircraft
         aircraft.rotate(m_rotation);
-
         // Update the appropriate rotation variable based on the ID
-        if (m_id == 1)
-        {
-            mP1Rotation += m_rotation;
-        }
-        else if (m_id == 2)
-        {
-            mP2Rotation += m_rotation;
-        }
+        aircraft.SetRotation(rot + m_rotation);
     }
 
     int m_id; // ID to differentiate between different entities, like player 1 or player 2
@@ -45,16 +31,17 @@ struct AircraftRotater
 struct AircraftMover
 {
     // Constructor takes an ID and a speed
-    AircraftMover(int id, float speed) : m_id(id), m_speed(speed)
+    AircraftMover(float speed) : m_speed(speed)
     {}
 
     void operator()(Aircraft& aircraft, sf::Time) const
     {
+       
         // Select the correct rotation based on the ID
-        float rotation = (m_id == 1) ? mP1Rotation : mP2Rotation;
+        float rot = aircraft.GetRotation();
 
         // Convert degrees to radians for trigonometric functions
-        float radian = rotation * 3.14159265f / 180.0f;
+        float radian = rot * 3.14159265f / 180.0f;
 
         // Calculate the forward velocity based on the angle
         sf::Vector2f velocity(std::cos(radian) * m_speed, std::sin(radian) * m_speed);
@@ -67,6 +54,14 @@ struct AircraftMover
     float m_speed;
 };
 
+struct AircraftRotReset
+{
+    void operator()(Aircraft& aircraft, sf::Time) const
+    {
+		aircraft.SetRotation(90.f);
+	}
+};
+
 //controls
 Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
 {
@@ -75,7 +70,6 @@ Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
     m_key_binding[sf::Keyboard::A] = Action::kP1TiltLeft; 
     m_key_binding[sf::Keyboard::D] = Action::kP1TiltRight; 
     m_key_binding[sf::Keyboard::W] = Action::kP1MoveUp; 
-
     m_key_binding[sf::Keyboard::C] = Action::kP1UsePowerUp;
     //P2
     m_key_binding[sf::Keyboard::J] = Action::kP2TiltLeft;
@@ -94,6 +88,13 @@ Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
         pair.second.category = static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft);
     }
 }
+
+//reset player rotations using (aircraft.SetRotation(90.f))
+void Player::ResetPlayerRotations()
+{
+    AircraftRotReset;
+}
+
 
 void Player::HandleEvent(const sf::Event& event, CommandQueue& command_queue)
 {
@@ -163,23 +164,29 @@ void Player::InitialiseActions()
     //add p2
     const float kPlayerSpeed = 400.f;
     const float kPlayerRotation = 2.f;
-    m_action_binding[Action::kP1TiltLeft].action =  DerivedAction<Aircraft>(AircraftRotater(1,-kPlayerRotation));
-    m_action_binding[Action::kP1TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(1,kPlayerRotation));
-
-    m_action_binding[Action::kP1MoveUp].action = DerivedAction<Aircraft>(AircraftMover(1,-kPlayerSpeed));
-
-    m_action_binding[Action::kMeteorSpawn].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
-        {
-            a.Fire();
-        }
-    );
-
+    m_action_binding[Action::kP1MoveUp].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed));
+    m_action_binding[Action::kP1TiltLeft].action =  DerivedAction<Aircraft>(AircraftRotater(-kPlayerRotation));
+    m_action_binding[Action::kP1TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(kPlayerRotation));
     m_action_binding[Action::kP1UsePowerUp].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
         {
             a.LaunchMissile();
         }
     );
 
+    m_action_binding[Action::kP2MoveUp].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed));
+    m_action_binding[Action::kP2TiltLeft].action = DerivedAction<Aircraft>(AircraftRotater(-kPlayerRotation));
+    m_action_binding[Action::kP2TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(kPlayerRotation));
+    m_action_binding[Action::kP2UsePowerUp].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
+        {
+            a.LaunchMissile();
+        }
+    );
+
+    m_action_binding[Action::kMeteorSpawn].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
+            {
+                a.Fire();
+            }
+        );
 }
 
 bool Player::IsRealTimeAction(Action action)

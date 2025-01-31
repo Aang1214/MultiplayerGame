@@ -12,6 +12,7 @@ class Player
 {
 public:
 	Player();
+	void ResetPlayerRotations();
 	void HandleEvent(const sf::Event& event, CommandQueue& command_queue);
 	void HandleRealTimeInput(CommandQueue& command_queue);
 

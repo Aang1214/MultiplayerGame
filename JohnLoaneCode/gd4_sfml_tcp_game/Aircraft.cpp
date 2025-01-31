@@ -42,13 +42,13 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_health_display(nullptr) //keep health display
 	, m_missile_display(nullptr) //replace with powerup display
 	, m_distance_travelled(0.f) //remove
-	, m_directions_index(0) //****************************************************************************************************
+	, m_directions_index(0) //**
 	, m_fire_rate(1) //remove
 	, m_spread_level(1) //remove
 	, m_is_firing(false) //remove
 	, m_is_launching_missile(false) //keep
 	, m_fire_countdown(sf::Time::Zero) //remove
-	, m_missile_ammo(0) //change (start with 0)
+	, m_missile_ammo(2) //change (start with 0)
 	, m_is_marked_for_removal(false) //remove
 	, m_show_explosion(true) //keep
 	, m_spawned_pickup(false) //keep

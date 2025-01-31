@@ -21,6 +21,16 @@ sf::Vector2f Entity::GetVelocity() const
     return m_velocity;
 }
 
+void Entity::SetRotation(float angle)
+{
+	m_rotation = angle;
+}
+
+float Entity::GetRotation() const
+{
+	return m_rotation;
+}
+
 void Entity::Accelerate(sf::Vector2f velocity)
 {
     m_velocity += velocity;
