@@ -13,14 +13,14 @@ std::vector<AircraftData> InitializeAircraftData()
     data[static_cast<int>(AircraftType::kEagle)].m_hitpoints = 100;
     data[static_cast<int>(AircraftType::kEagle)].m_speed = 200.f;
     data[static_cast<int>(AircraftType::kEagle)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kEagle)].m_texture_rect = sf::IntRect(0, 0, 48, 64);
-    data[static_cast<int>(AircraftType::kEagle)].m_has_roll_animation = true;
+    data[static_cast<int>(AircraftType::kEagle)].m_texture_rect = sf::IntRect(0, 0, 32, 32);
+    data[static_cast<int>(AircraftType::kEagle)].m_has_roll_animation = false;
 
-    //change to P2
+    //enemy 1
     data[static_cast<int>(AircraftType::kRaptor)].m_hitpoints = 100;
     data[static_cast<int>(AircraftType::kRaptor)].m_speed = 200.f;
     data[static_cast<int>(AircraftType::kRaptor)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kRaptor)].m_texture_rect = sf::IntRect(0, 0, 48, 64);
+    data[static_cast<int>(AircraftType::kRaptor)].m_texture_rect = sf::IntRect(0, 32, 32, 32);
     data[static_cast<int>(AircraftType::kRaptor)].m_has_roll_animation = true; 
 
     //AI for Raptor (remove)
@@ -33,10 +33,10 @@ std::vector<AircraftData> InitializeAircraftData()
     data[static_cast<int>(AircraftType::kAvenger)].m_speed = 50.f;
     data[static_cast<int>(AircraftType::kAvenger)].m_fire_interval = sf::seconds(2);
     data[static_cast<int>(AircraftType::kAvenger)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kAvenger)].m_texture_rect = sf::IntRect(228, 0, 60, 59);
+    data[static_cast<int>(AircraftType::kAvenger)].m_texture_rect = sf::IntRect(0, 32, 32, 32);
     data[static_cast<int>(AircraftType::kAvenger)].m_has_roll_animation = false;
 
-    //AI for Raptor (remove)
+    //AI for Avenger (remove)
     data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(+45.f, 50.f));
     data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(0.f, 50.f));
     data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(-45.f, 100.f));
@@ -50,21 +50,22 @@ std::vector<AircraftData> InitializeAircraftData()
 std::vector<ProjectileData> InitializeProjectileData()
 {
     std::vector<ProjectileData> data(static_cast<int>(ProjectileType::kProjectileCount));
+    //allied bullet
     data[static_cast<int>(ProjectileType::kAlliedBullet)].m_damage = 10;
     data[static_cast<int>(ProjectileType::kAlliedBullet)].m_speed = 300;
     data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture_rect = sf::IntRect(175, 64, 3, 14);
-
+    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture_rect = sf::IntRect(96, 0, 8, 16);
+    //enemy bullet
     data[static_cast<int>(ProjectileType::kEnemyBullet)].m_damage = 10;
     data[static_cast<int>(ProjectileType::kEnemyBullet)].m_speed = 300;
     data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture_rect = sf::IntRect(175, 64, 3, 14);
+    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture_rect = sf::IntRect(96, 0, 8, 16);
 
-
+    //missile
     data[static_cast<int>(ProjectileType::kMissile)].m_damage = 200;
     data[static_cast<int>(ProjectileType::kMissile)].m_speed = 150;
     data[static_cast<int>(ProjectileType::kMissile)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(ProjectileType::kMissile)].m_texture_rect = sf::IntRect(160, 64, 15, 32);
+    data[static_cast<int>(ProjectileType::kMissile)].m_texture_rect = sf::IntRect(96, 0, 8, 16);
 
     return data;
 }
