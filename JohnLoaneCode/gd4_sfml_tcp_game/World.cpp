@@ -14,7 +14,6 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
 	,m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y/2.f)
-	,m_scrollspeed(0)
 	,m_P1_aircraft(nullptr)
 	,m_P2_aircraft(nullptr)
 {
@@ -135,21 +134,22 @@ void World::BuildScene()
 	std::unique_ptr<SpriteNode> finish_sprite(new SpriteNode(finish_texture));
 	finish_sprite->setPosition(0.f, -76.f);
 
-	//Add the player's aircraft *** 
+	//Add the player 1 aircraft *** 
 	std::unique_ptr<Aircraft> Player1(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
 	m_P1_aircraft = Player1.get();
-	m_P1_aircraft->setPosition(m_spawn_position.x + 100, m_spawn_position.y);
+	m_P1_aircraft->setPosition(m_spawn_position.x + 1000, m_spawn_position.y);
 	m_P1_aircraft->SetVelocity(40.f, m_scrollspeed);
 	m_P1_aircraft->SetRotation(90.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player1));
 
-	//Add the player's aircraft *** 
+	/*
+	//Add the player 2 aircraft *** 
 	std::unique_ptr<Aircraft> Player2(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
 	m_P2_aircraft = Player2.get();
-	m_P2_aircraft->setPosition(m_spawn_position.x - 100, m_spawn_position.y);
+	m_P2_aircraft->setPosition(m_spawn_position.x - 1000, m_spawn_position.y);
 	m_P2_aircraft->SetVelocity(40.f, m_scrollspeed);
 	m_P2_aircraft->SetRotation(90.f);
-	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player2));
+	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player2));*/
 
 	//Add the particle nodes to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(ParticleType::kSmoke, m_textures));
