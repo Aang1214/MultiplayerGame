@@ -5,6 +5,12 @@
 float mP1Rotation = 90.0f;
 float mP2Rotation = 90.0f;
 
+void ResetPlayerRotations()
+{
+	mP1Rotation = 90.0f;
+	mP2Rotation = 90.0f;
+}
+
 //struct AircraftRotater (accepts and playerID and a float of rotation)
 //update mP1Rotation or mP2Rotation based on playerID
 struct AircraftRotater
