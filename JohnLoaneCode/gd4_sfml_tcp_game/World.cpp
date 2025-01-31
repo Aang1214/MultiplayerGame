@@ -14,6 +14,7 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
 	,m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y/2.f)
+	,m_scrollspeed(0.f)
 	,m_P1_aircraft(nullptr)
 	,m_P2_aircraft(nullptr)
 {
@@ -25,6 +26,9 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 
 void World::Update(sf::Time dt)
 {
+	//Scroll the world (remove this if you want to stop scrolling)
+	m_camera.move(0, m_scrollspeed * dt.asSeconds());
+
 	
 	m_P1_aircraft->SetVelocity(0.f, 0.f);
 	m_P2_aircraft->SetVelocity(0.f, 0.f);
@@ -73,7 +77,7 @@ CommandQueue& World::GetCommandQueue()
 
 bool World::HasAlivePlayer() const
 {
-	return !m_P1_aircraft->IsDestroyed() && !m_P2_aircraft->IsDestroyed();
+	return !m_P1_aircraft->IsDestroyed()  && !m_P2_aircraft->IsDestroyed();
 	//return !m_P1_aircraft->IsMarkedForRemoval();
 }
 
@@ -137,19 +141,19 @@ void World::BuildScene()
 	//Add the player 1 aircraft *** 
 	std::unique_ptr<Aircraft> Player1(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
 	m_P1_aircraft = Player1.get();
-	m_P1_aircraft->setPosition(m_spawn_position.x + 1000, m_spawn_position.y);
+	m_P1_aircraft->setPosition(m_spawn_position.x + 400, m_spawn_position.y + 100);
 	m_P1_aircraft->SetVelocity(40.f, m_scrollspeed);
 	m_P1_aircraft->SetRotation(90.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player1));
 
-	/*
+	
 	//Add the player 2 aircraft *** 
-	std::unique_ptr<Aircraft> Player2(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> Player2(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
 	m_P2_aircraft = Player2.get();
-	m_P2_aircraft->setPosition(m_spawn_position.x - 1000, m_spawn_position.y);
+	m_P2_aircraft->setPosition(m_spawn_position.x - 400, m_spawn_position.y + 100);
 	m_P2_aircraft->SetVelocity(40.f, m_scrollspeed);
 	m_P2_aircraft->SetRotation(90.f);
-	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player2));*/
+	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player2));
 
 	//Add the particle nodes to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(ParticleType::kSmoke, m_textures));
@@ -176,10 +180,10 @@ void World::BuildScene()
 //************************************************
 void World::AdaptPlayerPosition()
 {
-	//keep the player on the screen
 	sf::FloatRect view_bounds(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
 	const float border_distance = 40.f;
 
+	//keep the player 1 on the screen
 	sf::Vector2f position1 = m_P1_aircraft->getPosition();
 	position1.x = std::max(position1.x, view_bounds.left + border_distance);
 	position1.x = std::min(position1.x, view_bounds.left + view_bounds.width - border_distance);
@@ -187,10 +191,8 @@ void World::AdaptPlayerPosition()
 	position1.y = std::min(position1.y, view_bounds.top + view_bounds.height -border_distance);
 	m_P1_aircraft->setPosition(position1);
 
-	//keep the player on the screen
-	sf::FloatRect view_bounds(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
-	const float border_distance = 40.f;
-
+	
+	//keep the player 2 on the screen
 	sf::Vector2f position2 = m_P2_aircraft->getPosition();
 	position2.x = std::max(position2.x, view_bounds.left + border_distance);
 	position2.x = std::min(position2.x, view_bounds.left + view_bounds.width - border_distance);
@@ -201,25 +203,27 @@ void World::AdaptPlayerPosition()
 
 void World::AdaptPlayerVelocity()
 {
-	sf::Vector2f velocity = m_P1_aircraft->GetVelocity();
+	sf::Vector2f velocity1 = m_P1_aircraft->GetVelocity();
 
 	//If they are moving diagonally divide by sqrt 2 (remove)
-	if (velocity.x != 0.f && velocity.y != 0.f)
+	if (velocity1.x != 0.f && velocity1.y != 0.f)
 	{
-		m_P1_aircraft->SetVelocity(velocity / std::sqrt(2.f));
+		m_P1_aircraft->SetVelocity(velocity1 / std::sqrt(2.f));
 	}
 	//Add scrolling velocity (remove
 	m_P1_aircraft->Accelerate(0.f, m_scrollspeed);
 
-	sf::Vector2f velocity = m_P2_aircraft->GetVelocity();
+	
+	sf::Vector2f velocity2 = m_P2_aircraft->GetVelocity();
 
 	//If they are moving diagonally divide by sqrt 2 (remove)
-	if (velocity.x != 0.f && velocity.y != 0.f)
+	if (velocity2.x != 0.f && velocity2.y != 0.f)
 	{
-		m_P2_aircraft->SetVelocity(velocity / std::sqrt(2.f));
+		m_P2_aircraft->SetVelocity(velocity2 / std::sqrt(2.f));
 	}
 	//Add scrolling velocity (remove
 	m_P2_aircraft->Accelerate(0.f, m_scrollspeed);
+	
 }
 
 //chamge to spawn meteors
@@ -367,7 +371,7 @@ void World::HandleCollisions()
 	m_scenegraph.CheckSceneCollision(m_scenegraph, collision_pairs);
 	for (SceneNode::Pair pair : collision_pairs)
 	{
-		if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kEnemyAircraft))
+		if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kEnemyAircraft))
 		{
 			auto& player = static_cast<Aircraft&>(*pair.first);
 			auto& enemy = static_cast<Aircraft&>(*pair.second);
@@ -376,7 +380,7 @@ void World::HandleCollisions()
 			enemy.Destroy();
 		}
 
-		else if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kPickup))
+		else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kPickup))
 		{
 			auto& player = static_cast<Aircraft&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);
@@ -385,7 +389,7 @@ void World::HandleCollisions()
 			pickup.Destroy();
 			player.PlayLocalSound(m_command_queue, SoundEffect::kCollectPickup);
 		}
-		else if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kEnemyProjectile) || MatchesCategories(pair, ReceiverCategories::kEnemyAircraft, ReceiverCategories::kAlliedProjectile))
+		else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kEnemyProjectile) || MatchesCategories(pair, ReceiverCategories::kEnemyAircraft, ReceiverCategories::kAlliedProjectile))
 		{
 			auto& aircraft = static_cast<Aircraft&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);

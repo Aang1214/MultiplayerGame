@@ -35,7 +35,8 @@ private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 	void CheckProjectileLaunch(sf::Time dt, CommandQueue& commands);
-	bool IsAllied() const;
+	bool IsP1() const;
+	bool IsP2() const;
 	void CreatePickup(SceneNode& node, const TextureHolder& textures) const;
 	void CheckPickupDrop(CommandQueue& commands);
 	void UpdateRollAnimation();
