@@ -9,10 +9,10 @@
 #include <vector>
 #include <array>
 
-class SettingsState : public State
+class AudioSettingsState : public State
 {
 public:
-	SettingsState(StateStack& stack, Context context);
+	AudioSettingsState(StateStack& stack, Context context);
 	virtual void Draw() override;
 	virtual bool Update(sf::Time dt) override;
 	virtual bool HandleEvent(const sf::Event& event) override;

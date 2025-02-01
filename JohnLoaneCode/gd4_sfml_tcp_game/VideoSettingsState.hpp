@@ -5,14 +5,13 @@
 #include "Button.hpp"
 #include "Label.hpp"
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Text.hpp>
 #include <vector>
 #include <array>
 
-class SettingsState : public State
+class VideoSettingsState : public State
 {
 public:
-	SettingsState(StateStack& stack, Context context);
+	VideoSettingsState(StateStack& stack, Context context);
 	virtual void Draw() override;
 	virtual bool Update(sf::Time dt) override;
 	virtual bool HandleEvent(const sf::Event& event) override;
