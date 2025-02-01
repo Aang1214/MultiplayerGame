@@ -15,7 +15,12 @@ public:
 	SettingsState(StateStack& stack, Context context);
 	virtual void Draw() override;
 	virtual bool Update(sf::Time dt) override;
-	virtual bool HandleEvent(const sf::Event& event) override;
+
+	virtual bool HandleEvent(const sf::Event& event);
+
+private:
+	void UpdateLabels();
+	void AddButtonLabel(Action action, float x, float y, const std::string& text, Context context);
 
 private:
 	sf::Sprite m_background_sprite;

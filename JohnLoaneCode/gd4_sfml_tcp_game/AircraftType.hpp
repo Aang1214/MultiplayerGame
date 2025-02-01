@@ -6,8 +6,9 @@ kP#
 */
 enum class AircraftType
 {
-	kEagle,
-	kRaptor,
-	kAvenger,
+	kP1,
+	kP2,
+	kMeteorA,
+	kMeteorB,
 	kAircraftCount
 };

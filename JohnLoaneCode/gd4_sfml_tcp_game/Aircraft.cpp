@@ -20,13 +20,13 @@ TextureID ToTextureID(AircraftType type)
 {
 	switch (type)
 	{
-	case AircraftType::kEagle:
+	case AircraftType::kP1:
 		return TextureID::kEagle;
 		break;
-	case AircraftType::kRaptor:
+	case AircraftType::kP2:
 		return TextureID::kRaptor;
 		break;
-	case AircraftType::kAvenger:
+	case AircraftType::kMeteorA:
 		return TextureID::kAvenger;
 		break;
 	}
@@ -42,13 +42,13 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_health_display(nullptr) //keep health display
 	, m_missile_display(nullptr) //replace with powerup display
 	, m_distance_travelled(0.f) //remove
-	, m_directions_index(0) //****************************************************************************************************
+	, m_directions_index(0) //**
 	, m_fire_rate(1) //remove
 	, m_spread_level(1) //remove
 	, m_is_firing(false) //remove
 	, m_is_launching_missile(false) //keep
 	, m_fire_countdown(sf::Time::Zero) //remove
-	, m_missile_ammo(0) //change (start with 0)
+	, m_missile_ammo(100) //change (start with 0)
 	, m_is_marked_for_removal(false) //remove
 	, m_show_explosion(true) //keep
 	, m_spawned_pickup(false) //keep
@@ -88,7 +88,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	AttachChild(std::move(health_display));
 
 	// if player
-	if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kPlayerAircraft))
+	if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1) || Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP2))
 	{
 		//missile display (power up)
 		std::string* missile_ammo = new std::string("");
@@ -103,11 +103,14 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 //****************************************************************************************************
 unsigned int Aircraft::GetCategory() const
 {
-	if (IsAllied())
+	if (IsP1())
 	{
-		return static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft);
+		return static_cast<unsigned int>(ReceiverCategories::kP1);
 	}
-	return static_cast<unsigned int>(ReceiverCategories::kEnemyAircraft);
+	else if (IsP2())
+	{
+		return static_cast<unsigned int>(ReceiverCategories::kP2);
+	}
 
 }
 
@@ -210,7 +213,7 @@ void Aircraft::LaunchMissile()
 // remove
 void Aircraft::CreateBullet(SceneNode& node, const TextureHolder& textures) const
 {
-	ProjectileType type = IsAllied() ? ProjectileType::kAlliedBullet : ProjectileType::kEnemyBullet;
+	ProjectileType type = IsP1() ? ProjectileType::kAlliedBullet : ProjectileType::kEnemyBullet;
 	switch (m_spread_level)
 	{
 	case 1:
@@ -234,11 +237,18 @@ void Aircraft::CreateProjectile(SceneNode& node, ProjectileType type, float x_of
 {
 	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 	sf::Vector2f offset(x_offset * m_sprite.getGlobalBounds().width, y_offset * m_sprite.getGlobalBounds().height);
-	sf::Vector2f velocity(0, projectile->GetMaxSpeed());
 
-	float sign = IsAllied() ? -1.f : 1.f;
-	projectile->setPosition(GetWorldPosition() + offset * sign);
-	projectile->SetVelocity(velocity* sign);
+	// Select the correct rotation based on the ID
+	float rot = Aircraft::GetRotation();
+
+	// Convert degrees to radians for trigonometric functions
+	float radian = rot * 3.14159265f / 180.0f;
+
+	// Calculate the forward velocity based on the angle
+	sf::Vector2f velocity(std::cos(radian) * projectile->GetMaxSpeed(), std::sin(radian) * projectile->GetMaxSpeed());
+
+	projectile->setPosition(GetWorldPosition() + offset);
+	projectile->SetVelocity(-velocity);
 	node.AttachChild(std::move(projectile));
 }
 
@@ -299,14 +309,14 @@ void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 // keep
 void Aircraft::CheckProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
-	if (!IsAllied())
+	if (!IsP1())
 	{
 		Fire();
 	}
 
 	if (m_is_firing && m_fire_countdown <= sf::Time::Zero)
 	{
-		PlayLocalSound(commands, IsAllied() ? SoundEffect::kEnemyGunfire : SoundEffect::kAlliedGunfire);
+		PlayLocalSound(commands, IsP1() ? SoundEffect::kEnemyGunfire : SoundEffect::kAlliedGunfire);
 		commands.Push(m_fire_command);
 		m_fire_countdown += Table[static_cast<int>(m_type)].m_fire_interval / (m_fire_rate + 1.f);
 		m_is_firing = false;
@@ -328,9 +338,13 @@ void Aircraft::CheckProjectileLaunch(sf::Time dt, CommandQueue& commands)
 }
 
 // keep
-bool Aircraft::IsAllied() const
+bool Aircraft::IsP1() const
 {
-	return m_type == AircraftType::kEagle;
+	return m_type == AircraftType::kP1;
+}
+bool Aircraft::IsP2() const
+{
+	return m_type == AircraftType::kP2;
 }
 
 // move to spawner
@@ -347,7 +361,7 @@ void Aircraft::CreatePickup(SceneNode& node, const TextureHolder& textures) cons
 void Aircraft::CheckPickupDrop(CommandQueue& commands)
 {
 	//TODO Get rid of the magic number 3 here 
-	if (!IsAllied() && Utility::RandomInt(3) == 0 && !m_spawned_pickup)
+	if (!IsP1() && Utility::RandomInt(3) == 0 && !m_spawned_pickup)
 	{
 		commands.Push(m_drop_pickup_command);
 	}

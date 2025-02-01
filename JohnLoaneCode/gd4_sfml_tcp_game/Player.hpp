@@ -12,6 +12,7 @@ class Player
 {
 public:
 	Player();
+	void ResetPlayerRotations();
 	void HandleEvent(const sf::Event& event, CommandQueue& command_queue);
 	void HandleRealTimeInput(CommandQueue& command_queue);
 
@@ -24,9 +25,15 @@ private:
 	void InitialiseActions();
 	static bool IsRealTimeAction(Action action);
 
+
 private:
-	std::map<sf::Keyboard::Key, Action> m_key_binding;
-	std::map<Action, Command> m_action_binding;
+	std::map<sf::Keyboard::Key, Action> m_key_binding_P1;
+	std::map<sf::Keyboard::Key, Action> m_key_binding_P2;
+	std::map<sf::Keyboard::Key, Action> m_key_binding_God;
+
+	std::map<Action, Command> m_action_binding_P1;
+	std::map<Action, Command> m_action_binding_P2;
+	std::map<Action, Command> m_action_binding_God;
 	MissionStatus m_current_mission_status;
 
 };

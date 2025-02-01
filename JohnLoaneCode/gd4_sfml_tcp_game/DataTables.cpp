@@ -9,41 +9,41 @@ std::vector<AircraftData> InitializeAircraftData()
 {
     std::vector<AircraftData> data(static_cast<int>(AircraftType::kAircraftCount));
 
-    //change to P1
-    data[static_cast<int>(AircraftType::kEagle)].m_hitpoints = 100;
-    data[static_cast<int>(AircraftType::kEagle)].m_speed = 200.f;
-    data[static_cast<int>(AircraftType::kEagle)].m_fire_interval = sf::seconds(1); //remove
-    data[static_cast<int>(AircraftType::kEagle)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kEagle)].m_texture_rect = sf::IntRect(0, 0, 48, 64);
-    data[static_cast<int>(AircraftType::kEagle)].m_has_roll_animation = true;
+    //p1
+    data[static_cast<int>(AircraftType::kP1)].m_hitpoints = 100;
+    data[static_cast<int>(AircraftType::kP1)].m_speed = 200.f;
+    data[static_cast<int>(AircraftType::kP1)].m_texture = TextureID::kEntities;
+    data[static_cast<int>(AircraftType::kP1)].m_texture_rect = sf::IntRect(0, 0, 32, 32);
+    data[static_cast<int>(AircraftType::kP1)].m_has_roll_animation = true;
 
-    //change to P2
-    data[static_cast<int>(AircraftType::kRaptor)].m_hitpoints = 20;
-    data[static_cast<int>(AircraftType::kRaptor)].m_speed = 80.f;
-    data[static_cast<int>(AircraftType::kRaptor)].m_fire_interval = sf::Time::Zero; //remove
-    data[static_cast<int>(AircraftType::kRaptor)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kRaptor)].m_texture_rect = sf::IntRect(144, 0, 84, 64);
-    data[static_cast<int>(AircraftType::kRaptor)].m_has_roll_animation = false; // change to true for P2
+    //p2
+    data[static_cast<int>(AircraftType::kP2)].m_hitpoints = 100;
+    data[static_cast<int>(AircraftType::kP2)].m_speed = 200.f;
+    data[static_cast<int>(AircraftType::kP2)].m_texture = TextureID::kEntities;
+    data[static_cast<int>(AircraftType::kP2)].m_texture_rect = sf::IntRect(0, 32, 32, 32);
+    data[static_cast<int>(AircraftType::kP2)].m_has_roll_animation = true; 
 
-    //AI for Raptor (remove)
-    data[static_cast<int>(AircraftType::kRaptor)].m_directions.emplace_back(Direction(+45.f, 80.f));
-    data[static_cast<int>(AircraftType::kRaptor)].m_directions.emplace_back(Direction(-45.f, 160.f));
-    data[static_cast<int>(AircraftType::kRaptor)].m_directions.emplace_back(Direction(+45.f, 80.f));
 
-    //(remove)
-    data[static_cast<int>(AircraftType::kAvenger)].m_hitpoints = 40;
-    data[static_cast<int>(AircraftType::kAvenger)].m_speed = 50.f;
-    data[static_cast<int>(AircraftType::kAvenger)].m_fire_interval = sf::seconds(2);
-    data[static_cast<int>(AircraftType::kAvenger)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kAvenger)].m_texture_rect = sf::IntRect(228, 0, 60, 59);
-    data[static_cast<int>(AircraftType::kAvenger)].m_has_roll_animation = false;
+    // Small meteor
+    data[static_cast<int>(AircraftType::kMeteorA)].m_hitpoints = 100;
+    data[static_cast<int>(AircraftType::kMeteorA)].m_speed = 50.f;
+    data[static_cast<int>(AircraftType::kMeteorA)].m_fire_interval = sf::seconds(2);
+    data[static_cast<int>(AircraftType::kMeteorA)].m_texture = TextureID::kEntities;
+    data[static_cast<int>(AircraftType::kMeteorA)].m_texture_rect = sf::IntRect(96, 32, 48, 32);
+    data[static_cast<int>(AircraftType::kMeteorA)].m_has_roll_animation = false;
 
-    //AI for Raptor (remove)
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(+45.f, 50.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(0.f, 50.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(-45.f, 100.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(0.f, 50.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(45.f, 50.f));
+    // Large meteor
+    data[static_cast<int>(AircraftType::kMeteorB)].m_hitpoints = 100;
+    data[static_cast<int>(AircraftType::kMeteorB)].m_speed = 50.f;
+    data[static_cast<int>(AircraftType::kMeteorB)].m_fire_interval = sf::seconds(2);
+    data[static_cast<int>(AircraftType::kMeteorB)].m_texture = TextureID::kEntities;
+    data[static_cast<int>(AircraftType::kMeteorB)].m_texture_rect = sf::IntRect(112, 0, 32, 32);
+    data[static_cast<int>(AircraftType::kMeteorB)].m_has_roll_animation = false;
+
+
+
+    //AI for Avenger (remove)
+    //data[static_cast<int>(AircraftType::kMeteorA)].m_directions.emplace_back(Direction(+45.f, 50.f));
 
     return data;
 }
@@ -52,21 +52,22 @@ std::vector<AircraftData> InitializeAircraftData()
 std::vector<ProjectileData> InitializeProjectileData()
 {
     std::vector<ProjectileData> data(static_cast<int>(ProjectileType::kProjectileCount));
+    //allied bullet
     data[static_cast<int>(ProjectileType::kAlliedBullet)].m_damage = 10;
     data[static_cast<int>(ProjectileType::kAlliedBullet)].m_speed = 300;
     data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture_rect = sf::IntRect(175, 64, 3, 14);
-
+    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture_rect = sf::IntRect(96, 0, 8, 16);
+    //enemy bullet
     data[static_cast<int>(ProjectileType::kEnemyBullet)].m_damage = 10;
     data[static_cast<int>(ProjectileType::kEnemyBullet)].m_speed = 300;
     data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture_rect = sf::IntRect(175, 64, 3, 14);
+    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture_rect = sf::IntRect(96, 0, 8, 16);
 
-
+    //missile
     data[static_cast<int>(ProjectileType::kMissile)].m_damage = 200;
     data[static_cast<int>(ProjectileType::kMissile)].m_speed = 150;
     data[static_cast<int>(ProjectileType::kMissile)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(ProjectileType::kMissile)].m_texture_rect = sf::IntRect(160, 64, 15, 32);
+    data[static_cast<int>(ProjectileType::kMissile)].m_texture_rect = sf::IntRect(96, 0, 8, 16);
 
     return data;
 }
