@@ -19,7 +19,8 @@ KeySettingsState::KeySettingsState(StateStack& stack, Context context)
 	AddButtonLabel(Action::kP2TiltLeft, 400.f, 250.f, "P2 Tilt Left", context);
 	AddButtonLabel(Action::kP2UsePowerUp, 400.f, 350.f, "P2 Pulse Bomb", context);
 
-	AddButtonLabel(Action::kMeteorSpawn, 720.f, 150.f, "Meteor Span", context);
+	AddButtonLabel(Action::kMeteorSpawn , 700.f, 150.f, "Meteor Spawn", context);
+
 	UpdateLabels();
 
 	auto back_button = std::make_shared<gui::Button>(context);
