@@ -235,7 +235,9 @@ void World::SpawnEnemies()
 		SpawnPoint spawn = m_enemy_spawn_points.back();
 		std::unique_ptr<Aircraft> enemy(new Aircraft(spawn.m_type, m_textures, m_fonts));
 		enemy->setPosition(spawn.m_x, spawn.m_y);
-		enemy->setRotation(180.f);
+		//random float 
+		float rot = static_cast<float>(rand() % 360);
+		enemy->setRotation(rot);
 		m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(enemy));
 		m_enemy_spawn_points.pop_back();
 	}
@@ -244,57 +246,202 @@ void World::SpawnEnemies()
 //change to spawn meteors
 void World::AddEnemies()
 {
-	AddEnemy(AircraftType::kMeteorA, 450.f, 350.f);
-	/*
+	/*AddEnemy(AircraftType::kMeteorA, 450.f, 350.f);*/
 	AddEnemy(AircraftType::kMeteorA, 20.f, 50.f);
-	AddEnemy(AircraftType::kMeteorA, 20.f, 340.f);
+	AddEnemy(AircraftType::kMeteorB, 20.f, 100.f);
+	/*AddEnemy(AircraftType::kMeteorB, 20.f, 340.f);
 	AddEnemy(AircraftType::kMeteorA, 40.f, 280.f);
 	AddEnemy(AircraftType::kMeteorA, 40.f, 170.f);
-	AddEnemy(AircraftType::kMeteorA, 40.f, 90.f);
+	AddEnemy(AircraftType::kMeteorB, 40.f, 90.f);
 	AddEnemy(AircraftType::kMeteorA, 60.f, 220.f);
-	AddEnemy(AircraftType::kMeteorA, 60.f, 30.f);
+	AddEnemy(AircraftType::kMeteorB, 60.f, 30.f);
 	AddEnemy(AircraftType::kMeteorA, 80.f, 320.f);
 	AddEnemy(AircraftType::kMeteorA, 90.f, 280.f);
-	AddEnemy(AircraftType::kMeteorA, 90.f, 180.f);
+	AddEnemy(AircraftType::kMeteorB, 90.f, 180.f);
 	AddEnemy(AircraftType::kMeteorA, 90.f, 70.f);
 	AddEnemy(AircraftType::kMeteorA, 110.f, 130.f);
 	AddEnemy(AircraftType::kMeteorA, 130.f, 260.f);
-	AddEnemy(AircraftType::kMeteorA, 130.f, 210.f);
+	AddEnemy(AircraftType::kMeteorB, 130.f, 210.f);
 	AddEnemy(AircraftType::kMeteorA, 150.f, 330.f);
 	AddEnemy(AircraftType::kMeteorA, 140.f, 60.f);
-	AddEnemy(AircraftType::kMeteorA, 170.f, 170.f);
-	AddEnemy(AircraftType::kMeteorA, 180.f, 110.f);
+	AddEnemy(AircraftType::kMeteorB, 170.f, 170.f);
+	AddEnemy(AircraftType::kMeteorB, 180.f, 110.f);
 	AddEnemy(AircraftType::kMeteorA, 180.f, 20.f);
-	AddEnemy(AircraftType::kMeteorA, 190.f, 240.f);
+	AddEnemy(AircraftType::kMeteorB, 190.f, 240.f);
 	AddEnemy(AircraftType::kMeteorA, 200.f, 300.f);
 	AddEnemy(AircraftType::kMeteorA, 210.f, 80.f);
-	AddEnemy(AircraftType::kMeteorA, 220.f, 190.f);
+	AddEnemy(AircraftType::kMeteorB, 220.f, 190.f);
 	AddEnemy(AircraftType::kMeteorA, 240.f, 230.f);
 	AddEnemy(AircraftType::kMeteorA, 260.f, 270.f);
 	AddEnemy(AircraftType::kMeteorA, 250.f, 130.f);
-	AddEnemy(AircraftType::kMeteorA, 260.f, 80.f);
+	AddEnemy(AircraftType::kMeteorB, 260.f, 80.f);
 	AddEnemy(AircraftType::kMeteorA, 280.f, 30.f);
-	AddEnemy(AircraftType::kMeteorA, 280.f, 340.f);
+	AddEnemy(AircraftType::kMeteorB, 280.f, 340.f);
 	AddEnemy(AircraftType::kMeteorA, 300.f, 160.f);
-	AddEnemy(AircraftType::kMeteorA, 300.f, 120.f);
-	AddEnemy(AircraftType::kMeteorA, 320.f, 200.f);
-	AddEnemy(AircraftType::kMeteorA, 330.f, 300.f);
+	AddEnemy(AircraftType::kMeteorB, 300.f, 120.f);
+	AddEnemy(AircraftType::kMeteorB, 320.f, 200.f);
+	AddEnemy(AircraftType::kMeteorB, 330.f, 300.f);
 	AddEnemy(AircraftType::kMeteorA, 330.f, 260.f);
-	AddEnemy(AircraftType::kMeteorA, 330.f, 80.f);
+	AddEnemy(AircraftType::kMeteorB, 330.f, 80.f);
 	AddEnemy(AircraftType::kMeteorA, 350.f, 40.f);
-	AddEnemy(AircraftType::kMeteorA, 360.f, 140.f);
-	AddEnemy(AircraftType::kMeteorA, 370.f, 170.f);
+	AddEnemy(AircraftType::kMeteorB, 360.f, 140.f);
+	AddEnemy(AircraftType::kMeteorB, 370.f, 170.f);
 	AddEnemy(AircraftType::kMeteorA, 380.f, 240.f);
 	AddEnemy(AircraftType::kMeteorA, 380.f, 100.f);
-	AddEnemy(AircraftType::kMeteorA, 390.f, 340.f);
+	AddEnemy(AircraftType::kMeteorB, 390.f, 340.f);
 	AddEnemy(AircraftType::kMeteorA, 400.f, 290.f);
 	AddEnemy(AircraftType::kMeteorA, 410.f, 50.f);
 	AddEnemy(AircraftType::kMeteorA, 420.f, 210.f);
-	AddEnemy(AircraftType::kMeteorA, 420.f, 180.f);
+	AddEnemy(AircraftType::kMeteorB, 420.f, 180.f);
 	AddEnemy(AircraftType::kMeteorA, 440.f, 270.f);
-	AddEnemy(AircraftType::kMeteorA, 440.f, 90.f);*/
+	AddEnemy(AircraftType::kMeteorB, 440.f, 90.f);
 
+	AddEnemy(AircraftType::kMeteorA, -450.f, 350.f);
+	AddEnemy(AircraftType::kMeteorA, -20.f,	50.f);
+	AddEnemy(AircraftType::kMeteorB, -20.f,	340.f);
+	AddEnemy(AircraftType::kMeteorA, -40.f,	280.f);
+	AddEnemy(AircraftType::kMeteorA, -40.f,	170.f);
+	AddEnemy(AircraftType::kMeteorB, -40.f,	90.f);
+	AddEnemy(AircraftType::kMeteorA, -60.f,	220.f);
+	AddEnemy(AircraftType::kMeteorB, -60.f,	30.f);
+	AddEnemy(AircraftType::kMeteorA, -80.f,	320.f);
+	AddEnemy(AircraftType::kMeteorA, -90.f,	280.f);
+	AddEnemy(AircraftType::kMeteorB, -90.f,	180.f);
+	AddEnemy(AircraftType::kMeteorA, -90.f,	70.f);
+	AddEnemy(AircraftType::kMeteorA, -110.f, 130.f);
+	AddEnemy(AircraftType::kMeteorA, -130.f, 260.f);
+	AddEnemy(AircraftType::kMeteorB, -130.f, 210.f);
+	AddEnemy(AircraftType::kMeteorA, -150.f, 330.f);
+	AddEnemy(AircraftType::kMeteorA, -140.f, 60.f);
+	AddEnemy(AircraftType::kMeteorB, -170.f, 170.f);
+	AddEnemy(AircraftType::kMeteorB, -180.f, 110.f);
+	AddEnemy(AircraftType::kMeteorA, -180.f, 20.f);
+	AddEnemy(AircraftType::kMeteorB, -190.f, 240.f);
+	AddEnemy(AircraftType::kMeteorA, -200.f, 300.f);
+	AddEnemy(AircraftType::kMeteorA, -210.f, 80.f);
+	AddEnemy(AircraftType::kMeteorB, -220.f, 190.f);
+	AddEnemy(AircraftType::kMeteorA, -240.f, 230.f);
+	AddEnemy(AircraftType::kMeteorA, -260.f, 270.f);
+	AddEnemy(AircraftType::kMeteorA, -250.f, 130.f);
+	AddEnemy(AircraftType::kMeteorB, -260.f, 80.f);
+	AddEnemy(AircraftType::kMeteorA, -280.f, 30.f);
+	AddEnemy(AircraftType::kMeteorB, -280.f, 340.f);
+	AddEnemy(AircraftType::kMeteorA, -300.f, 160.f);
+	AddEnemy(AircraftType::kMeteorB, -300.f, 120.f);
+	AddEnemy(AircraftType::kMeteorB, -320.f, 200.f);
+	AddEnemy(AircraftType::kMeteorB, -330.f, 300.f);
+	AddEnemy(AircraftType::kMeteorA, -330.f, 260.f);
+	AddEnemy(AircraftType::kMeteorB, -330.f, 80.f);
+	AddEnemy(AircraftType::kMeteorA, -350.f, 40.f);
+	AddEnemy(AircraftType::kMeteorB, -360.f, 140.f);
+	AddEnemy(AircraftType::kMeteorB, -370.f, 170.f);
+	AddEnemy(AircraftType::kMeteorA, -380.f, 240.f);
+	AddEnemy(AircraftType::kMeteorA, -380.f, 100.f);
+	AddEnemy(AircraftType::kMeteorB, -390.f, 340.f);
+	AddEnemy(AircraftType::kMeteorA, -400.f, 290.f);
+	AddEnemy(AircraftType::kMeteorA, -410.f, 50.f);
+	AddEnemy(AircraftType::kMeteorA, -420.f, 210.f);
+	AddEnemy(AircraftType::kMeteorB, -420.f, 180.f);
+	AddEnemy(AircraftType::kMeteorA, -440.f, 270.f);
+	AddEnemy(AircraftType::kMeteorB, -440.f, 90.f);
 
+	AddEnemy(AircraftType::kMeteorA, -450.f, -350.f);
+	AddEnemy(AircraftType::kMeteorA, -20.f,  -50.f);
+	AddEnemy(AircraftType::kMeteorB, -20.f,  -340.f);
+	AddEnemy(AircraftType::kMeteorA, -40.f,  -280.f);
+	AddEnemy(AircraftType::kMeteorA, -40.f,  -170.f);
+	AddEnemy(AircraftType::kMeteorB, -40.f,  -90.f);
+	AddEnemy(AircraftType::kMeteorA, -60.f,  -220.f);
+	AddEnemy(AircraftType::kMeteorB, -60.f,  -30.f);
+	AddEnemy(AircraftType::kMeteorA, -80.f,  -320.f);
+	AddEnemy(AircraftType::kMeteorA, -90.f,  -280.f);
+	AddEnemy(AircraftType::kMeteorB, -90.f,  -180.f);
+	AddEnemy(AircraftType::kMeteorA, -90.f,	 -70.f);
+	AddEnemy(AircraftType::kMeteorA, -110.f, -130.f);
+	AddEnemy(AircraftType::kMeteorA, -130.f, -260.f);
+	AddEnemy(AircraftType::kMeteorB, -130.f, -210.f);
+	AddEnemy(AircraftType::kMeteorA, -150.f, -330.f);
+	AddEnemy(AircraftType::kMeteorA, -140.f, -60.f);
+	AddEnemy(AircraftType::kMeteorB, -170.f, -170.f);
+	AddEnemy(AircraftType::kMeteorB, -180.f, -110.f);
+	AddEnemy(AircraftType::kMeteorA, -180.f, -20.f);
+	AddEnemy(AircraftType::kMeteorB, -190.f, -240.f);
+	AddEnemy(AircraftType::kMeteorA, -200.f, -300.f);
+	AddEnemy(AircraftType::kMeteorA, -210.f, -80.f);
+	AddEnemy(AircraftType::kMeteorB, -220.f, -190.f);
+	AddEnemy(AircraftType::kMeteorA, -240.f, -230.f);
+	AddEnemy(AircraftType::kMeteorA, -260.f, -270.f);
+	AddEnemy(AircraftType::kMeteorA, -250.f, -130.f);
+	AddEnemy(AircraftType::kMeteorB, -260.f, -80.f);
+	AddEnemy(AircraftType::kMeteorA, -280.f, -30.f);
+	AddEnemy(AircraftType::kMeteorB, -280.f, -340.f);
+	AddEnemy(AircraftType::kMeteorA, -300.f, -160.f);
+	AddEnemy(AircraftType::kMeteorB, -300.f, -120.f);
+	AddEnemy(AircraftType::kMeteorB, -320.f, -200.f);
+	AddEnemy(AircraftType::kMeteorB, -330.f, -300.f);
+	AddEnemy(AircraftType::kMeteorA, -330.f, -260.f);
+	AddEnemy(AircraftType::kMeteorB, -330.f, -80.f);
+	AddEnemy(AircraftType::kMeteorA, -350.f, -40.f);
+	AddEnemy(AircraftType::kMeteorB, -360.f, -140.f);
+	AddEnemy(AircraftType::kMeteorB, -370.f, -170.f);
+	AddEnemy(AircraftType::kMeteorA, -380.f, -240.f);
+	AddEnemy(AircraftType::kMeteorA, -380.f, -100.f);
+	AddEnemy(AircraftType::kMeteorB, -390.f, -340.f);
+	AddEnemy(AircraftType::kMeteorA, -400.f, -290.f);
+	AddEnemy(AircraftType::kMeteorA, -410.f, -50.f);
+	AddEnemy(AircraftType::kMeteorA, -420.f, -210.f);
+	AddEnemy(AircraftType::kMeteorB, -420.f, -180.f);
+	AddEnemy(AircraftType::kMeteorA, -440.f, -270.f);
+	AddEnemy(AircraftType::kMeteorB, -440.f, -90.f);
+
+	AddEnemy(AircraftType::kMeteorA, 450.f, -350.f);
+	AddEnemy(AircraftType::kMeteorA, 20.f,  -50.f);
+	AddEnemy(AircraftType::kMeteorB, 20.f,  -340.f);
+	AddEnemy(AircraftType::kMeteorA, 40.f,  -280.f);
+	AddEnemy(AircraftType::kMeteorA, 40.f,  -170.f);
+	AddEnemy(AircraftType::kMeteorB, 40.f,  -90.f);
+	AddEnemy(AircraftType::kMeteorA, 60.f,  -220.f);
+	AddEnemy(AircraftType::kMeteorB, 60.f,  -30.f);
+	AddEnemy(AircraftType::kMeteorA, 80.f,  -320.f);
+	AddEnemy(AircraftType::kMeteorA, 90.f,  -280.f);
+	AddEnemy(AircraftType::kMeteorB, 90.f,  -180.f);
+	AddEnemy(AircraftType::kMeteorA, 90.f,  -70.f);
+	AddEnemy(AircraftType::kMeteorA, 110.f, -130.f);
+	AddEnemy(AircraftType::kMeteorA, 130.f, -260.f);
+	AddEnemy(AircraftType::kMeteorB, 130.f, -210.f);
+	AddEnemy(AircraftType::kMeteorA, 150.f, -330.f);
+	AddEnemy(AircraftType::kMeteorA, 140.f, -60.f);
+	AddEnemy(AircraftType::kMeteorB, 170.f, -170.f);
+	AddEnemy(AircraftType::kMeteorB, 180.f, -110.f);
+	AddEnemy(AircraftType::kMeteorA, 180.f, -20.f);
+	AddEnemy(AircraftType::kMeteorB, 190.f, -240.f);
+	AddEnemy(AircraftType::kMeteorA, 200.f, -300.f);
+	AddEnemy(AircraftType::kMeteorA, 210.f, -80.f);
+	AddEnemy(AircraftType::kMeteorB, 220.f, -190.f);
+	AddEnemy(AircraftType::kMeteorA, 240.f, -230.f);
+	AddEnemy(AircraftType::kMeteorA, 260.f, -270.f);
+	AddEnemy(AircraftType::kMeteorA, 250.f, -130.f);
+	AddEnemy(AircraftType::kMeteorB, 260.f, -80.f);
+	AddEnemy(AircraftType::kMeteorA, 280.f, -30.f);
+	AddEnemy(AircraftType::kMeteorB, 280.f, -340.f);
+	AddEnemy(AircraftType::kMeteorA, 300.f, -160.f);
+	AddEnemy(AircraftType::kMeteorB, 300.f, -120.f);
+	AddEnemy(AircraftType::kMeteorB, 320.f, -200.f);
+	AddEnemy(AircraftType::kMeteorB, 330.f, -300.f);
+	AddEnemy(AircraftType::kMeteorA, 330.f, -260.f);
+	AddEnemy(AircraftType::kMeteorB, 330.f, -80.f);
+	AddEnemy(AircraftType::kMeteorA, 350.f, -40.f);
+	AddEnemy(AircraftType::kMeteorB, 360.f, -140.f);
+	AddEnemy(AircraftType::kMeteorB, 370.f, -170.f);
+	AddEnemy(AircraftType::kMeteorA, 380.f, -240.f);
+	AddEnemy(AircraftType::kMeteorA, 380.f, -100.f);
+	AddEnemy(AircraftType::kMeteorB, 390.f, -340.f);
+	AddEnemy(AircraftType::kMeteorA, 400.f, -290.f);
+	AddEnemy(AircraftType::kMeteorA, 410.f, -50.f);
+	AddEnemy(AircraftType::kMeteorA, 420.f, -210.f);
+	AddEnemy(AircraftType::kMeteorB, 420.f, -180.f);
+	AddEnemy(AircraftType::kMeteorA, 440.f, -270.f);
+	AddEnemy(AircraftType::kMeteorB, 440.f, -90.f);*/
 
 	
 
@@ -333,7 +480,7 @@ sf::FloatRect World::GetBattleFieldBounds() const
 void World::DestroyEntitiesOutsideView()
 {
 	Command command;
-	command.category = static_cast<int>(ReceiverCategories::kEnemyAircraft) | static_cast<int>(ReceiverCategories::kProjectile);
+	command.category = static_cast<int>(ReceiverCategories::kMeteors) | static_cast<int>(ReceiverCategories::kProjectile);
 	command.action = DerivedAction<Entity>([this](Entity& e, sf::Time dt)
 		{
 			//Does the object intersect with the battlefield
@@ -350,7 +497,7 @@ void World::GuideMissiles()
 {
 	//Target the closest enemy in the world
 	Command enemyCollector;
-	enemyCollector.category = static_cast<int>(ReceiverCategories::kEnemyAircraft);
+	enemyCollector.category = static_cast<int>(ReceiverCategories::kMeteors);
 	enemyCollector.action = DerivedAction<Aircraft>([this](Aircraft& enemy, sf::Time)
 		{
 			if (!enemy.IsDestroyed())
@@ -418,16 +565,19 @@ void World::HandleCollisions()
 	m_scenegraph.CheckSceneCollision(m_scenegraph, collision_pairs);
 	for (SceneNode::Pair pair : collision_pairs)
 	{
-		if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kEnemyAircraft))
+		//colision between players and meteors
+		if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kMeteors) || MatchesCategories(pair, ReceiverCategories::kP2, ReceiverCategories::kMeteors))
 		{
 			auto& player = static_cast<Aircraft&>(*pair.first);
-			auto& enemy = static_cast<Aircraft&>(*pair.second);
+			auto& meteor = static_cast<Aircraft&>(*pair.second);
 			//Collision response
-			player.Damage(enemy.GetHitPoints());
-			enemy.Destroy();
+			player.Damage(1);
+			//knockback on enemy in direction of player movement
+			sf::Vector2f v = player.GetVelocity();
+			meteor.SetVelocity(v);
 		}
 
-		else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kPickup))
+		/*else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kPickup))
 		{
 			auto& player = static_cast<Aircraft&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);
@@ -435,14 +585,60 @@ void World::HandleCollisions()
 			pickup.Apply(player);
 			pickup.Destroy();
 			player.PlayLocalSound(m_command_queue, SoundEffect::kCollectPickup);
-		}
-		else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kEnemyProjectile) || MatchesCategories(pair, ReceiverCategories::kEnemyAircraft, ReceiverCategories::kAlliedProjectile))
+		}*/
+		//missile and meteor collision
+		else if (MatchesCategories(pair, ReceiverCategories::kMeteors, ReceiverCategories::kAlliedProjectile))
 		{
-			auto& aircraft = static_cast<Aircraft&>(*pair.first);
+			auto& meteor = static_cast<Aircraft&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
-			//Collision response
-			aircraft.Damage(projectile.GetDamage());
+			//Collision response - knockback (transfer all momentum from projectile to the meteor)
+			sf::Vector2f v = projectile.GetVelocity();
+			meteor.SetVelocity(v);
 			projectile.Destroy();
+		}
+		//meteor and meteor collision
+		else if (MatchesCategories(pair, ReceiverCategories::kMeteors, ReceiverCategories::kMeteors))
+		{
+			auto& meteor1 = static_cast<Aircraft&>(*pair.first);
+			auto& meteor2 = static_cast<Aircraft&>(*pair.second);
+			//Colission responce - knockback (transfer all momentum from one to the other)
+			sf::Vector2f v1 = meteor1.GetVelocity();
+			sf::Vector2f v2 = meteor2.GetVelocity();
+			meteor1.SetVelocity(v2);
+			meteor2.SetVelocity(v1);
+		}
+		/*meteor hits boarder knock back
+		(position1.x = std::max(position1.x, view_bounds.left + border_distance);
+		position1.x = std::min(position1.x, view_bounds.left + view_bounds.width - border_distance);
+		position1.y = std::max(position1.y, view_bounds.top + border_distance);
+		position1.y = std::min(position1.y, view_bounds.top + view_bounds.height - border_distance);*/
+		else if (MatchesCategories(pair, ReceiverCategories::kMeteors, ReceiverCategories::kScene))
+		{
+			auto& meteor = static_cast<Aircraft&>(*pair.first);
+			sf::Vector2f v = meteor.GetVelocity();
+			sf::Vector2f pos = meteor.getPosition();
+			sf::FloatRect view_bounds = GetViewBounds();
+			float border_distance = 40.f;
+			if (pos.x < view_bounds.left + border_distance)
+			{
+				v.x = -v.x;
+				meteor.SetVelocity(v);
+			}
+			if (pos.x > view_bounds.left + view_bounds.width - border_distance)
+			{
+				v.x = -v.x;
+				meteor.SetVelocity(v);
+			}
+			if (pos.y < view_bounds.top + border_distance)
+			{
+				v.y = -v.y;
+				meteor.SetVelocity(v);
+			}
+			if (pos.y > view_bounds.top + view_bounds.height - border_distance)
+			{
+				v.y = -v.y;
+				meteor.SetVelocity(v);
+			}
 		}
 	}
 }

@@ -111,7 +111,10 @@ unsigned int Aircraft::GetCategory() const
 	{
 		return static_cast<unsigned int>(ReceiverCategories::kP2);
 	}
-
+	else 
+	{
+		return static_cast<unsigned int>(ReceiverCategories::kMeteors);
+	}
 }
 
 // remove
