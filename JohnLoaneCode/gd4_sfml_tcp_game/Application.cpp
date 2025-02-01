@@ -71,6 +71,7 @@ void Application::ProcessInput()
 void Application::Update(sf::Time dt)
 {
 	m_stack.Update(dt);
+
 }
 
 void Application::Render()
@@ -89,6 +90,6 @@ void Application::RegisterStates()
 	m_stack.RegisterState<KeySettingsState>(StateID::kKeySettings);
 	m_stack.RegisterState<GameOverState>(StateID::kGameOver);
 	m_stack.RegisterState<SettingsState>(StateID::kSettings);
-	//m_stack.RegisterState<VideoSettingsState>(StateID::kVideoSettings);
-	//m_stack.RegisterState<AudioSettingsState>(StateID::kAudioSettings);
+	m_stack.RegisterState<VideoSettingsState>(StateID::kVideoSettings);
+	m_stack.RegisterState<AudioSettingsState>(StateID::kAudioSettings);
 }
