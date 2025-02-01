@@ -129,9 +129,6 @@
     <ClCompile Include="VideoSettingsState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AudioSettingsState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -309,9 +306,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VideoSettingsState.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AudioSettingsState.hpp">
