@@ -245,6 +245,55 @@ void World::SpawnEnemies()
 void World::AddEnemies()
 {
 	AddEnemy(AircraftType::kMeteorA, 450.f, 350.f);
+	/*
+	AddEnemy(AircraftType::kMeteorA, 20.f, 50.f);
+	AddEnemy(AircraftType::kMeteorA, 20.f, 340.f);
+	AddEnemy(AircraftType::kMeteorA, 40.f, 280.f);
+	AddEnemy(AircraftType::kMeteorA, 40.f, 170.f);
+	AddEnemy(AircraftType::kMeteorA, 40.f, 90.f);
+	AddEnemy(AircraftType::kMeteorA, 60.f, 220.f);
+	AddEnemy(AircraftType::kMeteorA, 60.f, 30.f);
+	AddEnemy(AircraftType::kMeteorA, 80.f, 320.f);
+	AddEnemy(AircraftType::kMeteorA, 90.f, 280.f);
+	AddEnemy(AircraftType::kMeteorA, 90.f, 180.f);
+	AddEnemy(AircraftType::kMeteorA, 90.f, 70.f);
+	AddEnemy(AircraftType::kMeteorA, 110.f, 130.f);
+	AddEnemy(AircraftType::kMeteorA, 130.f, 260.f);
+	AddEnemy(AircraftType::kMeteorA, 130.f, 210.f);
+	AddEnemy(AircraftType::kMeteorA, 150.f, 330.f);
+	AddEnemy(AircraftType::kMeteorA, 140.f, 60.f);
+	AddEnemy(AircraftType::kMeteorA, 170.f, 170.f);
+	AddEnemy(AircraftType::kMeteorA, 180.f, 110.f);
+	AddEnemy(AircraftType::kMeteorA, 180.f, 20.f);
+	AddEnemy(AircraftType::kMeteorA, 190.f, 240.f);
+	AddEnemy(AircraftType::kMeteorA, 200.f, 300.f);
+	AddEnemy(AircraftType::kMeteorA, 210.f, 80.f);
+	AddEnemy(AircraftType::kMeteorA, 220.f, 190.f);
+	AddEnemy(AircraftType::kMeteorA, 240.f, 230.f);
+	AddEnemy(AircraftType::kMeteorA, 260.f, 270.f);
+	AddEnemy(AircraftType::kMeteorA, 250.f, 130.f);
+	AddEnemy(AircraftType::kMeteorA, 260.f, 80.f);
+	AddEnemy(AircraftType::kMeteorA, 280.f, 30.f);
+	AddEnemy(AircraftType::kMeteorA, 280.f, 340.f);
+	AddEnemy(AircraftType::kMeteorA, 300.f, 160.f);
+	AddEnemy(AircraftType::kMeteorA, 300.f, 120.f);
+	AddEnemy(AircraftType::kMeteorA, 320.f, 200.f);
+	AddEnemy(AircraftType::kMeteorA, 330.f, 300.f);
+	AddEnemy(AircraftType::kMeteorA, 330.f, 260.f);
+	AddEnemy(AircraftType::kMeteorA, 330.f, 80.f);
+	AddEnemy(AircraftType::kMeteorA, 350.f, 40.f);
+	AddEnemy(AircraftType::kMeteorA, 360.f, 140.f);
+	AddEnemy(AircraftType::kMeteorA, 370.f, 170.f);
+	AddEnemy(AircraftType::kMeteorA, 380.f, 240.f);
+	AddEnemy(AircraftType::kMeteorA, 380.f, 100.f);
+	AddEnemy(AircraftType::kMeteorA, 390.f, 340.f);
+	AddEnemy(AircraftType::kMeteorA, 400.f, 290.f);
+	AddEnemy(AircraftType::kMeteorA, 410.f, 50.f);
+	AddEnemy(AircraftType::kMeteorA, 420.f, 210.f);
+	AddEnemy(AircraftType::kMeteorA, 420.f, 180.f);
+	AddEnemy(AircraftType::kMeteorA, 440.f, 270.f);
+	AddEnemy(AircraftType::kMeteorA, 440.f, 90.f);*/
+
 
 
 	
