@@ -7,6 +7,7 @@
 #include "GameOverState.hpp"
 #include "VideoSettingsState.hpp"
 #include "AudioSettingsState.hpp"
+#include "SettingsState.hpp"
 
 //***************************************      Main      **********************************************
 
@@ -90,4 +91,5 @@ void Application::RegisterStates()
 	m_stack.RegisterState<GameOverState>(StateID::kGameOver);
 	m_stack.RegisterState<VideoSettingsState>(StateID::kVideoSettings);
 	m_stack.RegisterState<AudioSettingsState>(StateID::kAudioSettings);
+	m_stack.RegisterState<SettingsState>(StateID::kSettings);
 }
