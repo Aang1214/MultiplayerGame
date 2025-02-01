@@ -200,7 +200,7 @@ void Aircraft::LaunchMissile()
 	if (m_missile_ammo > 0)
 	{
 		m_is_launching_missile = true;
-		--m_missile_ammo;
+		m_missile_ammo;
 	}
 }
 
@@ -303,11 +303,6 @@ void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 // keep
 void Aircraft::CheckProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
-	if (!IsP1())
-	{
-		Fire();
-	}
-
 	if (m_is_firing && m_fire_countdown <= sf::Time::Zero)
 	{
 		PlayLocalSound(commands, IsP1() ? SoundEffect::kEnemyGunfire : SoundEffect::kAlliedGunfire);
@@ -323,10 +318,17 @@ void Aircraft::CheckProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	}
 
 	//Missile launch
-	if (m_is_launching_missile)
+	if (m_is_launching_missile && m_fire_countdown <= sf::Time::Zero)
 	{
 		PlayLocalSound(commands, SoundEffect::kLaunchMissile);
 		commands.Push(m_missile_command);
+		m_fire_countdown += Table[static_cast<int>(m_type)].m_fire_interval / (m_fire_rate + 1.f);
+		m_is_launching_missile = false;
+	}
+	else if (m_fire_countdown > sf::Time::Zero)
+	{
+		//Wait, can't fire
+		m_fire_countdown -= dt;
 		m_is_launching_missile = false;
 	}
 }

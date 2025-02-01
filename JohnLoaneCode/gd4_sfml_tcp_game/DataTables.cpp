@@ -12,6 +12,7 @@ std::vector<AircraftData> InitializeAircraftData()
     //p1
     data[static_cast<int>(AircraftType::kP1)].m_hitpoints = 3;
     data[static_cast<int>(AircraftType::kP1)].m_speed = 200.f;
+    data[static_cast<int>(AircraftType::kP1)].m_fire_interval = sf::seconds(5);
     data[static_cast<int>(AircraftType::kP1)].m_texture = TextureID::kEntities;
     data[static_cast<int>(AircraftType::kP1)].m_texture_rect = sf::IntRect(0, 0, 32, 32);
     data[static_cast<int>(AircraftType::kP1)].m_has_roll_animation = true;
@@ -19,6 +20,7 @@ std::vector<AircraftData> InitializeAircraftData()
     //p2
     data[static_cast<int>(AircraftType::kP2)].m_hitpoints = 3;
     data[static_cast<int>(AircraftType::kP2)].m_speed = 200.f;
+    data[static_cast<int>(AircraftType::kP2)].m_fire_interval = sf::seconds(5);
     data[static_cast<int>(AircraftType::kP2)].m_texture = TextureID::kEntities;
     data[static_cast<int>(AircraftType::kP2)].m_texture_rect = sf::IntRect(0, 32, 32, 32);
     data[static_cast<int>(AircraftType::kP2)].m_has_roll_animation = true; 
@@ -28,14 +30,14 @@ std::vector<AircraftData> InitializeAircraftData()
     data[static_cast<int>(AircraftType::kMeteorA)].m_hitpoints = 100;
     data[static_cast<int>(AircraftType::kMeteorA)].m_speed = 50.f;
     data[static_cast<int>(AircraftType::kMeteorA)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kMeteorA)].m_texture_rect = sf::IntRect(96, 32, 48, 32);
+    data[static_cast<int>(AircraftType::kMeteorA)].m_texture_rect = sf::IntRect(0, 64, 96, 64);
     data[static_cast<int>(AircraftType::kMeteorA)].m_has_roll_animation = false;
 
     // Small meteor
     data[static_cast<int>(AircraftType::kMeteorB)].m_hitpoints = 100;
     data[static_cast<int>(AircraftType::kMeteorB)].m_speed = 50.f;
     data[static_cast<int>(AircraftType::kMeteorB)].m_texture = TextureID::kEntities;
-    data[static_cast<int>(AircraftType::kMeteorB)].m_texture_rect = sf::IntRect(112, 0, 32, 32);
+    data[static_cast<int>(AircraftType::kMeteorB)].m_texture_rect = sf::IntRect(96, 64, 64, 64);
     data[static_cast<int>(AircraftType::kMeteorB)].m_has_roll_animation = false;
 
 

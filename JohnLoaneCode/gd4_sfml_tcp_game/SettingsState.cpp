@@ -10,7 +10,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 	m_background_sprite.setTexture(context.textures->Get(TextureID::kTitleScreen));
 
 	auto controls_button = std::make_shared<gui::Button>(context);
-	controls_button->setPosition(382, 250);
+	controls_button->setPosition(400, 250);
 	controls_button->SetText("Controls");
 	controls_button->SetCallback([this]()
 		{
@@ -18,7 +18,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 		});
 
 	auto video_button = std::make_shared<gui::Button>(context);
-	video_button->setPosition(382, 300);
+	video_button->setPosition(400, 300);
 	video_button->SetText("Video");
 	video_button->SetCallback([this]()
 		{
@@ -26,7 +26,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 		});
 
 	auto audio_button = std::make_shared<gui::Button>(context);
-	audio_button->setPosition(382, 350);
+	audio_button->setPosition(400, 350);
 	audio_button->SetText("Audio");
 	audio_button->SetCallback([this]()
 		{
@@ -34,7 +34,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 		});
 
 	auto back_button = std::make_shared<gui::Button>(context);
-	back_button->setPosition(382, 500);
+	back_button->setPosition(400, 500);
 	back_button->SetText("Back");
 	back_button->SetCallback(std::bind(&SettingsState::RequestStackPop, this));
 

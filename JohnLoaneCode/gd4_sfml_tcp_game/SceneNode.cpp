@@ -65,16 +65,17 @@ sf::FloatRect SceneNode::GetBoundingRect() const
 {
     return sf::FloatRect();
 }
-
+//***********************************************************
 void SceneNode::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states, sf::FloatRect& rect) const
 {
     sf::RectangleShape shape;
+    //get the rotation of target
     shape.setPosition(sf::Vector2f(rect.left, rect.top));
     shape.setSize(sf::Vector2f(rect.width, rect.height));
     shape.setFillColor(sf::Color::Transparent);
    // shape.setOutlineColor(sf::Color::Green);
     shape.setOutlineThickness(1.f);
-   // target.draw(shape);
+    target.draw(shape);
 }
 
 void SceneNode::CheckSceneCollision(SceneNode& scene_graph, std::set<Pair>& collision_pairs)

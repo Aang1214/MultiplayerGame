@@ -22,8 +22,8 @@ public:
 
 	CommandQueue& GetCommandQueue();
 
-	bool HasAlivePlayer() const;
-	bool HasPlayerReachedEnd() const;
+	bool P1isDead() const;
+	bool P2isDead() const;
 
 private:
 	void LoadTextures();
@@ -37,7 +37,7 @@ private:
 	sf::FloatRect GetViewBounds() const;
 	sf::FloatRect GetBattleFieldBounds() const;
 
-	void DestroyEntitiesOutsideView();
+	void ReboundEntitiesOutsideView();
 	void GuideMissiles();
 
 	void HandleCollisions();

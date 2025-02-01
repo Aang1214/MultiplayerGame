@@ -18,14 +18,14 @@ bool GameState::Update(sf::Time dt)
 {
 
 	m_world.Update(dt);
-	if (!m_world.HasAlivePlayer())
+	if (m_world.P1isDead())
 	{
-		m_player.SetMissionStatus(MissionStatus::kMissionFailure);
+		m_player.SetMissionStatus(MissionStatus::kP2Win);
 		RequestStackPush(StateID::kGameOver);
 	}
-	else if(m_world.HasPlayerReachedEnd())
+	else if(m_world.P2isDead())
 	{ 
-		m_player.SetMissionStatus(MissionStatus::kMissionSuccess);
+		m_player.SetMissionStatus(MissionStatus::kP1Win);
 		RequestStackPush(StateID::kGameOver);
 	}
 	CommandQueue& commands = m_world.GetCommandQueue();
