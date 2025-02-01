@@ -3,8 +3,8 @@
 MusicPlayer::MusicPlayer()
 	: m_volume(10.f)
 {
-	m_filenames[MusicThemes::kMenuTheme] = "Media/Music/MenuTheme.ogg";
-	m_filenames[MusicThemes::kMissionTheme] = "Media/Music/MissionTheme.ogg";
+	m_filenames[MusicThemes::kMenuTheme] = "Media/Music/Unknown.ogg"; // music from f - SYNCLIPSE
+	m_filenames[MusicThemes::kMissionTheme] = "Media/Music/Aerial169.ogg"; // music from f - SYNCLIPSE
 }
 
 void MusicPlayer::Play(MusicThemes theme)

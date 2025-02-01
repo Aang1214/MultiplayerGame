@@ -5,9 +5,9 @@
 #include "Button.hpp"
 #include "Label.hpp"
 #include <SFML/Graphics/Sprite.hpp>
-
+#include <SFML/Graphics/Text.hpp>
+#include <vector>
 #include <array>
-
 
 class SettingsState : public State
 {
@@ -21,10 +21,9 @@ private:
 	void UpdateLabels();
 	void AddButtonLabel(Action action, float x, float y, const std::string& text, Context context);
 
+
 private:
 	sf::Sprite m_background_sprite;
 	gui::Container m_gui_container;
-	std::array<gui::Button::Ptr, static_cast<int>(Action::kActionCount)> m_binding_buttons;
-	std::array<gui::Label::Ptr, static_cast<int>(Action::kActionCount)> m_binding_labels;
 };
 

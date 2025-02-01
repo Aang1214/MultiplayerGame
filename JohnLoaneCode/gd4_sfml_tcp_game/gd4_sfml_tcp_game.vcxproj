@@ -133,6 +133,7 @@
     <ClCompile Include="Aircraft.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AudioSettingsState.cpp" />
     <ClCompile Include="BloomEffect.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Command.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="KeySettingsState.cpp" />
     <ClCompile Include="SettingsState.cpp" />
     <ClCompile Include="SoundNode.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
@@ -166,6 +168,7 @@
     <ClCompile Include="TextureHolder.cpp" />
     <ClCompile Include="TitleState.cpp" />
     <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="VideoSettingsState.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +177,7 @@
     <ClInclude Include="AircraftType.hpp" />
     <ClInclude Include="Animation.hpp" />
     <ClInclude Include="Application.hpp" />
+    <ClInclude Include="AudioSettingsState.hpp" />
     <ClInclude Include="BloomEffect.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="ButtonType.hpp" />
@@ -210,6 +214,7 @@
     <ClInclude Include="ResourceIdentifiers.hpp" />
     <ClInclude Include="SceneLayers.hpp" />
     <ClInclude Include="SceneNode.hpp" />
+    <ClInclude Include="KeySettingsState.hpp" />
     <ClInclude Include="SettingsState.hpp" />
     <ClInclude Include="ShaderTypes.hpp" />
     <ClInclude Include="SoundEffect.hpp" />
@@ -225,6 +230,7 @@
     <ClInclude Include="TextureID.hpp" />
     <ClInclude Include="TitleState.hpp" />
     <ClInclude Include="Utility.hpp" />
+    <ClInclude Include="VideoSettingsState.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>
