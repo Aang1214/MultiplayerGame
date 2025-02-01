@@ -84,7 +84,7 @@
     <ClCompile Include="Label.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsState.cpp">
+    <ClCompile Include="KeySettingsState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DataTables.cpp">
@@ -124,6 +124,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SoundNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoSettingsState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSettingsState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,7 +239,7 @@
     <ClInclude Include="Label.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsState.hpp">
+    <ClInclude Include="KeySettingsState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataTables.hpp">
@@ -297,6 +306,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SoundNode.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoSettingsState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSettingsState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
