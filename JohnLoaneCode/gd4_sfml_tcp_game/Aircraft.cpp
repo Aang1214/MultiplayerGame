@@ -20,13 +20,13 @@ TextureID ToTextureID(AircraftType type)
 {
 	switch (type)
 	{
-	case AircraftType::kEagle:
+	case AircraftType::kP1:
 		return TextureID::kEagle;
 		break;
-	case AircraftType::kRaptor:
+	case AircraftType::kP2:
 		return TextureID::kRaptor;
 		break;
-	case AircraftType::kAvenger:
+	case AircraftType::kMeteorA:
 		return TextureID::kAvenger;
 		break;
 	}
@@ -340,11 +340,11 @@ void Aircraft::CheckProjectileLaunch(sf::Time dt, CommandQueue& commands)
 // keep
 bool Aircraft::IsP1() const
 {
-	return m_type == AircraftType::kEagle;
+	return m_type == AircraftType::kP1;
 }
 bool Aircraft::IsP2() const
 {
-	return m_type == AircraftType::kRaptor;
+	return m_type == AircraftType::kP2;
 }
 
 // move to spawner

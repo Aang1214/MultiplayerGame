@@ -105,7 +105,7 @@ void World::LoadTextures()
 	m_textures.Load(TextureID::kFinishLine, "Media/Textures/FinishLine.png");
 
 	m_textures.Load(TextureID::kEntities, "Media/Textures/Ships.png");
-	m_textures.Load(TextureID::kJungle, "Media/Textures/Space.png");
+	m_textures.Load(TextureID::kSpace, "Media/Textures/Space.png");
 	m_textures.Load(TextureID::kExplosion, "Media/Textures/Explosion.png");
 	m_textures.Load(TextureID::kParticle, "Media/Textures/Particle.png");
 
@@ -124,7 +124,7 @@ void World::BuildScene()
 	}
 
 	//Prepare the background
-	sf::Texture& texture = m_textures.Get(TextureID::kJungle);
+	sf::Texture& texture = m_textures.Get(TextureID::kSpace);
 	sf::IntRect textureRect(m_world_bounds);
 	texture.setRepeated(true);
 
@@ -139,20 +139,20 @@ void World::BuildScene()
 	finish_sprite->setPosition(0.f, -76.f);
 
 	//Add the player 1 aircraft *** 
-	std::unique_ptr<Aircraft> Player1(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> Player1(new Aircraft(AircraftType::kP1, m_textures, m_fonts));
 	m_P1_aircraft = Player1.get();
-	m_P1_aircraft->setPosition(m_spawn_position.x + 400, m_spawn_position.y + 100);
+	m_P1_aircraft->setPosition(m_spawn_position.x - 400, m_spawn_position.y);
 	m_P1_aircraft->SetVelocity(40.f, m_scrollspeed);
-	m_P1_aircraft->SetRotation(90.f);
+	m_P1_aircraft->SetRotation(180.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player1));
 
 	
 	//Add the player 2 aircraft *** 
-	std::unique_ptr<Aircraft> Player2(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> Player2(new Aircraft(AircraftType::kP2, m_textures, m_fonts));
 	m_P2_aircraft = Player2.get();
-	m_P2_aircraft->setPosition(m_spawn_position.x - 400, m_spawn_position.y + 100);
+	m_P2_aircraft->setPosition(m_spawn_position.x + 400, m_spawn_position.y);
 	m_P2_aircraft->SetVelocity(40.f, m_scrollspeed);
-	m_P2_aircraft->SetRotation(90.f);
+	m_P2_aircraft->SetRotation(0.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player2));
 
 	//Add the particle nodes to the scene
@@ -244,13 +244,11 @@ void World::SpawnEnemies()
 //change to spawn meteors
 void World::AddEnemies()
 {
-	AddEnemy(AircraftType::kRaptor, 0.f, 500.f);
-	AddEnemy(AircraftType::kRaptor, 0.f, 1000.f);
-	AddEnemy(AircraftType::kRaptor, 100.f, 1100.f);
-	AddEnemy(AircraftType::kRaptor, -100.f, 1100.f);
-	AddEnemy(AircraftType::kAvenger, -70.f, 1400.f);
-	AddEnemy(AircraftType::kAvenger, 70.f, 1400.f);
-	AddEnemy(AircraftType::kAvenger, 70.f, 1600.f);
+	AddEnemy(AircraftType::kMeteorA, 450.f, 350.f);
+
+
+	
+
 
 	//Sort the enemies according to y-value so that enemies are checked first
 	std::sort(m_enemy_spawn_points.begin(), m_enemy_spawn_points.end(), [](SpawnPoint lhs, SpawnPoint rhs)
