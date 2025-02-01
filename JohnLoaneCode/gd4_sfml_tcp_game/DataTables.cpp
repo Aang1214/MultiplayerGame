@@ -24,18 +24,16 @@ std::vector<AircraftData> InitializeAircraftData()
     data[static_cast<int>(AircraftType::kP2)].m_has_roll_animation = true; 
 
 
-    // Small meteor
+    // Large meteor
     data[static_cast<int>(AircraftType::kMeteorA)].m_hitpoints = 100;
     data[static_cast<int>(AircraftType::kMeteorA)].m_speed = 50.f;
-    data[static_cast<int>(AircraftType::kMeteorA)].m_fire_interval = sf::seconds(2);
     data[static_cast<int>(AircraftType::kMeteorA)].m_texture = TextureID::kEntities;
     data[static_cast<int>(AircraftType::kMeteorA)].m_texture_rect = sf::IntRect(96, 32, 48, 32);
     data[static_cast<int>(AircraftType::kMeteorA)].m_has_roll_animation = false;
 
-    // Large meteor
+    // Small meteor
     data[static_cast<int>(AircraftType::kMeteorB)].m_hitpoints = 100;
     data[static_cast<int>(AircraftType::kMeteorB)].m_speed = 50.f;
-    data[static_cast<int>(AircraftType::kMeteorB)].m_fire_interval = sf::seconds(2);
     data[static_cast<int>(AircraftType::kMeteorB)].m_texture = TextureID::kEntities;
     data[static_cast<int>(AircraftType::kMeteorB)].m_texture_rect = sf::IntRect(112, 0, 32, 32);
     data[static_cast<int>(AircraftType::kMeteorB)].m_has_roll_animation = false;
