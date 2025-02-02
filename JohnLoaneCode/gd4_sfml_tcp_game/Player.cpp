@@ -1,3 +1,9 @@
+/*
+Jack Worthington - D00251921
+Keven Vokin		 - D00251324
+Marek Martinak	 - D00250456
+*/
+
 #include "Player.hpp"
 #include "ReceiverCategories.hpp"
 #include "Aircraft.hpp"

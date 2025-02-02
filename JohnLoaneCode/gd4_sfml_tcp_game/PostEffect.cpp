@@ -1,3 +1,9 @@
+/*
+Jack Worthington - D00251921
+Keven Vokin		 - D00251324
+Marek Martinak	 - D00250456
+*/
+
 #include "PostEffect.hpp"
 #include <SFML/Graphics/Shader.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>

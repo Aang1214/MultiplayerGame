@@ -1,3 +1,9 @@
+/*
+Jack Worthington - D00251921
+Keven Vokin		 - D00251324
+Marek Martinak	 - D00250456
+*/
+
 #include "SpriteNode.hpp"
 
 SpriteNode::SpriteNode(const sf::Texture& texture):m_sprite(texture)

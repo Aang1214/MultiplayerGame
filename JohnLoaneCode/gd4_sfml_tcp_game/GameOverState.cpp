@@ -1,3 +1,9 @@
+/*
+Jack Worthington - D00251921
+Keven Vokin		 - D00251324
+Marek Martinak	 - D00250456
+*/
+
 #include "GameOverState.hpp"
 #include "ResourceHolder.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>

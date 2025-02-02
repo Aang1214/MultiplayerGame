@@ -1,3 +1,9 @@
+/*
+Jack Worthington - D00251921
+Keven Vokin		 - D00251324
+Marek Martinak	 - D00250456
+*/
+
 #pragma once
 #include <SFML/System/NonCopyable.hpp>
 

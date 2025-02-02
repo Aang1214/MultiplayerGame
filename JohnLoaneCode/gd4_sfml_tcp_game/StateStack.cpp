@@ -1,3 +1,9 @@
+/*
+Jack Worthington - D00251921
+Keven Vokin		 - D00251324
+Marek Martinak	 - D00250456
+*/
+
 #include "StateStack.hpp"
 #include "StateID.hpp"
 #include <SFML/System/Time.hpp>
