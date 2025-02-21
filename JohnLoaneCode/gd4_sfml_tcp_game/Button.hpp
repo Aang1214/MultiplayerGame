@@ -22,10 +22,10 @@ namespace gui
 
 	public:
 		Button(State::Context context);
+		void toggleFullscreen();
 		void SetCallback(Callback callback);
 		void SetText(const std::string& text);
 		void SetToggle(bool flag);
-
 		virtual bool IsSelectable() const override;
 		virtual void Select() override;
 		virtual void Deselect() override;
@@ -43,6 +43,7 @@ namespace gui
 		sf::Text m_text;
 		bool m_is_toggle;
 		SoundPlayer& m_sounds;
+		State::Context m_context;
 	};
 }
 

@@ -10,7 +10,8 @@ Marek Martinak	 - D00250456
 #include "ButtonType.hpp"
 
 gui::Button::Button(State::Context context)
-    : m_sprite(context.textures->Get(TextureID::kButtons))
+	: m_context(context) 
+    , m_sprite(context.textures->Get(TextureID::kButtons))
     , m_text("", context.fonts->Get(Font::kMain), 16)
     , m_is_toggle(false)
     , m_sounds(*context.sounds)
@@ -18,8 +19,32 @@ gui::Button::Button(State::Context context)
     ChangeTexture(ButtonType::kNormal);
     sf::FloatRect bounds = m_sprite.getLocalBounds();
     m_text.setPosition(bounds.width / 2, bounds.height / 2);
-}
 
+}
+void gui::Button::toggleFullscreen()
+{
+    static bool isFullscreen = false; 
+
+    if (!m_context.window) return; 
+    sf::RenderWindow& window = *m_context.window; 
+
+    sf::Vector2i windowPos = window.getPosition();
+
+   
+    window.close();
+
+    if (!isFullscreen)
+    {
+        window.create(sf::VideoMode::getFullscreenModes()[0], "States", sf::Style::Fullscreen);
+    }
+    else
+    {
+        window.create(sf::VideoMode(1024, 768), "States", sf::Style::Close);
+        window.setPosition(windowPos); 
+    }
+
+    isFullscreen = !isFullscreen; 
+}
 void gui::Button::SetCallback(Callback callback)
 {
     m_callback = std::move(callback);
