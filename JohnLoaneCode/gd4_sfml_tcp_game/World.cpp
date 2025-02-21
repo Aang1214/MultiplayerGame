@@ -146,7 +146,7 @@ void World::BuildScene()
 	m_P1_aircraft = Player1.get();
 	m_P1_aircraft->setPosition(m_spawn_position.x - 400, m_spawn_position.y);
 	m_P1_aircraft->SetVelocity(40.f, m_scrollspeed);
-	m_P1_aircraft->SetRotation(180.f);
+	m_P1_aircraft->SetRotation(90.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player1));
 
 	
@@ -155,7 +155,7 @@ void World::BuildScene()
 	m_P2_aircraft = Player2.get();
 	m_P2_aircraft->setPosition(m_spawn_position.x + 400, m_spawn_position.y);
 	m_P2_aircraft->SetVelocity(40.f, m_scrollspeed);
-	m_P2_aircraft->SetRotation(0.f);
+	m_P2_aircraft->SetRotation(90.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player2));
 
 	//Add the particle nodes to the scene
@@ -285,29 +285,50 @@ sf::FloatRect World::GetBattleFieldBounds() const
 {
 	//Return camera bounds + a small area at the top where enemies spawn
 	sf::FloatRect bounds = GetViewBounds();
-	bounds.top -= 100.f;
-	bounds.height += 100.f;
 
 	return bounds;
 
 }
 
-void World::ReboundEntitiesOutsideView()
+void World::DestroyEntitiesOutsideView()
 {
 	Command command;
-	command.category = static_cast<int>(ReceiverCategories::kMeteors) | static_cast<int>(ReceiverCategories::kProjectile);
+	command.category = static_cast<int>(ReceiverCategories::kProjectile);
 	command.action = DerivedAction<Entity>([this](Entity& e, sf::Time dt)
 		{
 			//Does the object intersect with the battlefield
 			if (!GetBattleFieldBounds().intersects(e.GetBoundingRect()))
 			{
-				//get entity velocity
-				sf::Vector2f v = e.GetVelocity();
-				//reverse the velocity
-				e.SetVelocity(-v);
+				e.Remove();
 			}
 		});
 	m_command_queue.Push(command);
+}
+
+void World::ReboundEntitiesOutsideView()
+{
+	Command command;
+	command.category = static_cast<int>(ReceiverCategories::kMeteors);
+	command.action = DerivedAction<Entity>([this](Entity& e, sf::Time dt)
+		{
+			auto bounds = GetBattleFieldBounds();
+			auto rect = e.GetBoundingRect();
+			sf::Vector2f v = e.GetVelocity();
+
+			// Check horizontal collision (left or right side)
+			if (rect.left < bounds.left || rect.left + rect.width > bounds.left + bounds.width) {
+				v.x = -v.x;  // Reverse horizontal velocity
+			}
+
+			// Check vertical collision (top or bottom)
+			if (rect.top < bounds.top || rect.top + rect.height > bounds.top + bounds.height) {
+				v.y = -v.y;  // Reverse vertical velocity
+			}
+
+			e.SetVelocity(v);
+		});
+	m_command_queue.Push(command);
+
 }
 
 // keep maybe
@@ -388,9 +409,14 @@ void World::HandleCollisions()
 		{
 			auto& player = static_cast<Aircraft&>(*pair.first);
 			auto& meteor = static_cast<Aircraft&>(*pair.second);
+
+			sf::Vector2f v1 = player.GetVelocity();
+			sf::Vector2f v2 = meteor.GetVelocity();
+
 			//Collision response
 			player.Damage(1);
-			meteor.Destroy();
+			player.SetVelocity(-v1*10.f);
+			meteor.SetVelocity(v1*1.f);
 		}
 
 		/*else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kPickup))
@@ -423,13 +449,13 @@ void World::HandleCollisions()
 			//check if one of the meteors v is 0, make both v the other meteors v and the one that was 0 half it and in the opposite direction
 			if (v1 == sf::Vector2f(0.f, 0.f))
 			{
-				meteor1.SetVelocity(v2 / 2.f);
-				meteor2.SetVelocity(v2 / 6.f);
+				meteor1.SetVelocity(v2 );
+				meteor2.SetVelocity(v2 / 3.f);
 			}
 			else if (v2 == sf::Vector2f(0.f, 0.f))
 			{
-				meteor2.SetVelocity(v1/2.f);
-				meteor1.SetVelocity(v1 / 6.f);
+				meteor2.SetVelocity(v1);
+				meteor1.SetVelocity(v1 / 3.f);
 			}
 			else
 			{

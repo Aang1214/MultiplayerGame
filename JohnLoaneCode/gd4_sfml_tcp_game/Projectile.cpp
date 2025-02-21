@@ -21,17 +21,14 @@ Projectile::Projectile(ProjectileType type, const TextureHolder& textures)
 {
     Utility::CentreOrigin(m_sprite);
 
-    //Add particle system for missiles
-    if (IsGuided()) //could be a power up in future
-    {
-        std::unique_ptr<EmitterNode> smoke(new EmitterNode(ParticleType::kSmoke));
-        smoke->setPosition(0.f, GetBoundingRect().height / 2.f);
-        AttachChild(std::move(smoke));
+    std::unique_ptr<EmitterNode> smoke(new EmitterNode(ParticleType::kSmoke));
+    smoke->setPosition(0.f, GetBoundingRect().height / 2.f);
+    AttachChild(std::move(smoke));
 
-        std::unique_ptr<EmitterNode> propellant(new EmitterNode(ParticleType::kPropellant));
-        propellant->setPosition(0.f, GetBoundingRect().height / 2.f);
-        AttachChild(std::move(propellant));
-    }
+    std::unique_ptr<EmitterNode> propellant(new EmitterNode(ParticleType::kPropellant));
+    propellant->setPosition(0.f, GetBoundingRect().height / 2.f);
+    AttachChild(std::move(propellant));
+    
 }
 
 void Projectile::GuideTowards(sf::Vector2f position)

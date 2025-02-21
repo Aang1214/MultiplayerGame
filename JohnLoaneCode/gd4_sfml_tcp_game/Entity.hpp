@@ -27,6 +27,8 @@ public:
 	virtual bool IsDestroyed() const override;
 
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
+
+	void Remove();
 	
 
 private:
