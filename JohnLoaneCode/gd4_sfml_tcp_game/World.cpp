@@ -285,7 +285,6 @@ sf::FloatRect World::GetBattleFieldBounds() const
 {
 	//Return camera bounds + a small area at the top where enemies spawn
 	sf::FloatRect bounds = GetViewBounds();
-
 	return bounds;
 
 }
