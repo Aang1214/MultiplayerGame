@@ -239,8 +239,9 @@ void World::SpawnEnemies()
 		std::unique_ptr<Aircraft> enemy(new Aircraft(spawn.m_type, m_textures, m_fonts));
 		enemy->setPosition(spawn.m_x, spawn.m_y);
 		//random float 
+		/*
 		float rot = static_cast<float>(rand() % 360);
-		enemy->setRotation(rot);
+		enemy->setRotation(rot);*/
 		m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(enemy));
 		m_enemy_spawn_points.pop_back();
 	}
@@ -442,8 +443,10 @@ void World::HandleCollisions()
 			auto& meteor = static_cast<Aircraft&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
 			//Collision response - knockback (transfer all momentum from projectile to the meteor)
-			sf::Vector2f v = projectile.GetVelocity();
-			meteor.SetVelocity(v / 2.f);
+			sf::Vector2f v1 = projectile.GetVelocity();
+			sf::Vector2f v2 = meteor.GetVelocity();
+
+			meteor.SetVelocity(v2 + (v1/ 2.f));
 			projectile.Destroy();
 		}
 		//meteor and meteor collision
