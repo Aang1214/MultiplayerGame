@@ -3,7 +3,13 @@ Jack Worthington - D00251921
 Keven Vokin		 - D00251324
 Marek Martinak	 - D00250456
 */
+#ifndef VIDEO_SETTINGS_HPP
+#define VIDEO_SETTINGS_HPP
 
+extern int WIDTH;
+extern int HEIGHT;
+
+#endif VIDEO_SETTINGS_HPP
 #pragma once
 #include "State.hpp"
 #include "Player.hpp"

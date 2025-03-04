@@ -7,6 +7,8 @@ Marek Martinak	 - D00250456
 #include "VideoSettingsState.hpp"
 #include "ResourceHolder.hpp"
 #include "Utility.hpp"
+int WIDTH = 1024;
+int HEIGHT = 768;
 
 VideoSettingsState::VideoSettingsState(StateStack& stack, Context context)
 	:State(stack, context)
@@ -15,11 +17,17 @@ VideoSettingsState::VideoSettingsState(StateStack& stack, Context context)
 
 	m_background_sprite.setTexture(texture);
 
+	auto fullsfc_button = std::make_shared<gui::Button>(context);
+	fullsfc_button->setPosition(382, 600);
+	fullsfc_button->SetText("Fullscreen");
+	fullsfc_button->toggleFullscreen();
+
 	auto back_button = std::make_shared<gui::Button>(context);
 	back_button->setPosition(382, 500);
 	back_button->SetText("Back");
 	back_button->SetCallback(std::bind(&VideoSettingsState::RequestStackPop, this));
 
+	m_gui_container.Pack(fullsfc_button);
 	m_gui_container.Pack(back_button);
 }
 
