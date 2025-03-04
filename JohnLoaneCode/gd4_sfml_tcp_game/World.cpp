@@ -414,8 +414,17 @@ void World::HandleCollisions()
 
 			//Collision response
 			player.Damage(1);
+
+			if (v1 == sf::Vector2f(0.f, 0.f))
+			{
+				meteor.SetVelocity(-v2);
+			}
+			else 
+			{
+				meteor.SetVelocity(v1 * 1.f);
+			}
 			player.SetVelocity(-v1*10.f);
-			meteor.SetVelocity(v1*1.f);
+			
 		}
 
 		/*else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kPickup))
