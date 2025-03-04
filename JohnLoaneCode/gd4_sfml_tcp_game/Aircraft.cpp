@@ -88,14 +88,14 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 
 	//keep (health display)
 	// if player
-	if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1) || Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP2))
+	/*if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1) || Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP2))
 	{
 		//missile display (power up)
 		std::string* missile_ammo = new std::string("");
 		std::unique_ptr<TextNode> missile_display(new TextNode(fonts, *missile_ammo));
 		m_missile_display = missile_display.get();
 		AttachChild(std::move(missile_display));
-	}
+	}*/
 
 	UpdateTexts();//keep
 }
@@ -247,8 +247,10 @@ void Aircraft::CreateProjectile(SceneNode& node, ProjectileType type, float x_of
 	// Calculate the forward velocity based on the angle
 	sf::Vector2f velocity(std::cos(radian) * projectile->GetMaxSpeed(), std::sin(radian) * projectile->GetMaxSpeed());
 
+	//set rotation of projectile to match aircraft
 	projectile->setPosition(GetWorldPosition() + offset);
 	projectile->SetVelocity(-velocity);
+	projectile->setRotation(rot + 90.f);
 	node.AttachChild(std::move(projectile));
 }
 

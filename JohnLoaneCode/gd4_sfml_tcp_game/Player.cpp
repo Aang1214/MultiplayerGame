@@ -202,7 +202,7 @@ MissionStatus Player::GetMissionStatus() const
 void Player::InitialiseActions()
 {
     const float kPlayerSpeed = 400.f;
-    const float kPlayerRotation = 2.f;
+    const float kPlayerRotation = 4.f;
 
     m_action_binding_P1[Action::kP1MoveUp].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed));
     m_action_binding_P1[Action::kP1TiltLeft].action =  DerivedAction<Aircraft>(AircraftRotater(-kPlayerRotation));
