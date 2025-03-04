@@ -42,7 +42,6 @@ private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 	void CheckProjectileLaunch(sf::Time dt, CommandQueue& commands);
 	bool IsP1() const;
-	bool IsP2() const;
 	bool IsMeteor() const;
 	void CreatePickup(SceneNode& node, const TextureHolder& textures) const;
 	void CheckPickupDrop(CommandQueue& commands);
