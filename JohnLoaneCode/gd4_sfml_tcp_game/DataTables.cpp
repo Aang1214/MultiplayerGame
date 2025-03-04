@@ -110,7 +110,7 @@ std::vector<ParticleData> InitializeParticleData()
 {
     std::vector<ParticleData> data(static_cast<int>(ParticleType::kParticleCount));
 
-    data[static_cast<int>(ParticleType::kPropellant)].m_color = sf::Color(255, 255, 50);
+    data[static_cast<int>(ParticleType::kPropellant)].m_color = sf::Color(115, 239, 232);
     data[static_cast<int>(ParticleType::kPropellant)].m_lifetime = sf::seconds(0.5f);
 
     data[static_cast<int>(ParticleType::kSmoke)].m_color = sf::Color(50, 50, 50);
