@@ -82,7 +82,6 @@ CommandQueue& World::GetCommandQueue()
 //find me
 bool World::PDied() const
 {
-	return false;
 	return m_P1_aircraft->IsDestroyed();
 }
 
@@ -94,8 +93,7 @@ bool World::PLived() const
 // change/add textures
 void World::LoadTextures()
 {
-	m_textures.Load(TextureID::kEagle, "Media/Textures/SpaceShipGreen.png");
-	m_textures.Load(TextureID::kRaptor, "Media/Textures/Raptor.png");
+	m_textures.Load(TextureID::kEagle, "Media/Textures/PlayerShip.png");
 	m_textures.Load(TextureID::kAvenger, "Media/Textures/Avenger.png");
 	m_textures.Load(TextureID::kLandscape, "Media/Textures/Desert.png");
 	m_textures.Load(TextureID::kBullet, "Media/Textures/Bullet.png");
@@ -111,8 +109,6 @@ void World::LoadTextures()
 	m_textures.Load(TextureID::kSpace, "Media/Textures/Space.png");
 	m_textures.Load(TextureID::kExplosion, "Media/Textures/Explosion.png");
 	m_textures.Load(TextureID::kParticle, "Media/Textures/Particle.png");
-
-
 }
 
 void World::BuildScene()
@@ -161,14 +157,6 @@ void World::BuildScene()
 	m_scenegraph.AttachChild(std::move(soundNode));
 
 	AddEnemies();
-
-	/*std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	left_escort->setPosition(-80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(left_escort));
-
-	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	right_escort->setPosition(80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(right_escort));*/
 }
 
 //************************************************
