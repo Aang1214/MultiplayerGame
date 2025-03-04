@@ -3,7 +3,7 @@ Jack Worthington - D00251921
 Keven Vokin		 - D00251324
 Marek Martinak	 - D00250456
 */
-
+#include "VideoSettingsState.hpp"
 #include "Button.hpp"
 #include "ResourceHolder.hpp"
 #include "Utility.hpp"
@@ -35,11 +35,17 @@ void gui::Button::toggleFullscreen()
 
     if (!isFullscreen)
     {
-        window.create(sf::VideoMode::getFullscreenModes()[0], "States", sf::Style::Fullscreen);
+        window.create(sf::VideoMode(1024,768), "States", sf::Style::Fullscreen);
+        //const sf::Vector2u originalSize{ 640u, 480u };
+        //worldview.setCenter(sf::Vector2f(originalSize / 2u));
+		//float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
+		//view.setSize(1024 * aspectRatio, 768);
+
+
     }
     else
     {
-        window.create(sf::VideoMode(1024, 768), "States", sf::Style::Close);
+        window.create(sf::VideoMode(1024, 768), "States", sf::Style::Default);
         window.setPosition(windowPos); 
     }
 
