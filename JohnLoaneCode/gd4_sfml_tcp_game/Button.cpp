@@ -35,11 +35,11 @@ void gui::Button::toggleFullscreen()
 
     if (!isFullscreen)
     {
-        window.create(sf::VideoMode::getFullscreenModes()[0], "States", sf::Style::Fullscreen);
+        window.create(sf::VideoMode(1024, 768), "States", sf::Style::Fullscreen);
     }
     else
     {
-        window.create(sf::VideoMode(1024, 768), "States", sf::Style::Close);
+        window.create(sf::VideoMode(1024, 768), "States", sf::Style::Default);
         window.setPosition(windowPos); 
     }
 
