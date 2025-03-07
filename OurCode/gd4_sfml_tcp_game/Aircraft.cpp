@@ -12,6 +12,7 @@ Marek Martinak	 - D00250456
 #include "Projectile.hpp"
 #include "PickupType.hpp"
 #include "Pickup.hpp"
+#include "EmitterNode.hpp"
 #include "SoundNode.hpp"
 
 namespace
@@ -37,10 +38,10 @@ TextureID ToTextureID(AircraftType type)
 }
 
 // Constructor for player aircraft
-Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts)  
+Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts)
 	: Entity(Table[static_cast<int>(type)].m_hitpoints) //keep health points
 	, m_type(type) //keep type
-	, m_sprite(textures.Get(Table[static_cast<int>(type)].m_texture), Table[static_cast<int>(type)].m_texture_rect) //keep texture
+	, m_sprite(textures.Get(Table[static_cast<int>(type)].m_texture), Table[static_cast<int>(type)].m_texture_rect)//keep texture
 	, m_explosion(textures.Get(TextureID::kExplosion)) //keep explosion texture
 	, m_missile_display(nullptr) //replace with powerup display
 	, m_distance_travelled(0.f) //remove
@@ -83,16 +84,20 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 			CreatePickup(node, textures);
 		};
 
-	//keep (health display)
-	// if player
-	/*if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1))
+	
+
+	
+	
+	if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1))
 	{
-		//missile display (power up)
-		std::string* missile_ammo = new std::string("");
-		std::unique_ptr<TextNode> missile_display(new TextNode(fonts, *missile_ammo));
-		m_missile_display = missile_display.get();
-		AttachChild(std::move(missile_display));
-	}*/
+		std::unique_ptr<EmitterNode> propellant(new EmitterNode(ParticleType::kPlayerPropellant));
+		propellant->setPosition(0.f, GetBoundingRect().height / 2.f);
+		AttachChild(std::move(propellant));
+
+		std::unique_ptr<EmitterNode> smoke(new EmitterNode(ParticleType::kSmoke));
+		smoke->setPosition(0.f, GetBoundingRect().height / 2.f);
+		AttachChild(std::move(smoke));
+	}
 
 	UpdateTexts();//keep
 }
@@ -253,6 +258,12 @@ sf::FloatRect Aircraft::GetBoundingRect() const
 	return GetWorldTransform().transformRect(m_sprite.getGlobalBounds());
 }
 
+void Aircraft::ChangePlayerColor() {
+	if (IsP1()) {
+		m_sprite.setColor(sf::Color(0, 255, 0));
+	}
+}
+
 // keep
 bool Aircraft::IsMarkedForRemoval() const
 {
@@ -275,6 +286,7 @@ void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 // keep
 void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
+	ChangePlayerColor();
 	if (IsDestroyed())
 	{
 		CheckPickupDrop(commands);
