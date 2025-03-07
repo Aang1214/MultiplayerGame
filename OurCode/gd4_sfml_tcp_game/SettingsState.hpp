@@ -1,20 +1,13 @@
-/*
-Jack Worthington - D00251921
-Keven Vokin		 - D00251324
-Marek Martinak	 - D00250456
-*/
-
 #pragma once
+#include "State.hpp"
+#include "Player.hpp"
+#include "Container.hpp"
 #include "Button.hpp"
 #include "Label.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <vector>
 #include <array>
-#include "State.hpp"
-#include "Player.hpp"
-#include "Container.hpp"
-#include "Action.hpp"
 
 class SettingsState : public State
 {
@@ -25,9 +18,12 @@ public:
 	virtual bool HandleEvent(const sf::Event& event);
 
 private:
+	void UpdateLabels();
+	void AddButtonLabel(Action action, float x, float y, const std::string& text, Context context);
+
+
+private:
 	sf::Sprite m_background_sprite;
 	gui::Container m_gui_container;
-	std::array<gui::Button::Ptr, static_cast<int>(Action::kActionCount)> m_binding_buttons;
-	std::array<gui::Label::Ptr, static_cast<int>(Action::kActionCount)> m_binding_labels;
 };
 

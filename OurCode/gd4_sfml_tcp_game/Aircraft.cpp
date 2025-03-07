@@ -27,13 +27,13 @@ TextureID ToTextureID(AircraftType type)
 	switch (type)
 	{
 	case AircraftType::kP1:
-		return TextureID::kEagle;
+		return TextureID::kPlayer;
 		break;
 	case AircraftType::kMeteorA:
-		return TextureID::kAvenger;
+		return TextureID::kMeteor;
 		break;
 	}
-	return TextureID::kEagle;
+	return TextureID::kPlayer;
 }
 
 // Constructor for player aircraft
