@@ -93,9 +93,8 @@ bool World::PlayerWin() const
 // change/add textures
 void World::LoadTextures()
 {
-	m_textures.Load(TextureID::kEagle, "Media/Textures/SpaceShipGreen.png");
-	m_textures.Load(TextureID::kRaptor, "Media/Textures/Raptor.png");
-	m_textures.Load(TextureID::kAvenger, "Media/Textures/Avenger.png");
+	m_textures.Load(TextureID::kPlayer, "Media/Textures/SpaceShipGreen.png");
+	m_textures.Load(TextureID::kMeteor, "Media/Textures/Avenger.png");
 	m_textures.Load(TextureID::kLandscape, "Media/Textures/Desert.png");
 	m_textures.Load(TextureID::kBullet, "Media/Textures/Bullet.png");
 	m_textures.Load(TextureID::kMissile, "Media/Textures/Missile.png");
@@ -161,13 +160,6 @@ void World::BuildScene()
 
 	AddEnemies();
 
-	/*std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	left_escort->setPosition(-80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(left_escort));
-
-	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	right_escort->setPosition(80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(right_escort));*/
 }
 
 //************************************************

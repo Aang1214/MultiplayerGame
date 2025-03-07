@@ -8,9 +8,8 @@ Marek Martinak	 - D00250456
 enum class TextureID
 {
 	kLandscape,
-	kEagle,
-	kRaptor,
-	kAvenger,
+	kPlayer,
+	kMeteor,
 	kMissile,
 	kTitleScreen,
 	kButtonNormal,
