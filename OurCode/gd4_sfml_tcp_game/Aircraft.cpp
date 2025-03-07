@@ -248,8 +248,16 @@ void Aircraft::CreateProjectile(SceneNode& node, ProjectileType type, float x_of
 }
 
 // keep
+
 sf::FloatRect Aircraft::GetBoundingRect() const
 {
+	if (IsP1()) {
+		sf::Vector2f position = this->getPosition();
+		sf::Vector2f hitboxSize(20.f, 20.f);
+		sf::FloatRect hitbox(position.x - hitboxSize.x / 2, position.y - hitboxSize.y / 2, hitboxSize.x, hitboxSize.y);
+
+		return hitbox;
+	}
 	return GetWorldTransform().transformRect(m_sprite.getGlobalBounds());
 }
 
