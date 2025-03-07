@@ -16,5 +16,6 @@ enum class StateID
 	kGameOver,
 	kAudioSettings,
 	kVideoSettings,
-	kKeySettings
+	kKeySettings,
+	kJoin,
 };
