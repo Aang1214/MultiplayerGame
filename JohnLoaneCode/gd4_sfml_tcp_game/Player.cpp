@@ -10,7 +10,7 @@ Marek Martinak	 - D00250456
 
 
 //struct AircraftRotater (accepts and playerID and a float of rotation)
-//update mP1Rotation or mP2Rotation based on playerID
+//update mP1Rotation 
 struct AircraftRotater
 {
     // Constructor takes an additional ID parameter
@@ -75,11 +75,6 @@ Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
     m_key_binding_P1[sf::Keyboard::D] = Action::kP1TiltRight; 
     m_key_binding_P1[sf::Keyboard::W] = Action::kP1MoveUp; 
     m_key_binding_P1[sf::Keyboard::C] = Action::kP1UsePowerUp;
-    //P2
-    m_key_binding_P2[sf::Keyboard::J] = Action::kP2TiltLeft;
-    m_key_binding_P2[sf::Keyboard::L] = Action::kP2TiltRight;
-    m_key_binding_P2[sf::Keyboard::I] = Action::kP2MoveUp;
-    m_key_binding_P2[sf::Keyboard::M] = Action::kP2UsePowerUp;
 
     m_key_binding_God[sf::Keyboard::Space] = Action::kMeteorSpawn; //remove or temp meteor spawn
 
@@ -90,10 +85,6 @@ Player::Player(): m_current_mission_status(MissionStatus::kMissionRunning)
     for (auto& pair : m_action_binding_P1)
     {
         pair.second.category = static_cast<unsigned int>(ReceiverCategories::kP1);
-    }
-    for (auto& pair : m_action_binding_P2)
-    {
-        pair.second.category = static_cast<unsigned int>(ReceiverCategories::kP2);
     }
 }
 
@@ -113,11 +104,6 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& command_queue)
         {
             command_queue.Push(m_action_binding_P1[found1->second]);
         }
-        auto found2 = m_key_binding_P2.find(event.key.code);
-        if (found2 != m_key_binding_P2.end() && !IsRealTimeAction(found2->second))
-        {
-            command_queue.Push(m_action_binding_P2[found2->second]);
-        }
     }
 }
 
@@ -131,13 +117,6 @@ void Player::HandleRealTimeInput(CommandQueue& command_queue)
             command_queue.Push(m_action_binding_P1[pair.second]);
         }
     }
-    for (auto pair : m_key_binding_P2)
-    {
-        if (sf::Keyboard::isKeyPressed(pair.first) && IsRealTimeAction(pair.second))
-        {
-			command_queue.Push(m_action_binding_P2[pair.second]);
-		}
-	}
 }
 
 void Player::AssignKey(Action action, sf::Keyboard::Key key)
@@ -155,31 +134,11 @@ void Player::AssignKey(Action action, sf::Keyboard::Key key)
         }
     }
     m_key_binding_P1[key] = action;
-
-    for (auto itr = m_key_binding_P2.begin(); itr != m_key_binding_P2.end();)
-    {
-        if (itr->second == action)
-        {
-            m_key_binding_P2.erase(itr++);
-        }
-        else
-        {
-            ++itr;
-        }
-    }
-    m_key_binding_P2[key] = action;
 }
 
 sf::Keyboard::Key Player::GetAssignedKey(Action action) const
 {
     for (auto pair : m_key_binding_P1)
-    {
-        if (pair.second == action)
-        {
-            return pair.first;
-        }
-    }
-    for (auto pair : m_key_binding_P2)
     {
         if (pair.second == action)
         {
@@ -213,15 +172,6 @@ void Player::InitialiseActions()
         }
     );
 
-    m_action_binding_P2[Action::kP2MoveUp].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed));
-    m_action_binding_P2[Action::kP2TiltLeft].action = DerivedAction<Aircraft>(AircraftRotater(-kPlayerRotation));
-    m_action_binding_P2[Action::kP2TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(kPlayerRotation));
-    m_action_binding_P2[Action::kP2UsePowerUp].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
-        {
-            a.LaunchMissile();
-        }
-    );
-
     m_action_binding_God[Action::kMeteorSpawn].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
             {
                 a.Fire();
@@ -233,14 +183,9 @@ bool Player::IsRealTimeAction(Action action)
 {
     switch (action)
     {
-        //add for P2
     case Action::kP1TiltLeft:
     case Action::kP1TiltRight:
     case Action::kP1MoveUp:
-    case Action::kP2TiltLeft:
-    case Action::kP2TiltRight:
-    case Action::kP2MoveUp:
-
     case Action::kMeteorSpawn:
         return true;
     default:

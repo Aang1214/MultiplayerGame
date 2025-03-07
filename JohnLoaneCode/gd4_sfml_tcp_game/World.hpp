@@ -28,8 +28,8 @@ public:
 
 	CommandQueue& GetCommandQueue();
 
-	bool P1isDead() const;
-	bool P2isDead() const;
+	bool PlayerLose() const;
+	bool PlayerWin() const;
 
 private:
 	void LoadTextures();
@@ -76,7 +76,6 @@ private:
 	sf::Vector2f m_spawn_position;
 	float m_scrollspeed;
 	Aircraft* m_P1_aircraft;
-	Aircraft* m_P2_aircraft;
 
 
 	CommandQueue m_command_queue;

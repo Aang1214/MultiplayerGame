@@ -9,6 +9,6 @@ Marek Martinak	 - D00250456
 enum class MissionStatus
 {
 	kMissionRunning,
-	kP1Win,
-	kP2Win
+	PlayerWin,
+	PlayerLose
 };

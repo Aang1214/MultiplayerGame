@@ -21,16 +21,13 @@ namespace
 }
 
 //Helper function to convert AircraftType to TextureID
-// P1 and P2
+// P1 
 TextureID ToTextureID(AircraftType type)
 {
 	switch (type)
 	{
 	case AircraftType::kP1:
 		return TextureID::kEagle;
-		break;
-	case AircraftType::kP2:
-		return TextureID::kRaptor;
 		break;
 	case AircraftType::kMeteorA:
 		return TextureID::kAvenger;
@@ -88,7 +85,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 
 	//keep (health display)
 	// if player
-	/*if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1) || Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP2))
+	/*if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1))
 	{
 		//missile display (power up)
 		std::string* missile_ammo = new std::string("");
@@ -106,10 +103,6 @@ unsigned int Aircraft::GetCategory() const
 	if (IsP1())
 	{
 		return static_cast<unsigned int>(ReceiverCategories::kP1);
-	}
-	else if (IsP2())
-	{
-		return static_cast<unsigned int>(ReceiverCategories::kP2);
 	}
 	else 
 	{
@@ -345,10 +338,6 @@ void Aircraft::CheckProjectileLaunch(sf::Time dt, CommandQueue& commands)
 bool Aircraft::IsP1() const
 {
 	return m_type == AircraftType::kP1;
-}
-bool Aircraft::IsP2() const
-{
-	return m_type == AircraftType::kP2;
 }
 
 // move to spawner

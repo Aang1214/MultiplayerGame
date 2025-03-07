@@ -12,12 +12,7 @@ enum class Action
 	kP1TiltRight,
 	kP1MoveUp,
 
-	kP2TiltLeft,
-	kP2TiltRight,
-	kP2MoveUp,
-
 	kP1UsePowerUp, 
-	kP2UsePowerUp,
 
 	kMeteorSpawn,
 	kActionCount
