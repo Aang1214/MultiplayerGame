@@ -18,6 +18,7 @@ Marek Martinak	 - D00250456
 #include "SoundPlayer.hpp"
 
 #include <array>
+#include <cstdlib>
 
 class World : private sf::NonCopyable
 {
@@ -25,6 +26,7 @@ public:
 	explicit World(sf::RenderTarget& target, FontHolder& font, SoundPlayer& sounds);
 	void Update(sf::Time dt);
 	void Draw();
+
 
 	CommandQueue& GetCommandQueue();
 

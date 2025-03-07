@@ -12,17 +12,20 @@ Marek Martinak	 - D00250456
 
 World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sounds)
 	:m_target(output_target)
-	,m_camera(output_target.getDefaultView())
-	,m_textures()
-	,m_fonts(font)
-	,m_sounds(sounds)
-	,m_scenegraph(ReceiverCategories::kNone)
-	,m_scene_layers()
-	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
-	,m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y/2.f)
-	,m_scrollspeed(0.f)
-	,m_P1_aircraft(nullptr)
-	,m_P2_aircraft(nullptr)
+	, m_scene_texture()
+	, m_camera(output_target.getDefaultView()) // Initialize the camera with the default view
+	, m_textures()
+	, m_fonts(font)
+	, m_sounds(sounds)
+	, m_scenegraph()
+	, m_scene_layers()
+	, m_world_bounds(0.f, 0.f, 5000.f, 5000.f)  // Adjust the world size if needed
+	, m_spawn_position(2500.f, 4500.f)
+	, m_scrollspeed(0.f)
+	, m_P1_aircraft(nullptr)
+	, m_P2_aircraft(nullptr)
+	, m_command_queue()
+	, m_bloom_effect()
 {
 	m_scene_texture.create(m_target.getSize().x, m_target.getSize().y);
 	LoadTextures();
@@ -30,11 +33,15 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 	m_camera.setCenter(m_spawn_position);
 }
 
+
+
 void World::Update(sf::Time dt)
 {
-	//Scroll the world (remove this if you want to stop scrolling)
-	m_camera.move(0, m_scrollspeed * dt.asSeconds());
+	
+	//m_camera.move(0, m_scrollspeed * dt.asSeconds());
+	//m_camera.setCenter(m_original_camera_center + m_shake_offset);
 
+	// Apply camera shake if active
 	
 	m_P1_aircraft->SetVelocity(0.f, 0.f);
 	m_P2_aircraft->SetVelocity(0.f, 0.f);
@@ -425,6 +432,7 @@ void World::HandleCollisions()
 				meteor.SetVelocity(v1 * 1.f);
 			}
 			player.SetVelocity(-v1*10.f);
+
 			
 		}
 
