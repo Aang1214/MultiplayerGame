@@ -22,14 +22,14 @@ void GameState::Draw()
 
 bool GameState::Update(sf::Time dt)
 {
-
+	//Find Me
 	m_world.Update(dt);
-	if (m_world.P1isDead())
+	if (m_world.PDied())
 	{
-		m_player.SetMissionStatus(MissionStatus::kP2Win);
+		m_player.SetMissionStatus(MissionStatus::kP1Lose);
 		RequestStackPush(StateID::kGameOver);
 	}
-	else if(m_world.P2isDead())
+	else if(m_world.PLived())
 	{ 
 		m_player.SetMissionStatus(MissionStatus::kP1Win);
 		RequestStackPush(StateID::kGameOver);

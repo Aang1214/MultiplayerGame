@@ -20,11 +20,6 @@ KeySettingsState::KeySettingsState(StateStack& stack, Context context)
 	AddButtonLabel(Action::kP1TiltLeft, 80.f, 250.f, "P1 Tilt Left", context);
 	AddButtonLabel(Action::kP1UsePowerUp, 80.f, 350.f, "P1 Pulse Bomb", context);
 
-	AddButtonLabel(Action::kP2MoveUp, 400.f, 150.f, "P2 Move Up", context);
-	AddButtonLabel(Action::kP2TiltRight, 400.f, 200.f, "P2 Tilt Right", context);
-	AddButtonLabel(Action::kP2TiltLeft, 400.f, 250.f, "P2 Tilt Left", context);
-	AddButtonLabel(Action::kP2UsePowerUp, 400.f, 350.f, "P2 Pulse Bomb", context);
-
 	AddButtonLabel(Action::kMeteorSpawn , 700.f, 150.f, "Meteor Spawn", context);
 
 	UpdateLabels();

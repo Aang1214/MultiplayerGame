@@ -10,5 +10,5 @@ enum class MissionStatus
 {
 	kMissionRunning,
 	kP1Win,
-	kP2Win
+	kP1Lose
 };

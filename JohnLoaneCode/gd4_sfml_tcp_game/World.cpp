@@ -12,6 +12,7 @@ Marek Martinak	 - D00250456
 
 World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sounds)
 	:m_target(output_target)
+
 	, m_scene_texture()
 	, m_camera(output_target.getDefaultView()) // Initialize the camera with the default view
 	, m_textures()
@@ -26,6 +27,7 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 	, m_P2_aircraft(nullptr)
 	, m_command_queue()
 	, m_bloom_effect()
+
 {
 	m_scene_texture.create(m_target.getSize().x, m_target.getSize().y);
 	LoadTextures();
@@ -43,8 +45,8 @@ void World::Update(sf::Time dt)
 
 	// Apply camera shake if active
 	
+
 	m_P1_aircraft->SetVelocity(0.f, 0.f);
-	m_P2_aircraft->SetVelocity(0.f, 0.f);
 
 	ReboundEntitiesOutsideView();
 	GuideMissiles();
@@ -88,21 +90,21 @@ CommandQueue& World::GetCommandQueue()
 	return m_command_queue;
 }
 
-bool World::P1isDead() const
+//find me
+bool World::PDied() const
 {
-	return !m_P2_aircraft->IsDestroyed() && m_P1_aircraft->IsDestroyed();
+	return m_P1_aircraft->IsDestroyed();
 }
 
-bool World::P2isDead() const
+bool World::PLived() const
 {
-	return !m_P1_aircraft->IsDestroyed() && m_P2_aircraft->IsDestroyed();
+	return false;
 }
 
 // change/add textures
 void World::LoadTextures()
 {
-	m_textures.Load(TextureID::kEagle, "Media/Textures/SpaceShipGreen.png");
-	m_textures.Load(TextureID::kRaptor, "Media/Textures/Raptor.png");
+	m_textures.Load(TextureID::kEagle, "Media/Textures/PlayerShip.png");
 	m_textures.Load(TextureID::kAvenger, "Media/Textures/Avenger.png");
 	m_textures.Load(TextureID::kLandscape, "Media/Textures/Desert.png");
 	m_textures.Load(TextureID::kBullet, "Media/Textures/Bullet.png");
@@ -118,8 +120,6 @@ void World::LoadTextures()
 	m_textures.Load(TextureID::kSpace, "Media/Textures/Space.png");
 	m_textures.Load(TextureID::kExplosion, "Media/Textures/Explosion.png");
 	m_textures.Load(TextureID::kParticle, "Media/Textures/Particle.png");
-
-
 }
 
 void World::BuildScene()
@@ -152,18 +152,9 @@ void World::BuildScene()
 	std::unique_ptr<Aircraft> Player1(new Aircraft(AircraftType::kP1, m_textures, m_fonts));
 	m_P1_aircraft = Player1.get();
 	m_P1_aircraft->setPosition(m_spawn_position.x - 400, m_spawn_position.y);
-	m_P1_aircraft->SetVelocity(40.f, m_scrollspeed);
+	m_P1_aircraft->SetVelocity(40.f);
 	m_P1_aircraft->SetRotation(90.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player1));
-
-	
-	//Add the player 2 aircraft *** 
-	std::unique_ptr<Aircraft> Player2(new Aircraft(AircraftType::kP2, m_textures, m_fonts));
-	m_P2_aircraft = Player2.get();
-	m_P2_aircraft->setPosition(m_spawn_position.x + 400, m_spawn_position.y);
-	m_P2_aircraft->SetVelocity(40.f, m_scrollspeed);
-	m_P2_aircraft->SetRotation(90.f);
-	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player2));
 
 	//Add the particle nodes to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(ParticleType::kSmoke, m_textures));
@@ -177,14 +168,6 @@ void World::BuildScene()
 	m_scenegraph.AttachChild(std::move(soundNode));
 
 	AddEnemies();
-
-	/*std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	left_escort->setPosition(-80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(left_escort));
-
-	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	right_escort->setPosition(80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(right_escort));*/
 }
 
 //************************************************
@@ -201,14 +184,6 @@ void World::AdaptPlayerPosition()
 	position1.y = std::min(position1.y, view_bounds.top + view_bounds.height -border_distance);
 	m_P1_aircraft->setPosition(position1);
 
-	
-	//keep the player 2 on the screen
-	sf::Vector2f position2 = m_P2_aircraft->getPosition();
-	position2.x = std::max(position2.x, view_bounds.left + border_distance);
-	position2.x = std::min(position2.x, view_bounds.left + view_bounds.width - border_distance);
-	position2.y = std::max(position2.y, view_bounds.top + border_distance);
-	position2.y = std::min(position2.y, view_bounds.top + view_bounds.height - border_distance);
-	m_P2_aircraft->setPosition(position2);
 }
 
 void World::AdaptPlayerVelocity()
@@ -221,19 +196,7 @@ void World::AdaptPlayerVelocity()
 		m_P1_aircraft->SetVelocity(velocity1 / std::sqrt(2.f));
 	}
 	//Add scrolling velocity (remove
-	m_P1_aircraft->Accelerate(0.f, m_scrollspeed);
-
-	
-	sf::Vector2f velocity2 = m_P2_aircraft->GetVelocity();
-
-	//If they are moving diagonally divide by sqrt 2 (remove)
-	if (velocity2.x != 0.f && velocity2.y != 0.f)
-	{
-		m_P2_aircraft->SetVelocity(velocity2 / std::sqrt(2.f));
-	}
-	//Add scrolling velocity (remove
-	m_P2_aircraft->Accelerate(0.f, m_scrollspeed);
-	
+	m_P1_aircraft->Accelerate(0.f);
 }
 
 //chamge to spawn meteors
@@ -412,7 +375,7 @@ void World::HandleCollisions()
 	for (SceneNode::Pair pair : collision_pairs)
 	{
 		//colision between players and meteors
-		if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kMeteors) || MatchesCategories(pair, ReceiverCategories::kP2, ReceiverCategories::kMeteors))
+		if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kMeteors))
 		{
 			auto& player = static_cast<Aircraft&>(*pair.first);
 			auto& meteor = static_cast<Aircraft&>(*pair.second);
@@ -489,8 +452,6 @@ void World::UpdateSounds()
 {
 	// Set listener's position to player position
 	m_sounds.SetListenerPosition(m_P1_aircraft->GetWorldPosition());
-	// Set listener's position to player position
-	m_sounds.SetListenerPosition(m_P2_aircraft->GetWorldPosition());
 
 	// Remove unused sounds
 	m_sounds.RemoveStoppedSounds();

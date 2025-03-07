@@ -30,8 +30,8 @@ public:
 
 	CommandQueue& GetCommandQueue();
 
-	bool P1isDead() const;
-	bool P2isDead() const;
+	bool PDied() const;
+	bool PLived() const;
 
 private:
 	void LoadTextures();
@@ -76,9 +76,7 @@ private:
 	std::array<SceneNode*, static_cast<int>(SceneLayers::kLayerCount)> m_scene_layers;
 	sf::FloatRect m_world_bounds;
 	sf::Vector2f m_spawn_position;
-	float m_scrollspeed;
 	Aircraft* m_P1_aircraft;
-	Aircraft* m_P2_aircraft;
 
 
 	CommandQueue m_command_queue;
