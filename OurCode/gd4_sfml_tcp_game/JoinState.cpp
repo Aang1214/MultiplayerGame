@@ -16,7 +16,7 @@ JoinState::JoinState(StateStack& stack, Context context)
 
 	m_font = context.fonts->Get(Font::kMain);
 
-	// Configure text display
+	
 	m_ip_text.setFont(m_font);
 	m_ip_text.setCharacterSize(24);
 	m_ip_text.setFillColor(sf::Color::White);
@@ -39,31 +39,12 @@ bool JoinState::Update(sf::Time dt)
 
 bool JoinState::HandleEvent(const sf::Event& event)
 {
-	/*m_gui_container.HandleEvent(event);
-
-	if (event.type == sf::Event::TextEntered)
-	{
-		if (event.text.unicode == 8) // Backspace handling
-		{
-			if (!m_ip_input.isEmpty())
-				m_ip_input.erase(m_ip_input.getSize() - 1);
-		}
-		else if (event.text.unicode < 128) // Ensure ASCII input
-		{
-			m_ip_input += static_cast<char>(event.text.unicode);
-		}
-
-		m_ip_text.setString(m_ip_input);
-		SaveIPToFile(); // Save to file whenever input changes
-	}
-
-	return false;*/
 
 	m_gui_container.HandleEvent(event);
 
 	if (event.type == sf::Event::TextEntered)
 	{
-		if (event.text.unicode == 8) // Backspace
+		if (event.text.unicode == 8)
 		{
 			if (!m_ip_input.isEmpty())
 				m_ip_input.erase(m_ip_input.getSize() - 1);
@@ -72,7 +53,7 @@ bool JoinState::HandleEvent(const sf::Event& event)
 		{
 			SaveIPToFile(m_ip_input.toAnsiString());
 		}
-		else if (event.text.unicode < 128) // Only allow ASCII characters
+		else if (event.text.unicode < 128) 
 		{
 			m_ip_input += static_cast<char>(event.text.unicode);
 		}
@@ -85,18 +66,8 @@ bool JoinState::HandleEvent(const sf::Event& event)
 
 void JoinState::SaveIPToFile(const std::string& ip)
 {
-	/*std::ofstream file("ip_address.txt");
-	if (file.is_open())
-	{
-		file << m_ip_input.toAnsiString();
-		file.close();
-	}
-	else
-	{
-		std::cerr << "Failed to save IP address to file" << std::endl;
-	}
-	*/
-	std::ofstream file("ip_address.txt");  // Saves in the same directory as your .exe
+	
+	std::ofstream file("ip_address.txt");  
 	if (!file.is_open())
 	{
 		std::cerr << "Error: Could not open ip_address.txt for writing!" << std::endl;
