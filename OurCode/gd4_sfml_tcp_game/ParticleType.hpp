@@ -8,6 +8,7 @@ Marek Martinak	 - D00250456
 enum class ParticleType
 {
 	kPropellant,
+	kPlayerPropellant,
 	kSmoke,
 	kParticleCount,
 };
