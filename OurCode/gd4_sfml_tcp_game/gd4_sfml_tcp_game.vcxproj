@@ -146,6 +146,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="JoinState.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuState.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameOverState.hpp" />
     <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="JoinState.hpp" />
     <ClInclude Include="Label.hpp" />
     <ClInclude Include="MenuOptions.hpp" />
     <ClInclude Include="MenuState.hpp" />
