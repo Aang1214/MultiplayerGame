@@ -20,7 +20,6 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
 	,m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y/2.f)
-	,m_scrollspeed(0.f)
 	,m_P1_aircraft(nullptr)
 {
 	m_scene_texture.create(m_target.getSize().x, m_target.getSize().y);
@@ -30,11 +29,7 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 }
 
 void World::Update(sf::Time dt)
-{
-	//Scroll the world (remove this if you want to stop scrolling)
-	m_camera.move(0, m_scrollspeed * dt.asSeconds());
-
-	
+{	
 	m_P1_aircraft->SetVelocity(0.f, 0.f);
 
 	ReboundEntitiesOutsideView();
@@ -141,7 +136,7 @@ void World::BuildScene()
 	std::unique_ptr<Aircraft> Player1(new Aircraft(AircraftType::kP1, m_textures, m_fonts));
 	m_P1_aircraft = Player1.get();
 	m_P1_aircraft->setPosition(m_spawn_position.x - 400, m_spawn_position.y);
-	m_P1_aircraft->SetVelocity(40.f, m_scrollspeed);
+	m_P1_aircraft->SetVelocity(40.f);
 	m_P1_aircraft->SetRotation(90.f);
 	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player1));
 
@@ -185,7 +180,7 @@ void World::AdaptPlayerVelocity()
 		m_P1_aircraft->SetVelocity(velocity1 / std::sqrt(2.f));
 	}
 	//Add scrolling velocity (remove
-	m_P1_aircraft->Accelerate(0.f, m_scrollspeed);
+	m_P1_aircraft->Accelerate(0.f);
 }
 
 //chamge to spawn meteors
