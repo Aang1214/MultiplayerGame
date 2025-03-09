@@ -24,7 +24,8 @@ enum class ReceiverCategories
 	kEnemyProjectile = 1 << 5,
 	kPickup = 1 << 6,
 	kParticleSystem = 1 << 7,
-	kSoundEffect = 1 << 8,
+	kSoundEffect = 1 << 8, 
+	kNetwork = 1 << 9,
 
 	kAircraft = kP1 | kMeteors,
 	kProjectile = kAlliedProjectile | kEnemyProjectile
