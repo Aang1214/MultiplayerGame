@@ -97,6 +97,16 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	UpdateTexts();//keep
 }
 
+int	Aircraft::GetIdentifier()
+{
+	return m_identifier;
+}
+
+void Aircraft::SetIdentifier(int identifier)
+{
+	m_identifier = identifier;
+}
+
 //****************************************************************************************************
 unsigned int Aircraft::GetCategory() const
 {

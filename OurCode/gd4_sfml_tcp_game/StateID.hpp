@@ -18,4 +18,7 @@ enum class StateID
 	kVideoSettings,
 	kKeySettings,
 	kJoin,
+	kHostGame,
+	kNetworkPause,
+	kJoinGame
 };

@@ -21,6 +21,7 @@ public:
 	void Accelerate(float vx, float vy);
 
 	int GetHitPoints() const;
+	void SetHitpoints(int points);
 	void Repair(int points);
 	void Damage(int points);
 	void Destroy();

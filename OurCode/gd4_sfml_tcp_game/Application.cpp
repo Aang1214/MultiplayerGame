@@ -15,6 +15,7 @@ Marek Martinak	 - D00250456
 #include "AudioSettingsState.hpp"
 #include "SettingsState.hpp"
 #include "JoinState.hpp"
+#include "MultiplayerGameState.hpp"
 
 //***************************************      Main      **********************************************
 
@@ -100,4 +101,8 @@ void Application::RegisterStates()
 	m_stack.RegisterState<AudioSettingsState>(StateID::kAudioSettings);
 	m_stack.RegisterState<SettingsState>(StateID::kSettings);
 	m_stack.RegisterState<JoinState>(StateID::kJoin);
+	m_stack.RegisterState<MultiplayerGameState>(StateID::kHostGame, true);
+	m_stack.RegisterState<MultiplayerGameState>(StateID::kJoinGame, false);
+	m_stack.RegisterState<PauseState>(StateID::kPause);
+	m_stack.RegisterState<PauseState>(StateID::kNetworkPause, true);
 }

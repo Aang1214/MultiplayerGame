@@ -74,6 +74,39 @@ void World::Draw()
 	}
 }
 
+Aircraft* World::GetAircraft(int identifier) const
+{
+	for (Aircraft* a : m_player_aircraft)
+	{
+		if (a->GetIdentifier() == identifier)
+		{
+			return a;
+		}
+	}
+	return nullptr;
+}
+
+void World::RemoveAircraft(int identifier)
+{
+	Aircraft* aircraft = GetAircraft(identifier);
+	if (aircraft)
+	{
+		aircraft->Destroy();
+		m_player_aircraft.erase(std::find(m_player_aircraft.begin(), m_player_aircraft.end(), aircraft));
+	}
+}
+
+Aircraft* World::AddAircraft(int identifier)
+{
+	std::unique_ptr<Aircraft> player(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
+	player->setPosition(m_camera.getCenter());
+	player->SetIdentifier(identifier);
+
+	m_player_aircraft.emplace_back(player.get());
+	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(player));
+	return m_player_aircraft.back();
+}
+
 CommandQueue& World::GetCommandQueue()
 {
 	return m_command_queue;
@@ -218,6 +251,12 @@ void World::SpawnEnemies()
 	}
 }
 
+void World::AddEnemy(AircraftType type, float relx, float rely)
+{
+	SpawnPoint spawn(type, m_spawn_position.x + relx, m_spawn_position.y - rely);
+	m_enemy_spawn_points.emplace_back(spawn);
+}
+
 //change to spawn meteors
 void World::AddEnemies()
 {
@@ -241,10 +280,13 @@ void World::AddEnemies()
 
 }
 
-void World::AddEnemy(AircraftType type, float relx, float rely)
+void World::SortEnemies()
 {
-	SpawnPoint spawn(type, m_spawn_position.x + relx, m_spawn_position.y - rely);
-	m_enemy_spawn_points.emplace_back(spawn);
+	//Sort all enemies according to their y-value, such that lower enemies are checked first for spawning
+	std::sort(m_enemy_spawn_points.begin(), m_enemy_spawn_points.end(), [](SpawnPoint lhs, SpawnPoint rhs)
+		{
+			return lhs.m_y < rhs.m_y;
+		});
 }
 
 sf::FloatRect World::GetViewBounds() const

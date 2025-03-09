@@ -5,8 +5,15 @@ Marek Martinak	 - D00250456
 */
 
 #include "Player.hpp"
-#include "ReceiverCategories.hpp"
+#include "CommandQueue.hpp"
 #include "Aircraft.hpp"
+#include "NetworkProtocol.hpp"
+#include <SFML/Network/Packet.hpp>
+
+#include <map>
+#include <string>
+#include <algorithm>
+#include <iostream>
 
 
 //struct AircraftRotater (accepts and playerID and a float of rotation)
@@ -107,6 +114,25 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& command_queue)
     }
 }
 
+bool Player::IsLocal() const
+{
+    // No key binding means this player is remote
+    return m_key_binding != nullptr;
+}
+
+void Player::DisableAllRealtimeActions()
+{
+    for (auto& action : m_action_proxies)
+    {
+        sf::Packet packet;
+        packet << static_cast<sf::Int32>(Client::PacketType::kPlayerRealtimeChange);
+        packet << m_identifier;
+        packet << static_cast<sf::Int32>(action.first);
+        packet << false;
+        m_socket->send(packet);
+    }
+}
+
 void Player::HandleRealTimeInput(CommandQueue& command_queue)
 {
     //Check if any of the key bindings are pressed
@@ -117,6 +143,29 @@ void Player::HandleRealTimeInput(CommandQueue& command_queue)
             command_queue.Push(m_action_binding_P1[pair.second]);
         }
     }
+}
+
+void Player::HandleRealtimeNetworkInput(CommandQueue& commands)
+{
+    if (m_socket && !IsLocal())
+    {
+        // Traverse all realtime input proxies. Because this is a networked game, the input isn't handled directly
+        for (auto pair : m_action_proxies)
+        {
+            if (pair.second && IsRealtimeAction(pair.first))
+                commands.Push(m_action_binding[pair.first]);
+        }
+    }
+}
+
+void Player::HandleNetworkEvent(Action action, CommandQueue& commands)
+{
+    commands.Push(m_action_binding[action]);
+}
+
+void Player::HandleNetworkRealtimeChange(Action action, bool actionEnabled)
+{
+    m_action_proxies[action] = actionEnabled;
 }
 
 void Player::AssignKey(Action action, sf::Keyboard::Key key)

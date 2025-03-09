@@ -32,9 +32,14 @@ public:
 	bool PlayerWin() const;
 
 	void RemoveAircraft(int identifier);
+	Aircraft* AddAircraft(int identifier);
 	bool PollGameAction(GameActions::Action& out);
 	Aircraft* GetAircraft(int identifier) const;
 	bool HasAlivePlayer() const; 
+
+
+	void AddEnemy(AircraftType type, float relx, float rely);
+	void SortEnemies();
 private:
 	void LoadTextures();
 	void BuildScene();
@@ -43,7 +48,6 @@ private:
 
 	void SpawnEnemies();
 	void AddEnemies();
-	void AddEnemy(AircraftType type, float relx, float rely);
 	sf::FloatRect GetViewBounds() const;
 	sf::FloatRect GetBattleFieldBounds() const;
 
@@ -80,6 +84,8 @@ private:
 	sf::Vector2f m_spawn_position;
 	float m_scrollspeed;
 	Aircraft* m_P1_aircraft;
+
+	std::vector<Aircraft*> m_player_aircraft;
 
 
 	CommandQueue m_command_queue;

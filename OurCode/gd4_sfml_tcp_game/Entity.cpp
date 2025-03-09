@@ -53,6 +53,12 @@ int Entity::GetHitPoints() const
     return m_hitpoints;
 }
 
+void Entity::SetHitpoints(int points)
+{
+    //assert(points > 0);
+    m_hitpoints = points;
+}
+
 // maybe add powerup in future
 void Entity::Repair(int points)
 {

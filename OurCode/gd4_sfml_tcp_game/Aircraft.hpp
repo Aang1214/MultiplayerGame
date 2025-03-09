@@ -24,6 +24,9 @@ public:
 	void IncreaseFireSpread();
 	void CollectMissile(unsigned int count);
 
+	int GetIdentifier();
+	void SetIdentifier(int identifier);
+
 	void UpdateTexts();
 	void UpdateMovementPattern(sf::Time dt);
 
@@ -72,6 +75,8 @@ private:
 	bool m_show_explosion;
 	bool m_spawned_pickup;
 	bool m_played_explosion_sound;
+
+	int m_identifier;
 
 };
 
