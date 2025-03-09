@@ -16,13 +16,13 @@ Marek Martinak	 - D00250456
 #include "CommandQueue.hpp"
 #include "BloomEffect.hpp"
 #include "SoundPlayer.hpp"
-
+#include "NetworkNode.hpp"
 #include <array>
 
 class World : private sf::NonCopyable
 {
 public:
-	explicit World(sf::RenderTarget& target, FontHolder& font, SoundPlayer& sounds);
+	explicit World(sf::RenderTarget& target, FontHolder& font, SoundPlayer& sounds, bool networked = false);
 	void Update(sf::Time dt);
 	void Draw();
 
@@ -31,6 +31,10 @@ public:
 	bool PlayerLose() const;
 	bool PlayerWin() const;
 
+	void RemoveAircraft(int identifier);
+	bool PollGameAction(GameActions::Action& out);
+	Aircraft* GetAircraft(int identifier) const;
+	bool HasAlivePlayer() const; 
 private:
 	void LoadTextures();
 	void BuildScene();
@@ -50,7 +54,7 @@ private:
 	void HandleCollisions();
 	void UpdateSounds();
 
-
+	
 private:
 	struct SpawnPoint
 	{
@@ -84,5 +88,8 @@ private:
 	std::vector<Aircraft*> m_active_enemies;
 
 	BloomEffect m_bloom_effect;
+	bool m_networked_world;
+	NetworkNode* m_network_node;
+	SpriteNode* m_finish_sprite;
 };
 

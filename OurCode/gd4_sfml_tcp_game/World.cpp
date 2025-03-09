@@ -10,7 +10,7 @@ Marek Martinak	 - D00250456
 #include "ParticleNode.hpp"
 #include "SoundNode.hpp"
 
-World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sounds)
+World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sounds, bool networked)
 	:m_target(output_target)
 	,m_camera(output_target.getDefaultView())
 	,m_textures()
@@ -158,7 +158,15 @@ void World::BuildScene()
 	std::unique_ptr<SoundNode> soundNode(new SoundNode(m_sounds));
 	m_scenegraph.AttachChild(std::move(soundNode));
 
+	if (m_networked_world)
+	{
+		std::unique_ptr<NetworkNode> network_node(new NetworkNode());
+		m_network_node = network_node.get();
+		m_scenegraph.AttachChild(std::move(network_node));
+	}
+
 	AddEnemies();
+
 
 }
 
