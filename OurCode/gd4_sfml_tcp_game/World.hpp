@@ -83,6 +83,7 @@ private:
 	sf::FloatRect m_world_bounds;
 	sf::Vector2f m_spawn_position;
 	float m_scrollspeed;
+
 	Aircraft* m_P1_aircraft;
 
 	std::vector<Aircraft*> m_player_aircraft;

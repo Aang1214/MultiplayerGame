@@ -252,7 +252,7 @@ void Aircraft::CreateProjectile(SceneNode& node, ProjectileType type, float x_of
 
 	//set rotation of projectile to match aircraft
 	projectile->setPosition(GetWorldPosition() + offset);
-	projectile->SetVelocity(-velocity);
+	projectile->SetVelocity(velocity);
 	projectile->setRotation(rot + 90.f);
 	node.AttachChild(std::move(projectile));
 }

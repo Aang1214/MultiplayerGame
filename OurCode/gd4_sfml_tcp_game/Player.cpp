@@ -79,7 +79,7 @@ struct AircraftRotReset
 {
     void operator()(Aircraft& aircraft, sf::Time) const
     {
-        aircraft.SetRotation(90.f);
+        aircraft.SetRotation(90);
     }
 };
 
@@ -232,8 +232,8 @@ void Player::InitialiseActions()
     const float kPlayerSpeed = 400.f;
     const float kPlayerRotation = 4.f;
 
-    m_action_binding[Action::kP1TiltLeft].action = DerivedAction<Aircraft>(AircraftMover(kPlayerRotation, m_identifier));
-    m_action_binding[Action::kP1TiltRight].action = DerivedAction<Aircraft>(AircraftMover(kPlayerRotation, m_identifier));
+    m_action_binding[Action::kP1TiltLeft].action = DerivedAction<Aircraft>(AircraftRotater(-kPlayerRotation, m_identifier));
+    m_action_binding[Action::kP1TiltRight].action = DerivedAction<Aircraft>(AircraftRotater(kPlayerRotation, m_identifier));
     m_action_binding[Action::kP1MoveUp].action = DerivedAction<Aircraft>(AircraftMover(kPlayerSpeed, m_identifier));
     m_action_binding[Action::kP1UsePowerUp].action = DerivedAction<Aircraft>(AircraftMissileTrigger(m_identifier));
 }

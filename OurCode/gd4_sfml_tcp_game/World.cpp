@@ -35,9 +35,13 @@ void World::Update(sf::Time dt)
 	m_camera.move(0, m_scrollspeed * dt.asSeconds());
 
 	
-	m_P1_aircraft->SetVelocity(0.f, 0.f);
+	for (Aircraft* a : m_player_aircraft)
+	{
+		a->SetVelocity(0.f, 0.f);
+	}
 
 	ReboundEntitiesOutsideView();
+	DestroyEntitiesOutsideView();
 	GuideMissiles();
 
 	//Forward commands to the scenegraph
@@ -49,7 +53,11 @@ void World::Update(sf::Time dt)
 
 	HandleCollisions();
 
-	m_scenegraph.RemoveWrecks();
+	//Remove all of the destroyed entities
+	//RemoveWrecks() only destroys the entities, not the pointers in m_player_aircraft
+	auto first_to_remove = std::remove_if(m_player_aircraft.begin(), m_player_aircraft.end(), std::mem_fn(&Aircraft::IsMarkedForRemoval)); 
+	m_player_aircraft.erase(first_to_remove, m_player_aircraft.end()); 
+	m_scenegraph.RemoveWrecks(); 
 
 	SpawnEnemies();
 
@@ -100,6 +108,7 @@ Aircraft* World::AddAircraft(int identifier)
 {
 	std::unique_ptr<Aircraft> player(new Aircraft(AircraftType::kP1, m_textures, m_fonts));
 	player->setPosition(m_camera.getCenter());
+	player->setRotation(90.f);
 	player->SetIdentifier(identifier);
 
 	m_player_aircraft.emplace_back(player.get());
@@ -126,7 +135,7 @@ bool World::HasAlivePlayer() const
 //find me
 bool World::PlayerLose() const
 {
-	return m_P1_aircraft->IsDestroyed();
+	return m_player_aircraft.empty();
 }
 
 bool World::PlayerWin() const
@@ -177,20 +186,7 @@ void World::BuildScene()
 	std::unique_ptr<SpriteNode> background_sprite(new SpriteNode(texture, textureRect));
 	background_sprite->setPosition(m_world_bounds.left, m_world_bounds.top);
 	m_scene_layers[static_cast<int>(SceneLayers::kBackground)]->AttachChild(std::move(background_sprite));
-
-	//Add the finish line
-	sf::Texture& finish_texture = m_textures.Get(TextureID::kFinishLine);
-	std::unique_ptr<SpriteNode> finish_sprite(new SpriteNode(finish_texture));
-	finish_sprite->setPosition(0.f, -76.f);
-
-	//Add the player 1 aircraft *** 
-	std::unique_ptr<Aircraft> Player1(new Aircraft(AircraftType::kP1, m_textures, m_fonts));
-	m_P1_aircraft = Player1.get();
-	m_P1_aircraft->setPosition(m_spawn_position.x - 400, m_spawn_position.y);
-	m_P1_aircraft->SetVelocity(40.f, m_scrollspeed);
-	m_P1_aircraft->SetRotation(90.f);
-	m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(Player1));
-
+	
 	//Add the particle nodes to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(ParticleType::kSmoke, m_textures));
 	m_scene_layers[static_cast<int>(SceneLayers::kLowerAir)]->AttachChild(std::move(smokeNode));
@@ -210,37 +206,42 @@ void World::BuildScene()
 	}
 
 	AddEnemies();
-
-
 }
 
 //************************************************
 void World::AdaptPlayerPosition()
 {
-	sf::FloatRect view_bounds(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
+	//Keep the players on the sceen 
+	sf::FloatRect view_bounds = GetViewBounds();
 	const float border_distance = 40.f;
 
-	//keep the player 1 on the screen
-	sf::Vector2f position1 = m_P1_aircraft->getPosition();
-	position1.x = std::max(position1.x, view_bounds.left + border_distance);
-	position1.x = std::min(position1.x, view_bounds.left + view_bounds.width - border_distance);
-	position1.y = std::max(position1.y, view_bounds.top + border_distance);
-	position1.y = std::min(position1.y, view_bounds.top + view_bounds.height -border_distance);
-	m_P1_aircraft->setPosition(position1);
+	for (Aircraft* aircraft : m_player_aircraft)
+	{
+		sf::Vector2f position = aircraft->getPosition();
+		position.x = std::max(position.x, view_bounds.left + border_distance);
+		position.x = std::min(position.x, view_bounds.left + view_bounds.width - border_distance);
+		position.y = std::max(position.y, view_bounds.top + border_distance);
+		position.y = std::min(position.y, view_bounds.top + view_bounds.height - border_distance);
+		aircraft->setPosition(position);
+	}
 
 }
 
 void World::AdaptPlayerVelocity()
 {
-	sf::Vector2f velocity1 = m_P1_aircraft->GetVelocity();
-
-	//If they are moving diagonally divide by sqrt 2 (remove)
-	if (velocity1.x != 0.f && velocity1.y != 0.f)
+	for (Aircraft* aircraft : m_player_aircraft)
 	{
-		m_P1_aircraft->SetVelocity(velocity1 / std::sqrt(2.f));
+		sf::Vector2f velocity = aircraft->GetVelocity();
+
+		//If moving diagonally, reduce velocity (to have always same velocity)
+		if (velocity.x != 0.f && velocity.y != 0.f)
+		{
+			aircraft->SetVelocity(velocity / std::sqrt(2.f));
+		}
+
+		//Add scrolling velocity
+		aircraft->Accelerate(0.f, m_scrollspeed);
 	}
-	//Add scrolling velocity (remove
-	m_P1_aircraft->Accelerate(0.f, m_scrollspeed);
 
 }
 
@@ -253,13 +254,25 @@ void World::SpawnEnemies()
 		SpawnPoint spawn = m_enemy_spawn_points.back();
 		std::unique_ptr<Aircraft> enemy(new Aircraft(spawn.m_type, m_textures, m_fonts));
 		enemy->setPosition(spawn.m_x, spawn.m_y);
-		//random float 
-		/*
-		float rot = static_cast<float>(rand() % 360);
-		enemy->setRotation(rot);*/
 		m_scene_layers[static_cast<int>(SceneLayers::kUpperAir)]->AttachChild(std::move(enemy));
 		m_enemy_spawn_points.pop_back();
 	}
+}
+
+sf::FloatRect World::GetViewBounds() const
+{
+	return sf::FloatRect(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
+}
+
+sf::FloatRect World::GetBattleFieldBounds() const
+{
+	//Return camera bounds + a small area at the top where enemies spawn
+	sf::FloatRect bounds = GetViewBounds();
+	bounds.top -= 100.f;
+	bounds.height += 100.f;
+
+	return bounds;
+
 }
 
 void World::AddEnemy(AircraftType type, float relx, float rely)
@@ -283,12 +296,7 @@ void World::AddEnemies()
 	//AddEnemy(AircraftType::kMeteorB, 0.f, 0.f);
 	AddEnemy(AircraftType::kMeteorA, 0.f, -150.f);
 
-	//Sort the enemies according to y-value so that enemies are checked first
-	std::sort(m_enemy_spawn_points.begin(), m_enemy_spawn_points.end(), [](SpawnPoint lhs, SpawnPoint rhs)
-	{
-		return lhs.m_y < rhs.m_y;
-	});
-
+	SortEnemies();
 }
 
 void World::SortEnemies()
@@ -300,19 +308,7 @@ void World::SortEnemies()
 		});
 }
 
-sf::FloatRect World::GetViewBounds() const
-{
-	return sf::FloatRect(m_camera.getCenter() - m_camera.getSize()/2.f, m_camera.getSize());
-}
 
-//change for meteors
-sf::FloatRect World::GetBattleFieldBounds() const
-{
-	//Return camera bounds + a small area at the top where enemies spawn
-	sf::FloatRect bounds = GetViewBounds();
-	return bounds;
-
-}
 
 void World::DestroyEntitiesOutsideView()
 {
@@ -448,19 +444,10 @@ void World::HandleCollisions()
 			{
 				meteor.SetVelocity(v1 * 1.f);
 			}
-			player.SetVelocity(-v1*10.f);
+			player.SetVelocity(-v1*1.f);
 			
 		}
 
-		/*else if (MatchesCategories(pair, ReceiverCategories::kP1, ReceiverCategories::kPickup))
-		{
-			auto& player = static_cast<Aircraft&>(*pair.first);
-			auto& pickup = static_cast<Pickup&>(*pair.second);
-			//Collision response
-			pickup.Apply(player);
-			pickup.Destroy();
-			player.PlayLocalSound(m_command_queue, SoundEffect::kCollectPickup);
-		}*/
 		//missile and meteor collision
 		else if (MatchesCategories(pair, ReceiverCategories::kMeteors, ReceiverCategories::kAlliedProjectile))
 		{
@@ -503,8 +490,27 @@ void World::HandleCollisions()
 
 void World::UpdateSounds()
 {
-	// Set listener's position to player position
-	m_sounds.SetListenerPosition(m_P1_aircraft->GetWorldPosition());
+	sf::Vector2f listener_position;
+
+	// 0 players (multiplayer mode, until server is connected) -> view center
+	if (m_player_aircraft.empty())
+	{
+		listener_position = m_camera.getCenter();
+	}
+
+	// 1 or more players -> mean position between all aircrafts
+	else
+	{
+		for (Aircraft* aircraft : m_player_aircraft)
+		{
+			listener_position += aircraft->GetWorldPosition();
+		}
+
+		listener_position /= static_cast<float>(m_player_aircraft.size());
+	}
+
+	// Set listener's position
+	m_sounds.SetListenerPosition(listener_position);
 
 	// Remove unused sounds
 	m_sounds.RemoveStoppedSounds();

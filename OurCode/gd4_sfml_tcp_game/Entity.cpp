@@ -22,15 +22,16 @@ void Entity::SetVelocity(float vx, float vy)
     m_velocity.y = vy;
 }
 
+
+void Entity::SetRotation(float angle)
+{
+    m_rotation = angle;
+}
 sf::Vector2f Entity::GetVelocity() const
 {
     return m_velocity;
 }
 
-void Entity::SetRotation(float angle)
-{
-	m_rotation = angle;
-}
 
 float Entity::GetRotation() const
 {
