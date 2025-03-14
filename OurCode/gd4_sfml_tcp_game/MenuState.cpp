@@ -49,10 +49,30 @@ MenuState::MenuState(StateStack& stack, Context context)
             RequestStackPop();
     });
 
+    auto host_play_button = std::make_shared<gui::Button>(context);
+    host_play_button->setPosition(400, 450);
+    host_play_button->SetText("Host");
+    host_play_button->SetCallback([this]()
+        {
+            RequestStackPop();
+            RequestStackPush(StateID::kHostGame);
+        });
+
+    auto join_play_button = std::make_shared<gui::Button>(context);
+    join_play_button->setPosition(400, 500);
+    join_play_button->SetText("Join");
+    join_play_button->SetCallback([this]()
+        {
+            RequestStackPop();
+            RequestStackPush(StateID::kJoinGame);
+        });
+
     m_gui_container.Pack(play_button);
     m_gui_container.Pack(join_button);
     m_gui_container.Pack(settings_button);
     m_gui_container.Pack(exit_button);
+    m_gui_container.Pack(host_play_button);
+    m_gui_container.Pack(join_play_button);
 
     //Play the music
     context.music->Play(MusicThemes::kMenuTheme);
