@@ -16,6 +16,7 @@ Marek Martinak	 - D00250456
 #include "SettingsState.hpp"
 #include "JoinState.hpp"
 #include "MultiplayerGameState.hpp"
+#include "KeyBinding.hpp"
 
 //***************************************      Main      **********************************************
 
@@ -23,8 +24,10 @@ Marek Martinak	 - D00250456
 const sf::Time Application::kTimePerFrame = sf::seconds(1.f/60.f);
 
 //constructor (size of screen, title of window)
-Application::Application() : m_window(sf::VideoMode(WIDTH, HEIGHT), "States", sf::Style::Close)
-	, m_stack(State::Context(m_window, m_textures, m_fonts, m_player, m_music, m_sound))
+Application::Application() 
+	: m_window(sf::VideoMode(WIDTH, HEIGHT), "Networked", sf::Style::Close)
+	, m_key_binding_1(1), m_key_binding_2(2)
+	, m_stack(State::Context(m_window, m_textures, m_fonts, m_music, m_sound, m_key_binding_1, m_key_binding_2))
 {
 	m_window.setKeyRepeatEnabled(false);
 	m_fonts.Load(Font::kMain, "Media/Fonts/Sansation.ttf");
@@ -94,15 +97,17 @@ void Application::RegisterStates()
 	m_stack.RegisterState<TitleState>(StateID::kTitle);
 	m_stack.RegisterState<MenuState>(StateID::kMenu);
 	m_stack.RegisterState<GameState>(StateID::kGame);
+
 	m_stack.RegisterState<PauseState>(StateID::kPause);
+
 	m_stack.RegisterState<KeySettingsState>(StateID::kKeySettings);
-	m_stack.RegisterState<GameOverState>(StateID::kGameOver);
+	m_stack.RegisterState<GameOverState>(StateID::kGameOver, "Mission Failed!");
 	m_stack.RegisterState<VideoSettingsState>(StateID::kVideoSettings);
 	m_stack.RegisterState<AudioSettingsState>(StateID::kAudioSettings);
 	m_stack.RegisterState<SettingsState>(StateID::kSettings);
 	m_stack.RegisterState<JoinState>(StateID::kJoin);
-	m_stack.RegisterState<MultiplayerGameState>(StateID::kHostGame, true);
-	m_stack.RegisterState<MultiplayerGameState>(StateID::kJoinGame, false);
-	m_stack.RegisterState<PauseState>(StateID::kPause);
-	m_stack.RegisterState<PauseState>(StateID::kNetworkPause, true);
+	//m_stack.RegisterState<MultiplayerGameState>(StateID::kHostGame, true);
+
+	//m_stack.RegisterState<MultiplayerGameState>(StateID::kJoinGame, false); 
+	//m_stack.RegisterState<PauseState>(StateID::kNetworkPause, true);
 }

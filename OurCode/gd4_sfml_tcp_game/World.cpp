@@ -98,7 +98,7 @@ void World::RemoveAircraft(int identifier)
 
 Aircraft* World::AddAircraft(int identifier)
 {
-	std::unique_ptr<Aircraft> player(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> player(new Aircraft(AircraftType::kP1, m_textures, m_fonts));
 	player->setPosition(m_camera.getCenter());
 	player->SetIdentifier(identifier);
 
@@ -107,9 +107,20 @@ Aircraft* World::AddAircraft(int identifier)
 	return m_player_aircraft.back();
 }
 
+bool World::PollGameAction(GameActions::Action& out)
+{
+	return m_network_node->PollGameAction(out);
+}
+
 CommandQueue& World::GetCommandQueue()
 {
 	return m_command_queue;
+}
+
+
+bool World::HasAlivePlayer() const
+{
+	return !m_player_aircraft.empty();
 }
 
 //find me
@@ -269,7 +280,7 @@ void World::AddEnemies()
 	AddEnemy(AircraftType::kMeteorA, -240.f, -100.f);
 	AddEnemy(AircraftType::kMeteorB, -240.f, -300.f);
 	AddEnemy(AircraftType::kMeteorA, 0.f, 150.f);
-	AddEnemy(AircraftType::kMeteorB, 0.f, 0.f);
+	//AddEnemy(AircraftType::kMeteorB, 0.f, 0.f);
 	AddEnemy(AircraftType::kMeteorA, 0.f, -150.f);
 
 	//Sort the enemies according to y-value so that enemies are checked first

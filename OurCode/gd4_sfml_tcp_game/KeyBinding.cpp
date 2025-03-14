@@ -9,18 +9,18 @@ KeyBinding::KeyBinding(int control_preconfiguration)
 	// Set initial key bindings for player 1
 	if (control_preconfiguration == 1)
 	{
-		m_key_map[sf::Keyboard::Left] = Action::kP1TiltLeft; 
-		m_key_map[sf::Keyboard::Right] = Action::kP1TiltRight; 
-		m_key_map[sf::Keyboard::Up] = Action::kP1MoveUp;
+		m_key_map[sf::Keyboard::A] = Action::kP1TiltLeft; 
+		m_key_map[sf::Keyboard::D] = Action::kP1TiltRight; 
+		m_key_map[sf::Keyboard::W] = Action::kP1MoveUp;
 		m_key_map[sf::Keyboard::M] = Action::kP1UsePowerUp; 
 	}
 	else if (control_preconfiguration == 2)
 	{
 		// Player 2
-		m_key_map[sf::Keyboard::A] = Action::kP1TiltLeft;
-		m_key_map[sf::Keyboard::D] = Action::kP1TiltRight;
-		m_key_map[sf::Keyboard::W] = Action::kP1MoveUp;
-		m_key_map[sf::Keyboard::R] = Action::kP1UsePowerUp;
+		m_key_map[sf::Keyboard::J] = Action::kP1TiltLeft;
+		m_key_map[sf::Keyboard::L] = Action::kP1TiltRight;
+		m_key_map[sf::Keyboard::I] = Action::kP1MoveUp;
+		m_key_map[sf::Keyboard::BackSlash] = Action::kP1UsePowerUp;
 	}
 }
 

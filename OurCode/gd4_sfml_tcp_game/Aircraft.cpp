@@ -271,7 +271,7 @@ sf::FloatRect Aircraft::GetBoundingRect() const
 	return GetWorldTransform().transformRect(m_sprite.getGlobalBounds());
 }
 
-// keep
+// keepF
 bool Aircraft::IsMarkedForRemoval() const
 {
 	return IsDestroyed() && (m_explosion.IsFinished() || !m_show_explosion);

@@ -11,7 +11,7 @@ Marek Martinak	 - D00250456
 #include "Utility.hpp"
 
 
-GameOverState::GameOverState(StateStack& stack, Context context)
+GameOverState::GameOverState(StateStack& stack, Context context, const std::string& text)
     : State(stack, context)
     , m_game_over_text()
     , m_elapsed_time(sf::Time::Zero)
@@ -20,14 +20,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
     sf::Vector2f window_size(context.window->getSize());
 
     m_game_over_text.setFont(font);
-    if (context.player->GetMissionStatus() == MissionStatus::PlayerWin)
-    {
-        m_game_over_text.setString("Player 1 Wins");
-    }
-    else
-    {
-        m_game_over_text.setString("Player 2 Wins");
-    }
+    m_game_over_text.setString(text);
 
     m_game_over_text.setCharacterSize(70);
     Utility::CentreOrigin(m_game_over_text);

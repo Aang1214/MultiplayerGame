@@ -8,10 +8,12 @@ Marek Martinak	 - D00250456
 #include "Player.hpp"
 #include "MissionStatus.hpp"
 
-GameState::GameState(StateStack& stack, Context context) : State(stack, context), m_world(*context.window, *context.fonts, *context.sounds), m_player(*context.player)
+GameState::GameState(StateStack& stack, Context context) : State(stack, context), m_world(*context.window, *context.fonts, *context.sounds, false), m_player(nullptr, 1, context.keys1)
 {
+	m_world.AddAircraft(1);
+	m_player.ResetPlayerRotations(); 
+	m_player.SetMissionStatus(MissionStatus::kMissionRunning);
 	//Play the music
-	m_player.ResetPlayerRotations();
 	context.music->Play(MusicThemes::kMissionTheme);
 }
 
@@ -35,7 +37,7 @@ bool GameState::Update(sf::Time dt)
 		RequestStackPush(StateID::kGameOver);
 	}
 	CommandQueue& commands = m_world.GetCommandQueue();
-	m_player.HandleRealTimeInput(commands);
+	m_player.HandleRealtimeInput(commands);
 	return true;
 }
 

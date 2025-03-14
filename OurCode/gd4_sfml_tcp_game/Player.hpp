@@ -12,6 +12,7 @@ Marek Martinak	 - D00250456
 #include <map>
 #include "CommandQueue.hpp"
 #include <SFML/Network/TcpSocket.hpp>
+#include "KeyBinding.hpp"
 
 class Command;
 

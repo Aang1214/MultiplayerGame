@@ -14,7 +14,7 @@ sf::IpAddress GetAddressFromFile()
 {
 	{
 		//Try to open existing file
-		std::ifstream input_file("ip.txt");
+		std::ifstream input_file("ip_address.txt");
 		std::string ip_address;
 		if (input_file >> ip_address)
 		{
@@ -23,7 +23,7 @@ sf::IpAddress GetAddressFromFile()
 	}
 
 	//If the open/read failed, create a new file
-	std::ofstream output_file("ip.txt");
+	std::ofstream output_file("ip_address.txt");
 	std::string local_address = "127.0.0.1";
 	output_file << local_address;
 	return local_address;
@@ -166,7 +166,7 @@ bool MultiplayerGameState::Update(sf::Time dt)
 			CommandQueue& commands = m_world.GetCommandQueue();
 			for (auto& pair : m_players)
 			{
-				pair.second->HandleRealTimeInput(commands);
+				pair.second->HandleRealtimeInput(commands);
 			}
 		}
 

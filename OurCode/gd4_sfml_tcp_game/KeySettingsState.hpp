@@ -25,7 +25,7 @@ public:
 
 private:
 	void UpdateLabels();
-	void AddButtonLabel(Action action, float x, float y, const std::string& text, Context context);
+	void AddButtonLabel(std::size_t index, std::size_t x, std::size_t y, const std::string& text, Context context);
 
 private:
 	sf::Sprite m_background_sprite;
