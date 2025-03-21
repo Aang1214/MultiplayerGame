@@ -293,6 +293,8 @@ void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 // keep
 void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
+	ChangePlayerColor();
+
 	if (IsDestroyed())
 	{
 		CheckPickupDrop(commands);
@@ -414,4 +416,10 @@ void Aircraft::PlayLocalSound(CommandQueue& commands, SoundEffect effect)
 		});
 
 	commands.Push(command);
+}
+
+void Aircraft::ChangePlayerColor() {
+	if (IsP1()) {
+		m_sprite.setColor(sf::Color(0, 255, 0));
+	}
 }
