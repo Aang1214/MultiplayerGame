@@ -13,6 +13,7 @@ Marek Martinak	 - D00250456
 #include "PickupType.hpp"
 #include "Pickup.hpp"
 #include "SoundNode.hpp"
+#include "EmitterNode.hpp"
 
 namespace
 {
@@ -83,16 +84,16 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 			CreatePickup(node, textures);
 		};
 
-	//keep (health display)
-	// if player
-	/*if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1))
+	if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1))
 	{
-		//missile display (power up)
-		std::string* missile_ammo = new std::string("");
-		std::unique_ptr<TextNode> missile_display(new TextNode(fonts, *missile_ammo));
-		m_missile_display = missile_display.get();
-		AttachChild(std::move(missile_display));
-	}*/
+		std::unique_ptr<EmitterNode> propellant(new EmitterNode(ParticleType::kPlayerPropellant));
+		propellant->setPosition(0.f, GetBoundingRect().height / 2.f);
+		AttachChild(std::move(propellant));
+
+		std::unique_ptr<EmitterNode> smoke(new EmitterNode(ParticleType::kSmoke));
+		smoke->setPosition(0.f, GetBoundingRect().height / 2.f);
+		AttachChild(std::move(smoke));
+	}
 
 	UpdateTexts();//keep
 }
