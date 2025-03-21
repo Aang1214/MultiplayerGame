@@ -192,6 +192,9 @@ void World::BuildScene()
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(ParticleType::kSmoke, m_textures));
 	m_scene_layers[static_cast<int>(SceneLayers::kLowerAir)]->AttachChild(std::move(smokeNode));
 
+	std::unique_ptr<ParticleNode> playerPropellantNode(new ParticleNode(ParticleType::kPlayerPropellant, m_textures));
+	m_scene_layers[static_cast<int>(SceneLayers::kLowerAir)]->AttachChild(std::move(playerPropellantNode));
+
 	std::unique_ptr<ParticleNode> propellantNode(new ParticleNode(ParticleType::kPropellant, m_textures));
 	m_scene_layers[static_cast<int>(SceneLayers::kLowerAir)]->AttachChild(std::move(propellantNode));
 

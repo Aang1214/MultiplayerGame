@@ -9,5 +9,6 @@ enum class ParticleType
 {
 	kPropellant,
 	kSmoke,
+	kPlayerPropellant,
 	kParticleCount,
 };
