@@ -20,8 +20,8 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
 	,m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y/2.f)
+	,m_scrollspeed(0.f)
 	,m_P1_aircraft(nullptr)
-	,m_networked_world(networked)
 {
 	m_scene_texture.create(m_target.getSize().x, m_target.getSize().y);
 	LoadTextures();
@@ -31,6 +31,8 @@ World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sou
 
 void World::Update(sf::Time dt)
 {
+	//Scroll the world (remove this if you want to stop scrolling)
+	m_camera.move(0, m_scrollspeed * dt.asSeconds());
 
 	
 	for (Aircraft* a : m_player_aircraft)
@@ -237,6 +239,8 @@ void World::AdaptPlayerVelocity()
 			aircraft->SetVelocity(velocity / std::sqrt(2.f));
 		}
 
+		//Add scrolling velocity
+		aircraft->Accelerate(0.f, m_scrollspeed);
 	}
 
 }

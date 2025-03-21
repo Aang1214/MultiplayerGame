@@ -14,6 +14,7 @@ GameServer::GameServer(sf::Vector2f battlefield_size)
     , m_connected_players(0)
     , m_world_height(5000.f)
     , m_battlefield_rect(0.f, m_world_height - battlefield_size.y, battlefield_size.x, battlefield_size.y)
+    , m_battlefield_scrollspeed(-50.f)
     , m_aircraft_count(0)
     , m_peers(1)
     , m_aircraft_identifier_counter(1)
@@ -105,6 +106,7 @@ void GameServer::ExecutionThread()
         //Fixed time step
         while (frame_time >= frame_rate)
         {
+            m_battlefield_rect.top += m_battlefield_scrollspeed * frame_rate.asSeconds();
             frame_time -= frame_rate;
         }
 
