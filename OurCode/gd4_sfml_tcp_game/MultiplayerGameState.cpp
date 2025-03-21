@@ -24,7 +24,7 @@ sf::IpAddress GetAddressFromFile()
 
 	//If the open/read failed, create a new file
 	std::ofstream output_file("ip_address.txt");
-	std::string local_address = "192.168.0.2";
+	std::string local_address = "192.168.0.3";
 	output_file << local_address;
 	return local_address;
 
@@ -74,7 +74,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (m_host)
 	{
 		m_game_server.reset(new GameServer(sf::Vector2f(m_window.getSize())));
-		ip = "192.168.0.2";
+		ip = "192.168.0.3";
 	}
 	else
 	{
