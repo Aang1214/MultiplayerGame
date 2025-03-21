@@ -390,8 +390,8 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 	case Server::PacketType::kInitialState:
 	{
 		sf::Int32 aircraft_count;
-		float world_height, current_scroll;
-		packet >> world_height >> current_scroll;
+		float world_height;
+		packet >> world_height;
 
 		packet >> aircraft_count;
 		for (sf::Int32 i = 0; i < aircraft_count; ++i)
