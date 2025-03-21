@@ -491,7 +491,7 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 			if (aircraft && !is_local_plane)
 			{
 				sf::Vector2f interpolated_position = aircraft->getPosition() + (aircraft_position - aircraft->getPosition()) * 0.1f;
-				aircraft->setPosition(interpolated_position);
+				//aircraft->setPosition(interpolated_position);
 				aircraft->SetHitpoints(hitpoints);
 			}
 		}
