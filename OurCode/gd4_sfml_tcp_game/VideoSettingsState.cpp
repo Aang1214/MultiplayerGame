@@ -7,8 +7,8 @@ Marek Martinak	 - D00250456
 #include "VideoSettingsState.hpp"
 #include "ResourceHolder.hpp"
 #include "Utility.hpp"
-int WIDTH = 1024;
-int HEIGHT = 768;
+int WIDTH = 1920;
+int HEIGHT = 1080;
 
 VideoSettingsState::VideoSettingsState(StateStack& stack, Context context)
 	:State(stack, context)
