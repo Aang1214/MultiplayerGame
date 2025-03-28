@@ -160,7 +160,7 @@ void World::LoadTextures()
 	m_textures.Load(TextureID::kFinishLine, "Media/Textures/FinishLine.png");
 
 	m_textures.Load(TextureID::kEntities, "Media/Textures/Ships.png");
-	m_textures.Load(TextureID::kSpace, "Media/Textures/Space.png");
+	m_textures.Load(TextureID::kSpace, "Media/Textures/Space2.png");
 	m_textures.Load(TextureID::kExplosion, "Media/Textures/Explosion.png");
 	m_textures.Load(TextureID::kParticle, "Media/Textures/Particle.png");
 
