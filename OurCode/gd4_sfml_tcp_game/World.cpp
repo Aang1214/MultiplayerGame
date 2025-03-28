@@ -298,6 +298,7 @@ void World::AddEnemies()
 	AddEnemy(AircraftType::kMeteorB, -240.f, -300.f);
 	AddEnemy(AircraftType::kMeteorA, 0.f, 150.f);
 	//AddEnemy(AircraftType::kMeteorB, 0.f, 0.f);
+	AddEnemy(AircraftType::kMeteorB, 150.f, 0.f);
 	AddEnemy(AircraftType::kMeteorA, 0.f, -150.f);
 
 	SortEnemies();
