@@ -49,3 +49,9 @@ void EmitterNode::EmitParticles(sf::Time dt)
 		m_particle_system->AddParticle(GetWorldPosition());
 	}
 }
+
+//setcolor of the particle
+void EmitterNode::SetColour(sf::Color color)
+{
+	m_particle_system->SetColour(color);
+}

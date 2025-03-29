@@ -46,33 +46,33 @@ ColourID Colours::GetColourID(int colour_id)
 		case 0:
 			return ColourID::kOrnage;
 		case 1:
-			return ColourID::kLightOrange;
+			return ColourID::kGreen;
 		case 2:
 			return ColourID::kYellow;
 		case 3:
-			return ColourID::kOlive;
+			return ColourID::kAqua;
 		case 4:
-			return ColourID::kGreen;
+			return ColourID::kViolet;
 		case 5:
-			return ColourID::kLightGreen;
+			return ColourID::kMagenta;
 		case 6:
 			return ColourID::kCyan;
 		case 7:
-			return ColourID::kAqua;
+			return ColourID::kWhite;
 		case 8:
 			return ColourID::kBlue;
 		case 9:
-			return ColourID::kLightBlue;
+			return ColourID::kPink;
 		case 10:
-			return ColourID::kViolet;
+			return ColourID::kLightOrange;
 		case 11:
 			return ColourID::kPurple;
 		case 12:
-			return ColourID::kPink;
+			return ColourID::kLightGreen;
 		case 13:
-			return ColourID::kMagenta;
+			return ColourID::kLightBlue;
 		case 14:
-			return ColourID::kWhite;
+			return ColourID::kOlive;
 		case 15:
 			return ColourID::kGrey;
 	}

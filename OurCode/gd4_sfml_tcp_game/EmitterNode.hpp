@@ -13,6 +13,7 @@ class EmitterNode : public SceneNode
 {
 public:
 	explicit EmitterNode(ParticleType type);
+	void SetColour(sf::Color color);
 
 private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);

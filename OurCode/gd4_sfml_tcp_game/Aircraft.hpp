@@ -42,6 +42,8 @@ public:
 
 	void ChangePlayerColor(sf::Int32 aircraft_identifier);
 
+	void ChangeParticleColour(sf::Int32 aircraft_identifier);
+
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
