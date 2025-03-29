@@ -363,7 +363,7 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 		packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y;
 		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
 
-		aircraft->ChangePlayerColor(sf::Color::Cyan);
+		aircraft->ChangePlayerColor(aircraft_identifier); //colour
 
 		aircraft->setPosition(aircraft_position);
 		m_players[aircraft_identifier].reset(new Player(&m_socket, aircraft_identifier, GetContext().keys1));
@@ -378,9 +378,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 		sf::Vector2f aircraft_position;
 		packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y;
 
-		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
+		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier); //colour
 
-		aircraft->ChangePlayerColor(sf::Color::Red);
+		aircraft->ChangePlayerColor(aircraft_identifier);
 
 		aircraft->setPosition(aircraft_position);
 		m_players[aircraft_identifier].reset(new Player(&m_socket, aircraft_identifier, nullptr));
@@ -412,6 +412,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 			packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y >> hitpoints >> missile_ammo;
 
 			Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
+
+			aircraft->ChangePlayerColor(aircraft_identifier); //colour
+
 			aircraft->setPosition(aircraft_position);
 			aircraft->SetHitpoints(hitpoints);
 

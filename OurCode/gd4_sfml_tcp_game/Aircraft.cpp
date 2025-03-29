@@ -14,6 +14,8 @@ Marek Martinak	 - D00250456
 #include "Pickup.hpp"
 #include "SoundNode.hpp"
 #include "EmitterNode.hpp"
+#include "ColourID.hpp"
+#include "Colours.hpp"
 
 namespace
 {
@@ -435,8 +437,11 @@ void Aircraft::PlayLocalSound(CommandQueue& commands, SoundEffect effect)
 	commands.Push(command);
 }
 
-void Aircraft::ChangePlayerColor(sf::Color colour) {
+void Aircraft::ChangePlayerColor(sf::Int32 aircraft_identifier) {
 	if (IsP1()) {
+
+		ColourID colourId = Colours::GetColourID(aircraft_identifier); 
+		sf::Color colour = Colours::GetColour(colourId); 
 		m_sprite.setColor(colour);
 	}
 }

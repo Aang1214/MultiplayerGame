@@ -40,9 +40,8 @@ public:
 	bool IsMarkedForRemoval() const override;
 	void PlayLocalSound(CommandQueue& commands, SoundEffect effect);
 
-	void ChangePlayerColor(sf::Color colour);
+	void ChangePlayerColor(sf::Int32 aircraft_identifier);
 
-	//void ChangePlayerColor();
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
