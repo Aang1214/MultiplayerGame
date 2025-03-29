@@ -5,33 +5,33 @@ sf::Color Colours::GetColour(ColourID colour_id)
 	switch (colour_id)
 	{
 		case ColourID::kOrnage:
-			return sf::Color(255, 165, 0);
-		case ColourID::kBrown:
-			return sf::Color(165, 42, 42);
+			return sf::Color(236, 147, 51);
+		case ColourID::kLightOrange:
+			return sf::Color(255, 213, 109);
 		case ColourID::kYellow:
-			return sf::Color(255, 255, 0);
+			return sf::Color(255, 255, 97);
 		case ColourID::kOlive:
-			return sf::Color(128, 128, 0);
+			return sf::Color(159, 170, 98);
 		case ColourID::kGreen:
-			return sf::Color(0, 128, 0);
+			return sf::Color(84, 196, 67);
 		case ColourID::kLightGreen:
-			return sf::Color(144, 238, 144);
+			return sf::Color(133, 231, 118);
 		case ColourID::kCyan:
-			return sf::Color(0, 255, 255);
+			return sf::Color(113, 235, 184);
 		case ColourID::kAqua:
-			return sf::Color(0, 128, 128);
+			return sf::Color(53, 192, 158);
 		case ColourID::kBlue:
-			return sf::Color(0, 0, 255);
+			return sf::Color(62, 146, 198);
 		case ColourID::kLightBlue:
-			return sf::Color(173, 216, 230);
+			return sf::Color(119, 196, 243);
 		case ColourID::kViolet:
-			return sf::Color(238, 130, 238);
+			return sf::Color(152, 113, 225);
 		case ColourID::kPurple:
-			return sf::Color(128, 0, 128);
+			return sf::Color(122, 70, 174);
 		case ColourID::kPink:
-			return sf::Color(255, 192, 203);
+			return sf::Color(255, 139, 251);
 		case ColourID::kMagenta:
-			return sf::Color(255, 0, 255);
+			return sf::Color(183, 74, 255);
 		case ColourID::kWhite:
 			return sf::Color(255, 255, 255);
 		case ColourID::kGrey:
@@ -46,7 +46,7 @@ ColourID Colours::GetColourID(int colour_id)
 		case 0:
 			return ColourID::kOrnage;
 		case 1:
-			return ColourID::kBrown;
+			return ColourID::kLightOrange;
 		case 2:
 			return ColourID::kYellow;
 		case 3:
