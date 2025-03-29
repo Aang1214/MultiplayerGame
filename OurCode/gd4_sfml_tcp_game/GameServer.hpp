@@ -13,6 +13,7 @@
 class GameServer
 {
 public:
+	std::map<int, bool> m_player_ready;
 	explicit GameServer(sf::Vector2f battlefield_size);
 	~GameServer();
 	void NotifyPlayerSpawn(sf::Int32 aircraft_identifier);

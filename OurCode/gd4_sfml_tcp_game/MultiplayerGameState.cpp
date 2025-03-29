@@ -53,7 +53,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	m_player_invitation_text.setFont(context.fonts->Get(Font::kMain));
 	m_player_invitation_text.setCharacterSize(20);
 	m_player_invitation_text.setFillColor(sf::Color::White);
-	//m_player_invitation_text.setString("Press Enter to spawn player 2");
+	m_player_invitation_text.setString("Press Enter to be ready");
 	m_player_invitation_text.setPosition(1000 - m_player_invitation_text.getLocalBounds().width, 760 - m_player_invitation_text.getLocalBounds().height);
 
 	//Use this for "Attempt to connect" and "Failed to connect" messages
@@ -157,6 +157,8 @@ bool MultiplayerGameState::Update(sf::Time dt)
 					RequestStackPush(StateID::kGameOver);
 				}
 			}
+
+
 			else
 			{
 				++itr;
@@ -165,7 +167,7 @@ bool MultiplayerGameState::Update(sf::Time dt)
 
 		
 
-		/*if (!found_local_plane && m_game_started)
+		/*if (!found_local_plane && m_game_started) find me
 		{
 			RequestStackPush(StateID::kGameOver);
 		}*/
@@ -259,6 +261,7 @@ bool MultiplayerGameState::HandleEvent(const sf::Event& event)
 	//Game input handling
 	CommandQueue& commands = m_world.GetCommandQueue();
 
+	
 	//Forward events to all players
 	for (auto& pair : m_players)
 	{
@@ -275,6 +278,13 @@ bool MultiplayerGameState::HandleEvent(const sf::Event& event)
 			m_socket.send(packet);
 		}*/
 		//If escape is pressed, show the pause screen
+
+		if (event.key.code == sf::Keyboard::Return)
+		{
+			sf::Packet packet;
+			packet << static_cast<sf::Int32>(Client::PacketType::kCheckReady);
+			m_socket.send(packet);
+		}
 
 		/*else*/ if (event.key.code == sf::Keyboard::Escape)
 		{
@@ -346,6 +356,10 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 {
 	switch (static_cast<Server::PacketType>(packet_type))
 	{
+		//find
+	
+
+
 		//Send message to all Clients
 	case Server::PacketType::kBroadcastMessage:
 	{
@@ -443,6 +457,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 	break;*/
 
 	//Player event, like missile fired occurs
+
+	
+
 	case Server::PacketType::kPlayerEvent:
 	{
 		sf::Int32 aircraft_identifier;
@@ -515,6 +532,13 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 				aircraft->SetHitpoints(hitpoints);
 			}
 		}
+	}
+	break;
+
+	case Server::PacketType::kStartGame:
+	{
+		m_game_started = true;
+		// Do anything else you need to start the game
 	}
 	break;
 	}

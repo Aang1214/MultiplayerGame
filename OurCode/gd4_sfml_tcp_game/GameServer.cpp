@@ -242,6 +242,34 @@ void GameServer::HandleIncomingPackets(sf::Packet& packet, RemotePeer& receiving
 
     switch (static_cast<Client::PacketType> (packet_type))
     {
+    case Client::PacketType::kCheckReady:
+    {
+        if (!receiving_peer.m_aircraft_identifiers.empty())
+        {
+            sf::Int32 player_id = receiving_peer.m_aircraft_identifiers.front();
+            m_player_ready[player_id] = true;
+
+            // Check if all connected players are ready
+            bool all_ready = true;
+            for (const auto& pair : m_player_ready)
+            {
+                if (!pair.second)
+                    all_ready = false;
+            }
+
+            if (all_ready)
+            {
+                // Broadcast to all clients
+                sf::Packet start_packet;
+                start_packet << static_cast<sf::Int32>(Server::PacketType::kStartGame);
+                SendToAll(start_packet);
+            }
+        }
+    }
+    break;
+
+
+
     case Client::PacketType::kQuit:
     {
         receiving_peer.m_timed_out = true;
