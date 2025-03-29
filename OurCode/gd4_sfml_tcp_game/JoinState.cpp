@@ -8,7 +8,7 @@ JoinState::JoinState(StateStack& stack, Context context)
 	m_background_sprite.setTexture(texture);
 
 	auto back_button = std::make_shared<gui::Button>(context);
-	back_button->setPosition(382, 500);
+	back_button->setPosition(860, 500);
 	back_button->SetText("Back");
 	back_button->SetCallback(std::bind(&JoinState::RequestStackPop, this));
 	m_gui_container.Pack(back_button);
@@ -20,7 +20,7 @@ JoinState::JoinState(StateStack& stack, Context context)
 	m_ip_text.setFont(m_font);
 	m_ip_text.setCharacterSize(24);
 	m_ip_text.setFillColor(sf::Color::White);
-	m_ip_text.setPosition(250, 250);
+	m_ip_text.setPosition(860, 250);
 }
 
 void JoinState::Draw()

@@ -24,7 +24,7 @@ KeySettingsState::KeySettingsState(StateStack& stack, Context context)
 	UpdateLabels();
 
 	auto back_button = std::make_shared<gui::Button>(context);
-	back_button->setPosition(80.f, 620.f);
+	back_button->setPosition(860.f, 620.f);
 	back_button->SetText("Back");
 	back_button->SetCallback(std::bind(&KeySettingsState::RequestStackPop, this));
 	m_gui_container.Pack(back_button);
