@@ -53,7 +53,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	m_player_invitation_text.setFont(context.fonts->Get(Font::kMain));
 	m_player_invitation_text.setCharacterSize(20);
 	m_player_invitation_text.setFillColor(sf::Color::White);
-	m_player_invitation_text.setString("Press Enter to spawn player 2");
+	//m_player_invitation_text.setString("Press Enter to spawn player 2");
 	m_player_invitation_text.setPosition(1000 - m_player_invitation_text.getLocalBounds().width, 760 - m_player_invitation_text.getLocalBounds().height);
 
 	//Use this for "Attempt to connect" and "Failed to connect" messages
@@ -268,6 +268,7 @@ bool MultiplayerGameState::HandleEvent(const sf::Event& event)
 			m_socket.send(packet);
 		}*/
 		//If escape is pressed, show the pause screen
+
 		/*else*/ if (event.key.code == sf::Keyboard::Escape)
 		{
 			DisableAllRealtimeActions();
