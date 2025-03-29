@@ -498,3 +498,41 @@ GameServer::RemotePeer::RemotePeer() : m_ready(false), m_timed_out(false)
 {
     m_socket.setBlocking(false);
 }
+
+//colour airship depending on Identifier - 1 = red, 2 = blue, 3 = green, 4 = yellow
+void GameServer::ChangeColour() {
+    sf::Int32 aircraft_identifier;
+    sf::Color colour;
+    sf::Packet packet;
+    packet << static_cast<sf::Int32>(Server::PacketType::kChangeColour);
+
+    //depending on the aircraft identifier, change the colour to a random colour and save it, no repeat colours.
+    // colour is the same for all clients
+
+    for (std::size_t i = 0; i < m_connected_players; ++i)
+    {
+        if (m_peers[i]->m_ready)
+        {
+            for (sf::Int32 identifier : m_peers[i]->m_aircraft_identifiers)
+            {
+				aircraft_identifier = identifier;
+                //random colour
+                colour = sf::Color(Utility::RandomInt(255), Utility::RandomInt(255), Utility::RandomInt(255));
+                //check if the colour is already in use
+                for (const auto& aircraft : m_aircraft_info)
+                {
+                    if (aircraft.second.m_colour == colour)
+                    {
+						//if the colour is already in use, generate a new colour
+						colour = sf::Color(Utility::RandomInt(255), Utility::RandomInt(255), Utility::RandomInt(255));
+					}
+                }
+			}
+		}
+	}
+
+    //using aircraft ChangePlayerColor function to change the colour of the aircraft to the colour
+    m_aircraft_info[aircraft_identifier].m_colour = colour;
+    packet << aircraft_identifier << colour.r << colour.g << colour.b;
+    SendToAll(packet);
+    }

@@ -100,7 +100,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 		smoke->setPosition(0.f, GetBoundingRect().height / 2.f);
 		AttachChild(std::move(smoke));
 	}
-
+	ChangePlayerColor();
 	UpdateTexts();//keep
 }
 
@@ -310,7 +310,7 @@ void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 // keep
 void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	ChangePlayerColor();
+	
 
 	if (IsDestroyed())
 	{
@@ -437,6 +437,9 @@ void Aircraft::PlayLocalSound(CommandQueue& commands, SoundEffect effect)
 
 void Aircraft::ChangePlayerColor() {
 	if (IsP1()) {
-		m_sprite.setColor(sf::Color(0, 255, 0));
+
+		//randomize color
+		m_sprite.setColor(sf::Color( Utility::RandomInt(255), Utility::RandomInt(255), Utility::RandomInt(255)));
 	}
 }
+
