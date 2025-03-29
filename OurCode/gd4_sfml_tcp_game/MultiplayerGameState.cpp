@@ -133,13 +133,18 @@ bool MultiplayerGameState::Update(sf::Time dt)
 		m_world.Update(dt);
 
 		//Remove players whose aircraft were destroyed
-		bool found_local_plane = false;
+		bool found_local_plane = true;
 		for (auto itr = m_players.begin(); itr != m_players.end();)
 		{
 			//Check if there are no more local planes for remote clients
-			if (std::find(m_local_player_identifiers.begin(), m_local_player_identifiers.end(), itr->first) != m_local_player_identifiers.end())
+			/*if (std::find(m_local_player_identifiers.begin(), m_local_player_identifiers.end(), itr->first) != m_local_player_identifiers.end())
 			{
 				found_local_plane = true;
+			}*/
+
+			if (!found_local_plane && std::find(m_local_player_identifiers.begin(), m_local_player_identifiers.end(), itr->first) != m_local_player_identifiers.end())
+			{
+				RequestStackPush(StateID::kGameOver);
 			}
 
 			if (!m_world.GetAircraft(itr->first))
@@ -158,10 +163,12 @@ bool MultiplayerGameState::Update(sf::Time dt)
 			}
 		}
 
-		if (!found_local_plane && m_game_started)
+		
+
+		/*if (!found_local_plane && m_game_started)
 		{
 			RequestStackPush(StateID::kGameOver);
-		}
+		}*/
 
 		//Only handle the realtime input if the window has focus and the game is unpaused
 		if (m_active_state && m_has_focus)
