@@ -27,7 +27,7 @@ sf::IpAddress GetAddressFromFile()
 
 	//If the open/read failed, create a new file
 	std::ofstream output_file("ip_address.txt");
-	std::string local_address = "192.168.0.3";
+	std::string local_address = "192.168.0.4";
 	output_file << local_address;
 	return local_address;
 
@@ -77,7 +77,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (m_host)
 	{
 		m_game_server.reset(new GameServer(sf::Vector2f(m_window.getSize())));
-		ip = "192.168.0.3";
+		ip = "192.168.0.4";
 	}
 	else
 	{
@@ -261,14 +261,14 @@ bool MultiplayerGameState::HandleEvent(const sf::Event& event)
 	if (event.type == sf::Event::KeyPressed)
 	{
 		//If enter pressed, add second player co-op only if there is only 1 player
-		if (event.key.code == sf::Keyboard::Return && m_local_player_identifiers.size() == 1)
+		/*if (event.key.code == sf::Keyboard::Return && m_local_player_identifiers.size() == 1)
 		{
 			sf::Packet packet;
 			packet << static_cast<sf::Int32>(Client::PacketType::kRequestCoopPartner);
 			m_socket.send(packet);
-		}
+		}*/
 		//If escape is pressed, show the pause screen
-		else if (event.key.code == sf::Keyboard::Escape)
+		/*else*/ if (event.key.code == sf::Keyboard::Escape)
 		{
 			DisableAllRealtimeActions();
 			RequestStackPush(StateID::kNetworkPause);
@@ -423,7 +423,7 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 	}
 	break;
 
-	case Server::PacketType::kAcceptCoopPartner:
+	/*case Server::PacketType::kAcceptCoopPartner:
 	{
 		sf::Int32 aircraft_identifier;
 		packet >> aircraft_identifier;
@@ -432,7 +432,7 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 		m_players[aircraft_identifier].reset(new Player(&m_socket, aircraft_identifier, GetContext().keys2));
 		m_local_player_identifiers.emplace_back(aircraft_identifier);
 	}
-	break;
+	break;*/
 
 	//Player event, like missile fired occurs
 	case Server::PacketType::kPlayerEvent:
