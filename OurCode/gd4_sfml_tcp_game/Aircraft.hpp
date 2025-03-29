@@ -40,7 +40,8 @@ public:
 	bool IsMarkedForRemoval() const override;
 	void PlayLocalSound(CommandQueue& commands, SoundEffect effect);
 
-	void ChangePlayerColor();
+	void ChangePlayerColor(sf::Int32 aircraft_identifier);
+
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -57,6 +58,7 @@ private:
 	sf::Sprite m_sprite;
 	Animation m_explosion;
 
+	TextNode* m_health_display;
 	TextNode* m_missile_display;
 	float m_distance_travelled;
 	int m_directions_index;

@@ -12,7 +12,7 @@ GameServer::GameServer(sf::Vector2f battlefield_size)
     , m_client_timeout(sf::seconds(5.f))
     , m_max_connected_players(15)
     , m_connected_players(0)
-    , m_world_height(5000.f)
+    , m_world_height(3000.f)
     , m_battlefield_rect(0.f, m_world_height - battlefield_size.y, battlefield_size.x, battlefield_size.y)
     , m_battlefield_scrollspeed(0.f)
     , m_aircraft_count(0)
@@ -231,7 +231,7 @@ void GameServer::HandleIncomingPackets()
 
     if (detected_timeout)
     {
-        HandleDisconnections();
+        //HandleDisconnections();
     }
 }
 
@@ -272,7 +272,7 @@ void GameServer::HandleIncomingPackets(sf::Packet& packet, RemotePeer& receiving
     {
         receiving_peer.m_aircraft_identifiers.emplace_back(m_aircraft_identifier_counter);
         m_aircraft_info[m_aircraft_identifier_counter].m_position = sf::Vector2f(m_battlefield_rect.width / 2, m_battlefield_rect.top + m_battlefield_rect.height / 2);
-        m_aircraft_info[m_aircraft_identifier_counter].m_hitpoints = 100;
+        m_aircraft_info[m_aircraft_identifier_counter].m_hitpoints = 3;
         m_aircraft_info[m_aircraft_identifier_counter].m_missile_ammo = 2;
 
         sf::Packet request_packet;
@@ -315,6 +315,7 @@ void GameServer::HandleIncomingPackets(sf::Packet& packet, RemotePeer& receiving
             sf::Int32 aircraft_hitpoints;
             sf::Int32 missile_ammo;
             sf::Vector2f aircraft_position;
+
             packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y >> aircraft_hitpoints >> missile_ammo;
             m_aircraft_info[aircraft_identifier].m_position = aircraft_position;
             m_aircraft_info[aircraft_identifier].m_hitpoints = aircraft_hitpoints;
@@ -360,8 +361,10 @@ void GameServer::HandleIncomingConnections()
     {
         //Order the new client to spawn its player 1
         m_aircraft_info[m_aircraft_identifier_counter].m_position = sf::Vector2f(m_battlefield_rect.width / 2, m_battlefield_rect.top + m_battlefield_rect.height / 2);
-        m_aircraft_info[m_aircraft_identifier_counter].m_hitpoints = 100;
+        m_aircraft_info[m_aircraft_identifier_counter].m_hitpoints = 3;
         m_aircraft_info[m_aircraft_identifier_counter].m_missile_ammo = 2;
+
+        //go here
 
         sf::Packet packet;
         packet << static_cast<sf::Int32>(Server::PacketType::kSpawnSelf);
@@ -498,3 +501,4 @@ GameServer::RemotePeer::RemotePeer() : m_ready(false), m_timed_out(false)
 {
     m_socket.setBlocking(false);
 }
+

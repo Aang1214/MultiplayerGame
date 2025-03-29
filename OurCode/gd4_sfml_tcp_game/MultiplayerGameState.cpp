@@ -2,6 +2,9 @@
 #include "MusicPlayer.hpp"
 #include "Utility.hpp"
 
+#include "ColourID.hpp"
+#include "Colours.hpp"
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/Packet.hpp>
 #include <SFML/Network/IpAddress.hpp>
@@ -24,7 +27,7 @@ sf::IpAddress GetAddressFromFile()
 
 	//If the open/read failed, create a new file
 	std::ofstream output_file("ip_address.txt");
-	std::string local_address = " 169.254.70.237";
+	std::string local_address = "192.168.0.3";
 	output_file << local_address;
 	return local_address;
 
@@ -74,7 +77,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (m_host)
 	{
 		m_game_server.reset(new GameServer(sf::Vector2f(m_window.getSize())));
-		ip = "169.254.70.237";
+		ip = "192.168.0.3";
 	}
 	else
 	{
@@ -359,6 +362,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 		sf::Vector2f aircraft_position;
 		packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y;
 		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
+
+		aircraft->ChangePlayerColor(aircraft_identifier); //colour
+
 		aircraft->setPosition(aircraft_position);
 		m_players[aircraft_identifier].reset(new Player(&m_socket, aircraft_identifier, GetContext().keys1));
 		m_local_player_identifiers.push_back(aircraft_identifier);
@@ -372,7 +378,10 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 		sf::Vector2f aircraft_position;
 		packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y;
 
-		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
+		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier); //colour
+
+		aircraft->ChangePlayerColor(aircraft_identifier);
+
 		aircraft->setPosition(aircraft_position);
 		m_players[aircraft_identifier].reset(new Player(&m_socket, aircraft_identifier, nullptr));
 	}
@@ -403,6 +412,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 			packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y >> hitpoints >> missile_ammo;
 
 			Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
+
+			aircraft->ChangePlayerColor(aircraft_identifier); //colour
+
 			aircraft->setPosition(aircraft_position);
 			aircraft->SetHitpoints(hitpoints);
 
@@ -491,7 +503,7 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 			if (aircraft && !is_local_plane)
 			{
 				sf::Vector2f interpolated_position = aircraft->getPosition() + (aircraft_position - aircraft->getPosition()) * 0.1f;
-				//aircraft->setPosition(interpolated_position);
+				aircraft->setPosition(interpolated_position);
 				aircraft->SetHitpoints(hitpoints);
 			}
 		}
