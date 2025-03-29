@@ -43,6 +43,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_type(type) //keep type
 	, m_sprite(textures.Get(Table[static_cast<int>(type)].m_texture), Table[static_cast<int>(type)].m_texture_rect) //keep texture
 	, m_explosion(textures.Get(TextureID::kExplosion)) //keep explosion texture
+	, m_health_display(nullptr)
 	, m_missile_display(nullptr) //replace with powerup display
 	, m_distance_travelled(0.f) //remove
 	, m_directions_index(0) //**
@@ -83,6 +84,11 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 		{
 			CreatePickup(node, textures);
 		};
+
+	std::string health = "";  // No need for dynamic allocation
+	std::unique_ptr<TextNode> health_display(new TextNode(fonts, health));
+	m_health_display = health_display.get();
+	AttachChild(std::move(health_display));
 
 	if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1))
 	{
@@ -148,6 +154,16 @@ void Aircraft::CollectMissile(unsigned int count)
 // keep
 void Aircraft::UpdateTexts()
 {
+	if (IsDestroyed())
+	{
+		m_health_display->SetString("");
+	}
+	else
+	{
+		m_health_display->SetString(std::to_string(GetHitPoints()) + "HP");
+	}
+	m_health_display->setPosition(0.f, 50.f);
+	m_health_display->setRotation(-getRotation());
 
 	if (m_missile_display)
 	{
@@ -275,7 +291,7 @@ sf::FloatRect Aircraft::GetBoundingRect() const
 // keepF
 bool Aircraft::IsMarkedForRemoval() const
 {
-	return IsDestroyed() && (m_explosion.IsFinished() || !m_show_explosion);
+	return IsDestroyed();
 }
 
 // keep
@@ -283,7 +299,7 @@ void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 {
 	if (IsDestroyed() && m_show_explosion)
 	{
-		target.draw(m_explosion, states);
+		
 	}
 	else
 	{
