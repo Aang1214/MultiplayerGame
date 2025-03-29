@@ -24,7 +24,7 @@ sf::IpAddress GetAddressFromFile()
 
 	//If the open/read failed, create a new file
 	std::ofstream output_file("ip_address.txt");
-	std::string local_address = " 192.168.0.5";
+	std::string local_address = "192.168.0.3";
 	output_file << local_address;
 	return local_address;
 
@@ -74,7 +74,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (m_host)
 	{
 		m_game_server.reset(new GameServer(sf::Vector2f(m_window.getSize())));
-		ip = "192.168.0.5";
+		ip = "192.168.0.3";
 	}
 	else
 	{
@@ -491,7 +491,7 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 			if (aircraft && !is_local_plane)
 			{
 				sf::Vector2f interpolated_position = aircraft->getPosition() + (aircraft_position - aircraft->getPosition()) * 0.1f;
-				//aircraft->setPosition(interpolated_position);
+				aircraft->setPosition(interpolated_position);
 				aircraft->SetHitpoints(hitpoints);
 			}
 		}
