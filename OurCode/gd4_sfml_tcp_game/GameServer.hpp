@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/Color.hpp>
 
 class GameServer
 {
@@ -37,7 +36,7 @@ private:
 		sf::Int32 m_hitpoints;
 		sf::Int32 m_missile_ammo;
 		std::map<sf::Int32, bool> m_realtime_actions;
-		sf::Color m_colour;
+		
 	};
 
 	typedef std::unique_ptr<RemotePeer> PeerPtr;
@@ -58,8 +57,6 @@ private:
 	void BroadcastMessage(const std::string& message);
 	void SendToAll(sf::Packet& packet);
 	void UpdateClientState();
-
-	void ChangeColour();
 
 private:
 	sf::Thread m_thread;

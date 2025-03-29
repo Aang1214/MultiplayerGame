@@ -2,6 +2,9 @@
 #include "MusicPlayer.hpp"
 #include "Utility.hpp"
 
+#include "ColourID.hpp"
+#include "Colours.hpp"
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/Packet.hpp>
 #include <SFML/Network/IpAddress.hpp>
@@ -359,6 +362,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 		sf::Vector2f aircraft_position;
 		packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y;
 		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
+
+		aircraft->ChangePlayerColor(sf::Color::Cyan);
+
 		aircraft->setPosition(aircraft_position);
 		m_players[aircraft_identifier].reset(new Player(&m_socket, aircraft_identifier, GetContext().keys1));
 		m_local_player_identifiers.push_back(aircraft_identifier);
@@ -373,6 +379,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 		packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y;
 
 		Aircraft* aircraft = m_world.AddAircraft(aircraft_identifier);
+
+		aircraft->ChangePlayerColor(sf::Color::Red);
+
 		aircraft->setPosition(aircraft_position);
 		m_players[aircraft_identifier].reset(new Player(&m_socket, aircraft_identifier, nullptr));
 	}

@@ -40,7 +40,9 @@ public:
 	bool IsMarkedForRemoval() const override;
 	void PlayLocalSound(CommandQueue& commands, SoundEffect effect);
 
-	void ChangePlayerColor();
+	void ChangePlayerColor(sf::Color colour);
+
+	//void ChangePlayerColor();
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;

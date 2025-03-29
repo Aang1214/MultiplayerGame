@@ -100,7 +100,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 		smoke->setPosition(0.f, GetBoundingRect().height / 2.f);
 		AttachChild(std::move(smoke));
 	}
-	ChangePlayerColor();
+	//ChangePlayerColor(); find
 	UpdateTexts();//keep
 }
 
@@ -435,11 +435,9 @@ void Aircraft::PlayLocalSound(CommandQueue& commands, SoundEffect effect)
 	commands.Push(command);
 }
 
-void Aircraft::ChangePlayerColor() {
+void Aircraft::ChangePlayerColor(sf::Color colour) {
 	if (IsP1()) {
-
-		//randomize color
-		m_sprite.setColor(sf::Color( Utility::RandomInt(255), Utility::RandomInt(255), Utility::RandomInt(255)));
+		m_sprite.setColor(colour);
 	}
 }
 
