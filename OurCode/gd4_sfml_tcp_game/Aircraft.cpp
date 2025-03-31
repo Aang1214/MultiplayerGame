@@ -16,6 +16,7 @@ Marek Martinak	 - D00250456
 #include "EmitterNode.hpp"
 #include "ColourID.hpp"
 #include "Colours.hpp"
+#include "HiddenTextNode.h"
 
 namespace
 {
@@ -88,12 +89,16 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 		};
 
 	std::string health = "";  // No need for dynamic allocation
-	std::unique_ptr<TextNode> health_display(new TextNode(fonts, health));
+	std::unique_ptr<HiddenTextNode> health_display = std::make_unique<HiddenTextNode>(fonts, health);
 	m_health_display = health_display.get();
+	static_cast<HiddenTextNode*>(m_health_display)->SetVisible(false);
+	//m_health_display->SetVisible(false);
 	AttachChild(std::move(health_display));
 
 	if (Aircraft::GetCategory() == static_cast<int>(ReceiverCategories::kP1))
 	{
+		static_cast<HiddenTextNode*>(m_health_display)->SetVisible(true);
+		//m_health_display->SetVisible(true);
 		std::unique_ptr<EmitterNode> propellant(new EmitterNode(ParticleType::kPlayerPropellant));
 		propellant->setPosition(0.f, GetBoundingRect().height / 2.f);
 		AttachChild(std::move(propellant));
