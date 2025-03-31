@@ -5,6 +5,7 @@
 #include "Utility.hpp"
 #include "PickupType.hpp"
 #include "AircraftType.hpp"
+#include <iostream>
 
 GameServer::GameServer(sf::Vector2f battlefield_size)
     : m_thread(&GameServer::ExecutionThread, this)
@@ -344,10 +345,11 @@ void GameServer::HandleIncomingPackets(sf::Packet& packet, RemotePeer& receiving
             sf::Int32 missile_ammo;
             sf::Vector2f aircraft_position;
 
-            packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y >> aircraft_hitpoints >> missile_ammo;
+            packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y >> aircraft_hitpoints;
             m_aircraft_info[aircraft_identifier].m_position = aircraft_position;
+            std::cout << "The client is at position " << aircraft_position.x << aircraft_position.y << std::endl;
             m_aircraft_info[aircraft_identifier].m_hitpoints = aircraft_hitpoints;
-            m_aircraft_info[aircraft_identifier].m_missile_ammo = missile_ammo;
+            //m_aircraft_info[aircraft_identifier].m_missile_ammo = missile_ammo;
         }
     }
     break;
