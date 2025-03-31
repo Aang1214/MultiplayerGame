@@ -12,7 +12,7 @@ KeyBinding::KeyBinding(int control_preconfiguration)
 		m_key_map[sf::Keyboard::A] = Action::kP1TiltLeft; 
 		m_key_map[sf::Keyboard::D] = Action::kP1TiltRight; 
 		m_key_map[sf::Keyboard::W] = Action::kP1MoveUp;
-		m_key_map[sf::Keyboard::M] = Action::kP1UsePowerUp; 
+		m_key_map[sf::Keyboard::Space] = Action::kP1UsePowerUp; 
 	}
 	else if (control_preconfiguration == 2)
 	{
