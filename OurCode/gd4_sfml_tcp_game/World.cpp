@@ -288,16 +288,10 @@ void World::AddEnemy(AircraftType type, float relx, float rely)
 //change to spawn meteors
 void World::AddEnemies()
 {
-	AddEnemy(AircraftType::kMeteorB, 240.f, 100.f);
 	AddEnemy(AircraftType::kMeteorB, 240.f, 300.f);
-	AddEnemy(AircraftType::kMeteorB, 240.f, -100.f);
 	AddEnemy(AircraftType::kMeteorB, 240.f, -300.f);
-	AddEnemy(AircraftType::kMeteorB, -240.f, 100.f);
 	AddEnemy(AircraftType::kMeteorB, -240.f, 300.f);
-	AddEnemy(AircraftType::kMeteorB, -240.f, -100.f);
 	AddEnemy(AircraftType::kMeteorB, -240.f, -300.f);
-	AddEnemy(AircraftType::kMeteorA, 0.f, 150.f);
-	AddEnemy(AircraftType::kMeteorA, 0.f, -150.f);
 	AddEnemy(AircraftType::kMeteorB, 100.f, 400.f);
 	AddEnemy(AircraftType::kMeteorB, -100.f, 400.f);
 	AddEnemy(AircraftType::kMeteorB, 100.f, -400.f);
