@@ -288,18 +288,46 @@ void World::AddEnemy(AircraftType type, float relx, float rely)
 //change to spawn meteors
 void World::AddEnemies()
 {
-	AddEnemy(AircraftType::kMeteorA, 240.f, 100.f);
+	AddEnemy(AircraftType::kMeteorB, 240.f, 100.f);
 	AddEnemy(AircraftType::kMeteorB, 240.f, 300.f);
 	AddEnemy(AircraftType::kMeteorB, 240.f, -100.f);
-	AddEnemy(AircraftType::kMeteorA, 240.f, -300.f);
+	AddEnemy(AircraftType::kMeteorB, 240.f, -300.f);
 	AddEnemy(AircraftType::kMeteorB, -240.f, 100.f);
-	AddEnemy(AircraftType::kMeteorA, -240.f, 300.f);
-	AddEnemy(AircraftType::kMeteorA, -240.f, -100.f);
+	AddEnemy(AircraftType::kMeteorB, -240.f, 300.f);
+	AddEnemy(AircraftType::kMeteorB, -240.f, -100.f);
 	AddEnemy(AircraftType::kMeteorB, -240.f, -300.f);
 	AddEnemy(AircraftType::kMeteorA, 0.f, 150.f);
-	//AddEnemy(AircraftType::kMeteorB, 0.f, 0.f);
-	AddEnemy(AircraftType::kMeteorB, 150.f, 0.f);
 	AddEnemy(AircraftType::kMeteorA, 0.f, -150.f);
+	AddEnemy(AircraftType::kMeteorB, 100.f, 400.f);
+	AddEnemy(AircraftType::kMeteorB, -100.f, 400.f);
+	AddEnemy(AircraftType::kMeteorB, 100.f, -400.f);
+	AddEnemy(AircraftType::kMeteorB, -100.f, -400.f);
+	AddEnemy(AircraftType::kMeteorB, 450.f, 0.f);
+	AddEnemy(AircraftType::kMeteorB, 650.f, 200.f);
+	AddEnemy(AircraftType::kMeteorA, 700.f, 0.f);
+	AddEnemy(AircraftType::kMeteorB, 650.f, -200.f);
+	AddEnemy(AircraftType::kMeteorB, -450.f, 0.f);
+	AddEnemy(AircraftType::kMeteorB, -650.f, 200.f);
+	AddEnemy(AircraftType::kMeteorA, -700.f, 0.f);
+	AddEnemy(AircraftType::kMeteorB, -650.f, -200.f);
+	AddEnemy(AircraftType::kMeteorA, 400.f, 200.f);
+	AddEnemy(AircraftType::kMeteorA, 400.f, -200.f);
+	AddEnemy(AircraftType::kMeteorA, -400.f, -200.f);
+	AddEnemy(AircraftType::kMeteorA, -400.f, 200.f);
+	AddEnemy(AircraftType::kMeteorB,  750.f,  400.f);
+	AddEnemy(AircraftType::kMeteorB, -750.f,  400.f);
+	AddEnemy(AircraftType::kMeteorB,  750.f, -400.f);
+	AddEnemy(AircraftType::kMeteorB, -750.f, -400.f);
+	AddEnemy(AircraftType::kMeteorB,  850.f,  150.f);
+	AddEnemy(AircraftType::kMeteorB, -850.f,  150.f);
+	AddEnemy(AircraftType::kMeteorB,  850.f, -150.f);
+	AddEnemy(AircraftType::kMeteorB, -850.f, -150.f);
+	AddEnemy(AircraftType::kMeteorB,  500.f,  450.f);
+	AddEnemy(AircraftType::kMeteorB, -500.f,  450.f);
+	AddEnemy(AircraftType::kMeteorB,  500.f, -450.f);
+	AddEnemy(AircraftType::kMeteorB, -500.f, -450.f);
+
+
 
 	SortEnemies();
 }
