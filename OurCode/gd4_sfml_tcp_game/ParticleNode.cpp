@@ -106,5 +106,13 @@ void ParticleNode::ComputeVertices() const
         AddVertex(pos.x + half.x, pos.y + half.y, size.x, size.y, color);
         AddVertex(pos.x - half.x, pos.y + half.y, 0.f, size.y, color);
     }
+}
 
+//set color of the particle
+void ParticleNode::SetColour(sf::Color color)
+{
+    for (Particle& particle : m_particles)
+    {
+		particle.m_color = color;
+	}
 }

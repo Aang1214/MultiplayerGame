@@ -5,7 +5,7 @@ enum class ColourID
 {
 	//16 destinct colours (not dark or red)
 	kOrnage,
-	kBrown,
+	kLightOrange,
 	kYellow,
 	kOlive,
 	kGreen,

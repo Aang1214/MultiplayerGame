@@ -442,7 +442,17 @@ void Aircraft::ChangePlayerColor(sf::Int32 aircraft_identifier) {
 
 		ColourID colourId = Colours::GetColourID(aircraft_identifier); 
 		sf::Color colour = Colours::GetColour(colourId); 
+
 		m_sprite.setColor(colour);
 	}
 }
 
+void Aircraft::ChangeParticleColour(sf::Int32 aircraft_identifier)
+{
+	std::unique_ptr<EmitterNode> propellant(new EmitterNode(ParticleType::kPlayerPropellant));
+
+	ColourID colourId = Colours::GetColourID(aircraft_identifier);
+	sf::Color colour = Colours::GetColour(colourId);
+
+	propellant->SetColour(colour);
+}
