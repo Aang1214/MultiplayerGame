@@ -53,7 +53,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	m_player_invitation_text.setFont(context.fonts->Get(Font::kMain));
 	m_player_invitation_text.setCharacterSize(20);
 	m_player_invitation_text.setFillColor(sf::Color::White);
-	m_player_invitation_text.setString("Press Enter to spawn player 2");
+	m_player_invitation_text.setString("Press Enter to be ready");
 	m_player_invitation_text.setPosition(1000 - m_player_invitation_text.getLocalBounds().width, 760 - m_player_invitation_text.getLocalBounds().height);
 
 	//Use this for "Attempt to connect" and "Failed to connect" messages
@@ -133,13 +133,18 @@ bool MultiplayerGameState::Update(sf::Time dt)
 		m_world.Update(dt);
 
 		//Remove players whose aircraft were destroyed
-		bool found_local_plane = false;
+		bool found_local_plane = true;
 		for (auto itr = m_players.begin(); itr != m_players.end();)
 		{
 			//Check if there are no more local planes for remote clients
-			if (std::find(m_local_player_identifiers.begin(), m_local_player_identifiers.end(), itr->first) != m_local_player_identifiers.end())
+			/*if (std::find(m_local_player_identifiers.begin(), m_local_player_identifiers.end(), itr->first) != m_local_player_identifiers.end())
 			{
 				found_local_plane = true;
+			}*/
+
+			if (!found_local_plane && std::find(m_local_player_identifiers.begin(), m_local_player_identifiers.end(), itr->first) != m_local_player_identifiers.end())
+			{
+				RequestStackPush(StateID::kGameOver);
 			}
 
 			if (!m_world.GetAircraft(itr->first))
@@ -152,16 +157,20 @@ bool MultiplayerGameState::Update(sf::Time dt)
 					RequestStackPush(StateID::kGameOver);
 				}
 			}
+
+
 			else
 			{
 				++itr;
 			}
 		}
 
-		if (!found_local_plane && m_game_started)
+		
+
+		/*if (!found_local_plane && m_game_started) find me
 		{
 			RequestStackPush(StateID::kGameOver);
-		}
+		}*/
 
 		//Only handle the realtime input if the window has focus and the game is unpaused
 		if (m_active_state && m_has_focus)
@@ -252,6 +261,7 @@ bool MultiplayerGameState::HandleEvent(const sf::Event& event)
 	//Game input handling
 	CommandQueue& commands = m_world.GetCommandQueue();
 
+	
 	//Forward events to all players
 	for (auto& pair : m_players)
 	{
@@ -268,7 +278,17 @@ bool MultiplayerGameState::HandleEvent(const sf::Event& event)
 			m_socket.send(packet);
 		}
 		//If escape is pressed, show the pause screen
-		else if (event.key.code == sf::Keyboard::Escape)
+
+
+		if (event.key.code == sf::Keyboard::Return)
+		{
+			sf::Packet packet;
+			packet << static_cast<sf::Int32>(Client::PacketType::kCheckReady);
+			m_socket.send(packet);
+		}
+
+		/*else*/ if (event.key.code == sf::Keyboard::Escape)
+
 		{
 			DisableAllRealtimeActions();
 			RequestStackPush(StateID::kNetworkPause);
@@ -338,6 +358,10 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 {
 	switch (static_cast<Server::PacketType>(packet_type))
 	{
+		//find
+	
+
+
 		//Send message to all Clients
 	case Server::PacketType::kBroadcastMessage:
 	{
@@ -435,6 +459,9 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 	break;
 
 	//Player event, like missile fired occurs
+
+	
+
 	case Server::PacketType::kPlayerEvent:
 	{
 		sf::Int32 aircraft_identifier;
@@ -512,6 +539,13 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 				aircraft->SetHitpoints(hitpoints);
 			}
 		}
+	}
+	break;
+
+	case Server::PacketType::kStartGame:
+	{
+		m_game_started = true;
+		// Do anything else you need to start the game
 	}
 	break;
 	}
