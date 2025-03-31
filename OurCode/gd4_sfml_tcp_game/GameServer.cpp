@@ -126,8 +126,6 @@ void GameServer::Tick()
 {
     UpdateClientState();
 
-    NotifyEnemyState();
-
     //Check if the game is over = all planes postion.y < offset
 
     bool all_aircraft_done = true;
@@ -523,23 +521,6 @@ void GameServer::UpdateClientState()
     }
 
     SendToAll(update_client_state_packet);
-}
-
-void GameServer::NotifyEnemyState()
-{
-    sf::Packet packet;
-    packet << static_cast<sf::Int32>(Server::PacketType::kUpdateEnemyState);
-    packet << static_cast<sf::Int32>(m_enemy_info.size());
-
-    for (const auto& enemy : m_enemy_info)
-    {
-        packet << enemy.first // Enemy ID
-            << enemy.second.m_position.x
-            << enemy.second.m_position.y
-            << enemy.second.m_hitpoints;
-    }
-
-    SendToAll(packet);
 }
 
 
