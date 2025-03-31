@@ -59,6 +59,8 @@ private:
 	void SendToAll(sf::Packet& packet);
 	void UpdateClientState();
 
+	void NotifyEnemyState();
+
 private:
 	sf::Thread m_thread;
 	sf::Clock m_clock;
@@ -75,6 +77,7 @@ private:
 
 	std::size_t m_aircraft_count;
 	std::map<sf::Int32, AircraftInfo> m_aircraft_info;
+	std::map<sf::Int32, AircraftInfo> m_enemy_info;
 
 	std::vector<PeerPtr> m_peers;
 	sf::Int32 m_aircraft_identifier_counter;

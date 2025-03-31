@@ -512,11 +512,35 @@ void MultiplayerGameState::HandlePacket(sf::Int32 packet_type, sf::Packet& packe
 	}
 	break;
 
-	//Mission Successfully completed
-	
+	case Server::PacketType::kUpdateEnemyState:
+	{
+		float current_world_position;
+		sf::Int32 enemy_count;
+		packet >> current_world_position >> enemy_count;
 
-	//Pickup created
-	
+		for (sf::Int32 i = 0; i < enemy_count; ++i) {
+			sf::Vector2f aircraft_position;
+			sf::Int32 aircraft_identifier;
+			sf::Int32 hitpoints;
+			packet >> aircraft_identifier >> aircraft_position.x >> aircraft_position.y >> hitpoints;
+
+			m_enemy_identifiers.push_back(aircraft_identifier); // Track the enemy
+
+			Aircraft* aircraft = m_world.GetAircraft(aircraft_identifier);
+
+			if (aircraft) {
+				// Update existing enemy
+				aircraft->setPosition(aircraft_position);
+				aircraft->SetHitpoints(hitpoints);
+			}
+			else {
+				// Create a new enemy if needed
+				//aircraft = m_world.AddEnemy(AircraftType::kMeteorA, aircraft_position.x, aircraft_position.y);
+				aircraft->SetHitpoints(hitpoints);
+			}
+		}
+	}
+	break;
 
 	case Server::PacketType::kUpdateClientState:
 	{

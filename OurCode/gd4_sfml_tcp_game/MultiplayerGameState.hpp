@@ -30,6 +30,7 @@ private:
 
 	std::map<int, PlayerPtr> m_players;
 	std::vector<sf::Int32> m_local_player_identifiers;
+	std::vector<sf::Int32> m_enemy_identifiers;
 	sf::TcpSocket m_socket;
 	bool m_connected;
 	std::unique_ptr<GameServer> m_game_server;
