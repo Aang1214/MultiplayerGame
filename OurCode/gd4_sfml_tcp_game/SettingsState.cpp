@@ -45,7 +45,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 	back_button->SetCallback(std::bind(&SettingsState::RequestStackPop, this));
 
 	
-	m_gui_container.Pack(controls_button);
+	//m_gui_container.Pack(controls_button);
 	m_gui_container.Pack(video_button);
 	m_gui_container.Pack(audio_button);
 	m_gui_container.Pack(back_button);

@@ -27,7 +27,7 @@ sf::IpAddress GetAddressFromFile()
 
 	//If the open/read failed, create a new file
 	std::ofstream output_file("ip_address.txt");
-	std::string local_address = "10.102.236.16";
+	std::string local_address = "192.168.0.3";
 	output_file << local_address;
 	return local_address;
 
@@ -53,7 +53,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	m_player_invitation_text.setFont(context.fonts->Get(Font::kMain));
 	m_player_invitation_text.setCharacterSize(20);
 	m_player_invitation_text.setFillColor(sf::Color::White);
-	m_player_invitation_text.setString("Press Enter to be ready");
+	//m_player_invitation_text.setString("Press Enter to be ready");
 	m_player_invitation_text.setPosition(1000 - m_player_invitation_text.getLocalBounds().width, 760 - m_player_invitation_text.getLocalBounds().height);
 
 	//Use this for "Attempt to connect" and "Failed to connect" messages
@@ -77,7 +77,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (m_host)
 	{
 		m_game_server.reset(new GameServer(sf::Vector2f(m_window.getSize())));
-		ip = "10.102.236.16";
+		ip = "192.168.0.3";
 	}
 	else
 	{
