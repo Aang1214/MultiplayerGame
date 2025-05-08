@@ -8,7 +8,7 @@
 
 bool Server::StaticInit()
 {
-	s_instance.reset(new Server());
+	sInstance.reset(new Server());
 
 	return true;
 }

@@ -33,6 +33,7 @@ public:
 
 protected:
 	IntToGameObjectMap m_network_id_to_game_object_map;
+	IntToGameObjectMap		mNetworkIdToGameObjectMap;
 
 private:
 	class ReceivedPacket

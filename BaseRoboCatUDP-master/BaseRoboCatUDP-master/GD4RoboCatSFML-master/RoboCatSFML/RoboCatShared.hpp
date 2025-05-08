@@ -36,6 +36,7 @@ const int SOCKET_ERROR = -1;
 #include "unordered_set"
 #include "cassert"
 
+
 using std::shared_ptr;
 using std::unique_ptr;
 using std::vector;
@@ -91,3 +92,5 @@ class GameObject;
 #include "ReplicationCommand.hpp"
 #include "NetworkManager.hpp"
 #include "Engine.hpp"
+
+#include "ConnectionDetails.h"

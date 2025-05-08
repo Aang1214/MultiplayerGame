@@ -81,20 +81,39 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		//read the name
 		string name;
 		inInputStream.Read(name);
-		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, mNewPlayerId++);
+
+		// Check if there is a perfered ID type for this player.
+		int prefID = PersistantPlayerSprites::sInstance->GetID(name);
+		if (prefID != -1)
+		{
+			mNewPlayerId++;
+			while (mNewPlayerId % prefID != 0)
+			{
+				mNewPlayerId++;
+			}
+		}
+		else
+		{
+			mNewPlayerId++;
+		}
+		int id = mNewPlayerId;
+
+		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, id);
 		mAddressToClientMap[inFromAddress] = newClientProxy;
 		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
+
+		PersistantPlayerSprites::sInstance->AddPlayerEntry(name, id);
 
 		//tell the server about this client, spawn a cat, etc...
 		//if we had a generic message system, this would be a good use for it...
 		//instead we'll just tell the server directly
-		static_cast<Server*> (Engine::s_instance.get())->HandleNewClient(newClientProxy);
+		static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(newClientProxy);
 
 		//and welcome the client...
 		SendWelcomePacket(newClientProxy);
 
 		//and now init the replication manager with everything we know about!
-		for (const auto& pair : m_network_id_to_game_object_map)
+		for (const auto& pair : mNetworkIdToGameObjectMap)
 		{
 			newClientProxy->GetReplicationManagerServer().ReplicateCreate(pair.first, pair.second->GetAllStateMask());
 		}
@@ -276,12 +295,12 @@ void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy
 {
 	mPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
 	mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
-	static_cast<Server*> (Engine::s_instance.get())->HandleLostClient(inClientProxy);
+	static_cast<Server*> (Engine::sInstance.get())->HandleLostClient(inClientProxy);
 
 	//was that the last client? if so, bye!
 	if (mAddressToClientMap.empty())
 	{
-		Engine::s_instance->SetShouldKeepRunning(false);
+		Engine::sInstance->SetShouldKeepRunning(false);
 	}
 }
 
