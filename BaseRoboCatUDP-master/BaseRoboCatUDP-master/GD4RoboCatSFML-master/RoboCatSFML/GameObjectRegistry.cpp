@@ -19,7 +19,7 @@ void GameObjectRegistry::RegisterCreationFunction(uint32_t inFourCCName, GameObj
 
 GameObjectPtr GameObjectRegistry::CreateGameObject(uint32_t inFourCCName)
 {
-	
+	std::cout << "Request to create GameObject with FourCC: " << std::hex << inFourCCName << std::endl;
 	//no error checking- if the name isn't there, exception!
 	GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];
 

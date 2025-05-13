@@ -1,6 +1,6 @@
 #include "RoboCatClientPCH.hpp"
 
-/*void MouseClient::Read(InputMemoryBitStream& inInputStream)
+/**/void MouseClient::Read(InputMemoryBitStream& inInputStream)
 {
 	bool stateBit;
 
@@ -31,7 +31,7 @@
 	}
 
 	
-}*/
+}
 
 MouseClient::MouseClient()
 {

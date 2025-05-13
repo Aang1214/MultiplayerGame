@@ -82,31 +82,5 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 	return writtenState;
 }
 
-void Mouse::Read(InputMemoryBitStream& inInputStream)
-{
-	bool stateBit;
-
-	inInputStream.Read(stateBit);
-	if (stateBit)
-	{
-		Vector3 location;
-		inInputStream.Read(location.mX);
-		inInputStream.Read(location.mY);
-		SetLocation(location);
-
-		float rotation;
-		inInputStream.Read(rotation);
-		SetRotation(rotation);
-	}
-
-
-	inInputStream.Read(stateBit);
-	if (stateBit)
-	{
-		Vector3 color;
-		inInputStream.Read(color);
-		SetColor(color);
-	}
-}
 
 
