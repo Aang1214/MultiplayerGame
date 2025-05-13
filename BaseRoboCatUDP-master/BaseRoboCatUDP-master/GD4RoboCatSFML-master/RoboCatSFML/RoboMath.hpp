@@ -192,14 +192,34 @@ namespace RoboMath
 
 namespace Colors
 {
-	static const Vector3 Black(0.0f, 0.0f, 0.0f);
-	static const Vector3 White(255.0f, 255.0f, 255.0f);
-	static const Vector3 Red(255.0f, 0.0f, 0.0f);
-	static const Vector3 Green(0.0f, 255.0f, 0.0f);
-	static const Vector3 Blue(0.0f, 0.0f, 255.0f);
-	static const Vector3 LightYellow(255.0f, 255.0f, 224.4f);
-	static const Vector3 LightBlue(173.4f, 216.75f, 229.5f);
-	static const Vector3 LightPink(255.0f, 181.05f, 193.8f);
-	static const Vector3 LightGreen(142.8f, 237.15f, 142.8f);
+	// Text colours
+	static const Vector3 TBlack(0.0f, 0.0f, 0.0f);
+	static const Vector3 TWhite(255.0f, 255.0f, 255.0f);
+	static const Vector3 TRed(255.0f, 0.0f, 0.0f);
+	static const Vector3 TGreen(0.0f, 255.0f, 0.0f);
+	static const Vector3 TBlue(0.0f, 0.0f, 255.0f);
+
+	// Player colours
+	static const Vector3 NeonRed(255.0f, 0.0f, 0.0f);
+	static const Vector3 NeonOrange(255.0f, 102.0f, 0.0f);
+	static const Vector3 NeonYellow(255.0f, 255.0f, 0.0f);
+	static const Vector3 NeonGreen(57.0f, 255.0f, 20.0f);
+	static const Vector3 NeonTurquoise(0.0f, 255.0f, 255.0f);
+	static const Vector3 NeonBlue(0.0f, 153.0f, 255.0f);
+	static const Vector3 NeonLavender(221.0f, 160.0f, 255.0f);
+	static const Vector3 NeonViolet(148.0f, 0.0f, 211.0f);
+	static const Vector3 NeonPink(255.0f, 20.0f, 147.0f);
+	static const Vector3 NeonWhite(255.0f, 255.0f, 255.0f);
+
+	static const Vector3 PastelRed(255.0f, 179.0f, 186.0f);
+	static const Vector3 PastelOrange(255.0f, 223.0f, 186.0f);
+	static const Vector3 PastelYellow(255.0f, 255.0f, 186.0f);
+	static const Vector3 PastelGreen(186.0f, 255.0f, 201.0f);
+	static const Vector3 PastelMint(204.0f, 255.0f, 229.0f);
+	static const Vector3 PastelBlue(186.0f, 223.0f, 255.0f);
+	static const Vector3 PastelIndigo(204.0f, 186.0f, 255.0f);
+	static const Vector3 PastelViolet(230.0f, 186.0f, 255.0f);
+	static const Vector3 PastelPink(255.0f, 186.0f, 250.0f);
+	static const Vector3 PastelBrown(210.0f, 180.0f, 140.0f);
 }
 

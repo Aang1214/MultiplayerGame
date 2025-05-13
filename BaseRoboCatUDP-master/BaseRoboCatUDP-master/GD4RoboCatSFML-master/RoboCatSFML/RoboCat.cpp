@@ -1,7 +1,7 @@
 #include "RoboCatPCH.hpp"
 
-const float WORLD_HEIGHT = 720.f;
-const float WORLD_WIDTH = 1280.f;
+const float WORLD_HEIGHT = 1080.f;
+const float WORLD_WIDTH = 1920.f;
 
 RoboCat::RoboCat() :
 	GameObject(),
@@ -15,7 +15,7 @@ RoboCat::RoboCat() :
 	mIsShooting(false),
 	mHealth(10)
 {
-	SetCollisionRadius(60.f);
+	SetCollisionRadius(15.f);
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
