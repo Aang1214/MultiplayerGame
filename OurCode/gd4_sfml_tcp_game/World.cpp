@@ -472,7 +472,7 @@ void World::HandleCollisions()
 				meteor.SetVelocity(v1 * 1.f);
 			}
 			player.SetVelocity(-v1*1.f);
-			
+
 		}
 
 		//missile and meteor collision

@@ -1,12 +1,12 @@
 #include "RoboCatPCH.hpp"
 
-const float WORLD_HEIGHT = 720.f;
-const float WORLD_WIDTH = 1280.f;
+const float WORLD_HEIGHT = 1080.f;
+const float WORLD_WIDTH = 1920.f;
 
 RoboCat::RoboCat() :
 	GameObject(),
-	mMaxRotationSpeed(100.f),
-	mMaxLinearSpeed(5000.f),
+	mMaxRotationSpeed(500.f),
+	mMaxLinearSpeed(20000.f),
 	mVelocity(Vector3::Zero),
 	mWallRestitution(0.1f),
 	mCatRestitution(0.1f),
@@ -60,23 +60,25 @@ void RoboCat::Update()
 
 void RoboCat::ProcessCollisions()
 {
-	//right now just bounce off the sides..
+	// Handle screen edge collisions
 	ProcessCollisionsWithScreenWalls();
 
 	float sourceRadius = GetCollisionRadius();
 	Vector3 sourceLocation = GetLocation();
 
-	//now let's iterate through the world and see what we hit...
-	//note: since there's a small number of objects in our game, this is fine.
-	//but in a real game, brute-force checking collisions against every other object is not efficient.
-	//it would be preferable to use a quad tree or some other structure to minimize the
-	//number of collisions that need to be tested.
+	// Iterate through all game objects
 	for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
 	{
 		GameObject* target = goIt->get();
 		if (target != this && !target->DoesWantToDie())
 		{
-			//simple collision test for spheres- are the radii summed less than the distance?
+			// Skip other RoboCats
+			if (target->GetAsCat())
+			{
+				continue;
+			}
+
+			// Simple sphere collision test
 			Vector3 targetLocation = target->GetLocation();
 			float targetRadius = target->GetCollisionRadius();
 
@@ -85,53 +87,32 @@ void RoboCat::ProcessCollisions()
 			float collisionDist = (sourceRadius + targetRadius);
 			if (distSq < (collisionDist * collisionDist))
 			{
-				//first, tell the other guy there was a collision with a cat, so it can do something...
-
 				if (target->HandleCollisionWithCat(this))
 				{
-					//okay, you hit something!
-					//so, project your location far enough that you're not colliding
 					Vector3 dirToTarget = delta;
 					dirToTarget.Normalize2D();
 					Vector3 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
-					//important note- we only move this cat. the other cat can take care of moving itself
 					SetLocation(targetLocation - acceptableDeltaFromSourceToTarget);
-
 
 					Vector3 relVel = mVelocity;
 
-					//if other object is a cat, it might have velocity, so there might be relative velocity...
-					RoboCat* targetCat = target->GetAsCat();
-					if (targetCat)
-					{
-						relVel -= targetCat->mVelocity;
-					}
+					// We no longer need to consider relative velocity from other cats
+					// because we're not interacting with cats anymore
 
-					//got vel with dir between objects to figure out if they're moving towards each other
-					//and if so, the magnitude of the impulse ( since they're both just balls )
 					float relVelDotDir = Dot2D(relVel, dirToTarget);
 
 					if (relVelDotDir > 0.f)
 					{
 						Vector3 impulse = relVelDotDir * dirToTarget;
 
-						if (targetCat)
-						{
-							mVelocity -= impulse;
-							mVelocity *= mCatRestitution;
-						}
-						else
-						{
-							mVelocity -= impulse * 2.f;
-							mVelocity *= mWallRestitution;
-						}
-
+						// Apply wall restitution or object-based restitution
+						mVelocity -= impulse * 2.f;
+						mVelocity *= mWallRestitution;
 					}
 				}
 			}
 		}
 	}
-
 }
 
 void RoboCat::ProcessCollisionsWithScreenWalls()
