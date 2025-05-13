@@ -13,6 +13,14 @@ bool Mouse::HandleCollisionWithCat(RoboCat* inCat)
 	return false;
 }
 
+bool Mouse::HandleCollisionWithMouse(Mouse* inMouse)
+{
+	(void)inMouse;
+	return false;
+}
+
+
+
 
 uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
 {

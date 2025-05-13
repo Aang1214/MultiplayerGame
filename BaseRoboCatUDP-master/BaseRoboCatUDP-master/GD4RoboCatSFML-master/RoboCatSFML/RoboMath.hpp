@@ -23,6 +23,14 @@ public:
 		mZ = z;
 	}
 
+	float GetX() {
+		return mX;
+	}
+
+	float GetY() {
+		return mY;
+	}
+
 	friend Vector3 operator+(const Vector3& inLeft, const Vector3& inRight)
 	{
 		return Vector3(inLeft.mX + inRight.mX, inLeft.mY + inRight.mY, inLeft.mZ + inRight.mZ);

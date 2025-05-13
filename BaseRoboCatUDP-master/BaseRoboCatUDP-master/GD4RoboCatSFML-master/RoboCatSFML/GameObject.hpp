@@ -1,3 +1,4 @@
+class Mouse;
 #define CLASS_IDENTIFICATION(in_code, in_class) \
 enum {kClassId = in_code}; \
 virtual uint32_t GetClassId() const {return kClassId;} \
@@ -17,6 +18,8 @@ public:
 
 	//return whether to keep processing collision
 	virtual bool HandleCollisionWithCat(RoboCat* inCat) { (void)inCat; return true; }
+
+	virtual bool HandleCollisionWithMouse(Mouse* inMouse) { (void)inMouse; return true; }
 
 	virtual void Update();
 

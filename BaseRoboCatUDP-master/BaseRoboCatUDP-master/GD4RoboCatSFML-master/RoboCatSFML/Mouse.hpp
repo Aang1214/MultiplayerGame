@@ -20,6 +20,10 @@ public:
 
 	virtual bool HandleCollisionWithCat(RoboCat* inCat) override;
 
+	virtual bool HandleCollisionWithMouse(Mouse* inMouse) override;
+	const Vector3& GetVelocity()						const { return mVelocity; }
+private:
+	Vector3				mVelocity;
 protected:
 	Mouse();
 };
