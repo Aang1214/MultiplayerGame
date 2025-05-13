@@ -10,7 +10,9 @@ public:
 
 		EMRS_AllState = EMRS_Pose | EMRS_Color
 	};
-
+	sf::Vector2f GetVelocity();
+	void SetVelocity(sf::Vector2f velocity);
+	void Update();
 	static	GameObject* StaticCreate() { return new Mouse(); }
 
 	virtual uint32_t	GetAllStateMask()	const override { return EMRS_AllState; }

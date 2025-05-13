@@ -1,11 +1,33 @@
 #include "RoboCatPCH.hpp"
 
-Mouse::Mouse()
+Mouse::Mouse() :
+mVelocity(Vector3::Zero)
 {
 	SetScale(GetScale() * 0.5f);
 	SetCollisionRadius(20.f);
 }
 
+sf::Vector2f Mouse::GetVelocity()
+{
+	return sf::Vector2f(mVelocity.GetX(), mVelocity.GetY());
+}
+
+void Mouse::SetVelocity(sf::Vector2f velocity)
+{
+	mVelocity.SetX(velocity.x);
+	mVelocity.SetY(velocity.y);
+}
+
+void Mouse::Update()
+{
+	float deltaTime = Timing::sInstance.GetDeltaTime();
+	// position += velocity * deltaTime
+	Vector3 newPos = GetLocation() + mVelocity * deltaTime;
+	SetLocation(newPos);
+
+	// Optional: friction
+	mVelocity = mVelocity * 0.98f; // slow down slightly
+}
 
 bool Mouse::HandleCollisionWithCat(RoboCat* inCat)
 {

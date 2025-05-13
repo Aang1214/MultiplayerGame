@@ -9,18 +9,7 @@ void MouseServer::HandleDying()
 	NetworkManagerServer::sInstance->UnregisterGameObject(this);
 }
 
-sf::Vector2f MouseServer::GetVelocity()
-{
-    sf::Vector2f velocity;
 
-
-    return velocity;
-}
-
-void MouseServer::SetVelocity(sf::Vector2f velocity)
-{
-
-} 
 
 
 bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
@@ -49,6 +38,13 @@ bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
    // ScoreBoardManager::sInstance->IncScore(inCat->GetPlayerId(), 1);
 
     return true;
+}
+void MouseServer::Update()
+{
+    Mouse::Update();
+
+
+
 }
 /*
 bool MouseServer::HandleCollisionWithMouse(Mouse* inMouse)

@@ -31,6 +31,14 @@ public:
 		return mY;
 	}
 
+	void SetX(float x) {
+		mX = x;
+	
+	};
+	void SetY(float y) {
+		mY = y;
+	};
+
 	friend Vector3 operator+(const Vector3& inLeft, const Vector3& inRight)
 	{
 		return Vector3(inLeft.mX + inRight.mX, inLeft.mY + inRight.mY, inLeft.mZ + inRight.mZ);

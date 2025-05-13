@@ -19,6 +19,7 @@ void GameObjectRegistry::RegisterCreationFunction(uint32_t inFourCCName, GameObj
 
 GameObjectPtr GameObjectRegistry::CreateGameObject(uint32_t inFourCCName)
 {
+	
 	//no error checking- if the name isn't there, exception!
 	GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];
 
