@@ -6,7 +6,15 @@ RenderManager::RenderManager()
 {
 	view.reset(sf::FloatRect(0, 0, 1280, 720));
 	WindowManager::sInstance->setView(view);
+
+	// Set up background sprite
+	TexturePtr bgTexture = TextureManager::sInstance->GetTexture("BG");
+	if (bgTexture)
+	{
+		mBackgroundSprite.setTexture(*bgTexture);
+	}
 }
+
 
 
 void RenderManager::StaticInit()
@@ -63,18 +71,19 @@ void RenderManager::RenderComponents()
 
 void RenderManager::Render()
 {
-	//
-	// Clear the back buffer
-	//
-	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
+	// Clear the window (default black)
+	WindowManager::sInstance->clear();
 
+	// Draw background first
+	WindowManager::sInstance->draw(mBackgroundSprite);
+
+	// Draw all sprite components
 	RenderManager::sInstance->RenderComponents();
 
+	// Draw HUD
 	HUD::sInstance->Render();
 
-	//
-	// Present our back buffer to our front buffer
-	//
+	// Swap buffers
 	WindowManager::sInstance->display();
-
 }
+
