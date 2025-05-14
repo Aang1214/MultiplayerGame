@@ -57,13 +57,12 @@ namespace
 		Vector3 mouseMin(100.f, 100.f, 0.f);
 		Vector3 mouseMax(1820.f, 980.f, 0.f);
 
-		// Center exclusion zone (400x300 box in the middle of a 1920x1080 screen)
-		Vector3 centerMin(760.f, 390.f, 0.f);
-		Vector3 centerMax(1160.f, 690.f, 0.f);
+		// Center exclusion zone (400x400 box in the middle of a 1920x1080 screen)
+		Vector3 centerMin(760.f, 340.f, 0.f);  
+		Vector3 centerMax(1160.f, 740.f, 0.f); 
 
 		GameObjectPtr go;
 
-		// Compute grid dimensions
 		int gridCols = static_cast<int>(ceilf(sqrtf(inMouseCount)));
 		int gridRows = static_cast<int>(ceilf(inMouseCount / static_cast<float>(gridCols)));
 
@@ -89,7 +88,6 @@ namespace
 					continue;
 				}
 
-				// Create and place the mouse
 				go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
 				go->SetLocation(Vector3(x, y, 0.f));
 				++spawned;
