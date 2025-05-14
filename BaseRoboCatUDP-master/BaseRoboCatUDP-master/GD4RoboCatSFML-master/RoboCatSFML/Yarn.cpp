@@ -1,7 +1,11 @@
 #include "RoboCatPCH.hpp"
 const float WORLD_HEIGHT = 1080.f;
 const float WORLD_WIDTH = 1920.f;
-
+template <typename T>
+T Clamp(T value, T min, T max)
+{
+	return (value < min) ? min : (value > max) ? max : value;
+}
 Yarn::Yarn() :
 	mMuzzleSpeed(300.f),
 	mVelocity(Vector3::Zero),
@@ -115,45 +119,43 @@ void Yarn::ProcessCollisionsWithScreenWalls()
 	}*/
 
 	Vector3 location = GetLocation();
-	Vector3 velocity = mVelocity;
+	Vector3 velocity = GetVelocity();
 	float radius = GetCollisionRadius();
 
-	bool bounced = false;
+	bool collided = false;
 
-	// Bottom Wall
-	if (location.mY + radius >= WORLD_HEIGHT && velocity.mY > 0)
+	// Bounce off left or right wall
+	if (location.mX - radius < 0.f)
 	{
-		location.mY = WORLD_HEIGHT - radius;
-		velocity.mY = -velocity.mY * mWallRestitution;
-		bounced = true;
+		location.mX = radius;  // snap back inside bounds
+		velocity.mX = -velocity.mX * mWallRestitution;
+		collided = true;
 	}
-	// Top Wall
-	else if (location.mY - radius <= 0 && velocity.mY < 0)
-	{
-		location.mY = radius;
-		velocity.mY = -velocity.mY * mWallRestitution;
-		bounced = true;
-	}
-
-	// Right Wall
-	if (location.mX + radius >= WORLD_WIDTH && velocity.mX > 0)
+	else if (location.mX + radius > WORLD_WIDTH)
 	{
 		location.mX = WORLD_WIDTH - radius;
 		velocity.mX = -velocity.mX * mWallRestitution;
-		bounced = true;
-	}
-	// Left Wall
-	else if (location.mX - radius <= 0 && velocity.mX < 0)
-	{
-		location.mX = radius;
-		velocity.mX = -velocity.mX * mWallRestitution;
-		bounced = true;
+		collided = true;
 	}
 
-	if (bounced)
+	// Bounce off top or bottom wall
+	if (location.mY - radius < 0.f)
 	{
-		SetLocation(location);
+		location.mY = radius;
+		velocity.mY = -velocity.mY * mWallRestitution;
+		collided = true;
+	}
+	else if (location.mY + radius > WORLD_HEIGHT)
+	{
+		location.mY = WORLD_HEIGHT - radius;
+		velocity.mY = -velocity.mY * mWallRestitution;
+		collided = true;
+	}
+
+	if (collided)
+	{
 		SetVelocity(velocity);
+		SetLocation(location);
 	}
 }
 

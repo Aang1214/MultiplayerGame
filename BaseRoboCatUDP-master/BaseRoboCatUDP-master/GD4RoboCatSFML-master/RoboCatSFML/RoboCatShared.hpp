@@ -36,6 +36,7 @@ const int SOCKET_ERROR = -1;
 #include "unordered_set"
 #include "cassert"
 #include <iostream>
+#include <algorithm>
 using std::shared_ptr;
 using std::unique_ptr;
 using std::vector;

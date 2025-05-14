@@ -1,6 +1,7 @@
 class Vector3
 {
 public:
+	
 
 	float		mX, mY, mZ;
 
