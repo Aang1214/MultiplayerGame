@@ -1,6 +1,7 @@
 #include "RoboCatServerPCH.hpp"
 
 
+
 YarnServer::YarnServer()
 {
 	//yarn lives a second...
@@ -21,15 +22,7 @@ void YarnServer::Update()
 	if (pos.mX < 0.0f || pos.mX > 1920.0f || pos.mY < 0.0f || pos.mY > 1080.0f) 
 	{
 		SetDoesWantToDie(true); 
-		//write to console say bullet death
-
 	}
-
-	//
-	/*if (Timing::sInstance.GetFrameStartTime() > mTimeToDie)
-	{
-		SetDoesWantToDie(true);
-	}*/
 
 }
 
