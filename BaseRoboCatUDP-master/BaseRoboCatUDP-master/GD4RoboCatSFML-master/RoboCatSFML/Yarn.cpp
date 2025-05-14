@@ -82,7 +82,8 @@ bool Yarn::HandleCollisionWithCat(RoboCat* inCat)
 
 void Yarn::ProcessCollisionsWithScreenWalls()
 {
-	/*Vector3 location = GetLocation();
+	/*
+	Vector3 location = GetLocation();
 	float x = location.mX;
 	float y = location.mY;
 
@@ -91,7 +92,7 @@ void Yarn::ProcessCollisionsWithScreenWalls()
 
 	float radius = GetCollisionRadius();
 
-	//if the cat collides against a wall, the quick solution is to push it off
+	
 	if ((y + radius) >= WORLD_HEIGHT && vy > 0)
 	{
 		mVelocity.mY = -vy * mWallRestitution;
@@ -116,47 +117,41 @@ void Yarn::ProcessCollisionsWithScreenWalls()
 		mVelocity.mX = -vx * mWallRestitution;
 		location.mX = radius;
 		SetLocation(location);
-	}*/
+	}
+	*/
+	///////////////////////////
 
 	Vector3 location = GetLocation();
 	Vector3 velocity = GetVelocity();
 	float radius = GetCollisionRadius();
 
-	bool collided = false;
+	// Define boundaries
+	float left = 0.f + radius;
+	float right = WORLD_WIDTH - radius;
+	float top = 0.f + radius;
+	float bottom = WORLD_HEIGHT - radius; 
 
-	// Bounce off left or right wall
-	if (location.mX - radius < 0.f)
+	// Horizontal bounce (left/right walls)
+	if (location.mX < left || location.mX > right)
 	{
-		location.mX = radius;  // snap back inside bounds
-		velocity.mX = -velocity.mX * mWallRestitution;
-		collided = true;
-	}
-	else if (location.mX + radius > WORLD_WIDTH)
-	{
-		location.mX = WORLD_WIDTH - radius;
-		velocity.mX = -velocity.mX * mWallRestitution;
-		collided = true;
-	}
+		velocity.mX = -velocity.mX;// *mWallRestitution;
 
-	// Bounce off top or bottom wall
-	if (location.mY - radius < 0.f)
-	{
-		location.mY = radius;
-		velocity.mY = -velocity.mY * mWallRestitution;
-		collided = true;
-	}
-	else if (location.mY + radius > WORLD_HEIGHT)
-	{
-		location.mY = WORLD_HEIGHT - radius;
-		velocity.mY = -velocity.mY * mWallRestitution;
-		collided = true;
+		// Clamp location to inside the world
+		location.mX = std::max(left, std::min(location.mX, right));
 	}
 
-	if (collided)
+	// Vertical bounce (top/bottom walls)
+	if (location.mY < top || location.mY > bottom)
 	{
-		SetVelocity(velocity);
-		SetLocation(location);
+		velocity.mY = -velocity.mY;// *mWallRestitution;
+
+		// Clamp location to inside the world
+		location.mY = std::max(top, std::min(location.mY, bottom));
 	}
+
+	SetVelocity(velocity);
+	SetLocation(location);
+
 }
 
 void Yarn::InitFromShooter(RoboCat* inShooter)
@@ -173,7 +168,7 @@ void Yarn::InitFromShooter(RoboCat* inShooter)
 
 void Yarn::Update()
 {
-	ProcessCollisionsWithScreenWalls(); 
+	ProcessCollisionsWithScreenWalls();
 	float deltaTime = Timing::sInstance.GetDeltaTime();
 
 	SetLocation(GetLocation() + mVelocity * deltaTime);

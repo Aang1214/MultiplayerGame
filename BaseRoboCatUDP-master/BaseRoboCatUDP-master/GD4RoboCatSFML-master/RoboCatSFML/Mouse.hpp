@@ -12,10 +12,10 @@ public:
 	};
 	
 	static	GameObject* StaticCreate() { return new Mouse(); }
-	sf::Vector2f GetVelocity();
-	void SetVelocity(sf::Vector2f velocity);
+	void SetVelocity(Vector3 velocity);
 	void Update();
 	virtual uint32_t	GetAllStateMask()	const override { return EMRS_AllState; }
+
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
@@ -26,8 +26,11 @@ public:
 
 	virtual bool HandleCollisionWithMouse(Mouse* inMouse) override;
 	const Vector3& GetVelocity()						const { return mVelocity; }
+	void ProcessCollisionsWithScreenWalls();
 private:
+
 	Vector3				mVelocity;
+	
 	int			mPlayerId;
 protected:
 	Mouse();

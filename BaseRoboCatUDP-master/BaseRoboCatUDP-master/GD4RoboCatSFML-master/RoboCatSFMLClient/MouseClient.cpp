@@ -24,8 +24,7 @@ void MouseClient::Update()
 		Vector3 velocity;
 		inInputStream.Read(velocity.mX);
 		inInputStream.Read(velocity.mY);
-		sf::Vector2f velo(velocity.GetX(), velocity.GetY());
-		SetVelocity(velo);
+		SetVelocity(velocity);
 
 
 	}

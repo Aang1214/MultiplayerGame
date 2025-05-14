@@ -1,5 +1,6 @@
 #include "RoboCatPCH.hpp"
-
+const float WORLD_HEIGHT = 1080.f;
+const float WORLD_WIDTH = 1920.f;
 Mouse::Mouse() :
 mVelocity(Vector3::Zero),
 mPlayerId(0)
@@ -8,19 +9,17 @@ mPlayerId(0)
 	SetCollisionRadius(20.f);
 }
 
-sf::Vector2f Mouse::GetVelocity()
-{
-	return sf::Vector2f(mVelocity.GetX(), mVelocity.GetY());
-}
 
-void Mouse::SetVelocity(sf::Vector2f velocity)
+
+void Mouse::SetVelocity(Vector3 velocity)
 {
-	mVelocity.SetX(velocity.x);
-	mVelocity.SetY(velocity.y);
+	mVelocity.SetX(velocity.mX);
+	mVelocity.SetY(velocity.mY);
 }
 
 void Mouse::Update()
 {
+	
 	float deltaTime = Timing::sInstance.GetDeltaTime();
 	// position += velocity * deltaTime
 	Vector3 newPos = GetLocation() + mVelocity * deltaTime;
@@ -40,6 +39,80 @@ bool Mouse::HandleCollisionWithMouse(Mouse* inMouse)
 {
 	(void)inMouse;
 	return false;
+}
+
+void Mouse::ProcessCollisionsWithScreenWalls()
+{
+	/*
+	Vector3 location = GetLocation();
+	float x = location.mX;
+	float y = location.mY;
+
+	float vx = mVelocity.mX;
+	float vy = mVelocity.mY;
+
+	float radius = GetCollisionRadius();
+
+
+	if ((y + radius) >= WORLD_HEIGHT && vy > 0)
+	{
+		mVelocity.mY = -vy * mWallRestitution;
+		location.mY = WORLD_HEIGHT - radius;
+		SetLocation(location);
+	}
+	else if (y - radius <= 0 && vy < 0)
+	{
+		mVelocity.mY = -vy * mWallRestitution;
+		location.mY = radius;
+		SetLocation(location);
+	}
+
+	if ((x + radius) >= WORLD_WIDTH && vx > 0)
+	{
+		mVelocity.mX = -vx * mWallRestitution;
+		location.mX = WORLD_WIDTH - radius;
+		SetLocation(location);
+	}
+	else if (x - radius <= 0 && vx < 0)
+	{
+		mVelocity.mX = -vx * mWallRestitution;
+		location.mX = radius;
+		SetLocation(location);
+	}
+	*/
+	///////////////////////////
+
+	Vector3 location = GetLocation();
+	Vector3 velocity = GetVelocity();
+	float radius = GetCollisionRadius();
+
+	// Define boundaries
+	float left = 0.f + radius;
+	float right = WORLD_WIDTH - radius;
+	float top = 0.f + radius;
+	float bottom = WORLD_HEIGHT - radius;
+
+	// Horizontal bounce (left/right walls)
+	if (location.mX < left || location.mX > right)
+	{
+		velocity.mX = -velocity.mX;// *mWallRestitution;
+
+		// Clamp location to inside the world
+		location.mX = std::max(left, std::min(location.mX, right));
+	}
+
+	// Vertical bounce (top/bottom walls)
+	if (location.mY < top || location.mY > bottom)
+	{
+		velocity.mY = -velocity.mY;// *mWallRestitution;
+
+		// Clamp location to inside the world
+		location.mY = std::max(top, std::min(location.mY, bottom));
+	}
+
+	SetVelocity(velocity);
+	SetLocation(location);
+
 }
 
 

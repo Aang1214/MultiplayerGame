@@ -15,6 +15,7 @@ void YarnServer::HandleDying()
 
 void YarnServer::Update()
 {
+
 	Yarn::Update();
 
 	if (Timing::sInstance.GetFrameStartTime() > mTimeToDie)

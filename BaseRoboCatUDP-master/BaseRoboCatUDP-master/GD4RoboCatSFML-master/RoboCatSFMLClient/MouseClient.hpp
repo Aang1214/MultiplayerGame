@@ -6,8 +6,8 @@ public:
 	virtual void		Read(InputMemoryBitStream& inInputStream) override;
 protected:
 	MouseClient();
-	SpriteComponentPtr	mSpriteComponent;
+	//SpriteComponentPtr	mSpriteComponent;
 private:
 
-	//SpriteComponentPtr	mSpriteComponent;
+	SpriteComponentPtr	mSpriteComponent;
 };

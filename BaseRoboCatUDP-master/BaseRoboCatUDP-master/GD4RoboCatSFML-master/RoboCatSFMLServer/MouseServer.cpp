@@ -20,15 +20,20 @@ bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
     // Knockback logic: transfer Cat's velocity to the mouse
     Vector3 initCatVel = inCat->GetVelocity();
     sf::Vector2f catVelocity = sf::Vector2f(initCatVel.GetX(), initCatVel.GetY());
-    sf::Vector2f mouseVelocity = GetVelocity();
+    Vector3 initMouseVel = GetVelocity();
+    sf::Vector2f mouseVelocity = sf::Vector2f(initMouseVel.GetX(), initMouseVel.GetY());
     // Simple elastic-ish collision response
     if (catVelocity == sf::Vector2f(0.f, 0.f))
     {
-        SetVelocity(mouseVelocity / 2.f); // mouse gets pushed slightly
+        sf::Vector2f convert = mouseVelocity / 2.f;
+        Vector3 result(convert.x, convert.y, 0);
+        SetVelocity(result); // mouse gets pushed slightly
     }
     else
     {
-        SetVelocity(catVelocity + mouseVelocity * 0.5f); // combine velocity influence
+        sf::Vector2f convert = catVelocity + mouseVelocity * 0.5f;
+        Vector3 result(convert.x, convert.y, 0);
+        SetVelocity(result); // combine velocity influence
     }
 
     if (inCat->GetPlayerId() != GetPlayerId())
