@@ -1,6 +1,7 @@
 class Vector3
 {
 public:
+	
 
 	float		mX, mY, mZ;
 
@@ -22,6 +23,22 @@ public:
 		mY = y;
 		mZ = z;
 	}
+
+	float GetX() {
+		return mX;
+	}
+
+	float GetY() {
+		return mY;
+	}
+
+	void SetX(float x) {
+		mX = x;
+	
+	};
+	void SetY(float y) {
+		mY = y;
+	};
 
 	friend Vector3 operator+(const Vector3& inLeft, const Vector3& inRight)
 	{

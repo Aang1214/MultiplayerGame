@@ -30,7 +30,9 @@ public:
 	virtual void Update() override;
 
 	virtual bool HandleCollisionWithCat(RoboCat* inCat) override;
-
+	void ProcessCollisionsWithScreenWalls();
+private:
+	float				mWallRestitution;
 protected:
 	Yarn();
 	Vector3		mVelocity;

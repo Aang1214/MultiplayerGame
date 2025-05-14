@@ -71,8 +71,10 @@ void RenderManager::RenderComponents()
 
 void RenderManager::Render()
 {
+
 	// Clear the window (default black)
 	WindowManager::sInstance->clear();
+
 
 	// Draw background first
 	WindowManager::sInstance->draw(mBackgroundSprite);

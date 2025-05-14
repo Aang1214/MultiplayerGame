@@ -11,7 +11,7 @@ public:
 
 	void SetTexture(TexturePtr inTexture);
 	virtual sf::Sprite& GetSprite();
-	
+	void SetPosition(const Vector3& inPosition);
 
 
 protected:

@@ -1,17 +1,121 @@
 #include "RoboCatPCH.hpp"
-
-Mouse::Mouse()
+const float WORLD_HEIGHT = 1080.f;
+const float WORLD_WIDTH = 1920.f;
+Mouse::Mouse() :
+mVelocity(Vector3::Zero),
+mPlayerId(0)
 {
 	SetScale(GetScale() * 2.f);
 	SetCollisionRadius(40.f);
 }
 
 
+
+void Mouse::SetVelocity(Vector3 velocity)
+{
+	mVelocity.SetX(velocity.mX);
+	mVelocity.SetY(velocity.mY);
+}
+
+void Mouse::Update()
+{
+	
+	float deltaTime = Timing::sInstance.GetDeltaTime();
+	// position += velocity * deltaTime
+	Vector3 newPos = GetLocation() + mVelocity * deltaTime;
+	SetLocation(newPos);
+
+	// Optional: friction
+	mVelocity = mVelocity * 0.98f; // slow down slightly
+}
+
 bool Mouse::HandleCollisionWithCat(RoboCat* inCat)
 {
 	(void)inCat;
 	return false;
 }
+
+bool Mouse::HandleCollisionWithMouse(Mouse* inMouse)
+{
+	(void)inMouse;
+	return false;
+}
+
+void Mouse::ProcessCollisionsWithScreenWalls()
+{
+	/*
+	Vector3 location = GetLocation();
+	float x = location.mX;
+	float y = location.mY;
+
+	float vx = mVelocity.mX;
+	float vy = mVelocity.mY;
+
+	float radius = GetCollisionRadius();
+
+
+	if ((y + radius) >= WORLD_HEIGHT && vy > 0)
+	{
+		mVelocity.mY = -vy * mWallRestitution;
+		location.mY = WORLD_HEIGHT - radius;
+		SetLocation(location);
+	}
+	else if (y - radius <= 0 && vy < 0)
+	{
+		mVelocity.mY = -vy * mWallRestitution;
+		location.mY = radius;
+		SetLocation(location);
+	}
+
+	if ((x + radius) >= WORLD_WIDTH && vx > 0)
+	{
+		mVelocity.mX = -vx * mWallRestitution;
+		location.mX = WORLD_WIDTH - radius;
+		SetLocation(location);
+	}
+	else if (x - radius <= 0 && vx < 0)
+	{
+		mVelocity.mX = -vx * mWallRestitution;
+		location.mX = radius;
+		SetLocation(location);
+	}
+	*/
+	///////////////////////////
+
+	Vector3 location = GetLocation();
+	Vector3 velocity = GetVelocity();
+	float radius = GetCollisionRadius();
+
+	// Define boundaries
+	float left = 0.f + radius;
+	float right = WORLD_WIDTH - radius;
+	float top = 0.f + radius;
+	float bottom = WORLD_HEIGHT - radius;
+
+	// Horizontal bounce (left/right walls)
+	if (location.mX < left || location.mX > right)
+	{
+		velocity.mX = -velocity.mX;// *mWallRestitution;
+
+		// Clamp location to inside the world
+		location.mX = std::max(left, std::min(location.mX, right));
+	}
+
+	// Vertical bounce (top/bottom walls)
+	if (location.mY < top || location.mY > bottom)
+	{
+		velocity.mY = -velocity.mY;// *mWallRestitution;
+
+		// Clamp location to inside the world
+		location.mY = std::max(top, std::min(location.mY, bottom));
+	}
+
+	SetVelocity(velocity);
+	SetLocation(location);
+
+}
+
+
 
 
 uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
@@ -26,7 +130,9 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 		inOutputStream.Write(location.mX);
 		inOutputStream.Write(location.mY);
 
-		inOutputStream.Write(GetRotation());
+		Vector3 velocity = GetVelocity();
+		inOutputStream.Write(velocity.mX);
+		inOutputStream.Write(velocity.mY);
 
 		writtenState |= EMRS_Pose;
 	}
@@ -34,7 +140,7 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 	{
 		inOutputStream.Write((bool)false);
 	}
-
+	/**/
 	if (inDirtyState & EMRS_Color)
 	{
 		inOutputStream.Write((bool)true);
@@ -47,36 +153,10 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 	{
 		inOutputStream.Write((bool)false);
 	}
-
+	
 
 	return writtenState;
 }
 
-void Mouse::Read(InputMemoryBitStream& inInputStream)
-{
-	bool stateBit;
-
-	inInputStream.Read(stateBit);
-	if (stateBit)
-	{
-		Vector3 location;
-		inInputStream.Read(location.mX);
-		inInputStream.Read(location.mY);
-		SetLocation(location);
-
-		float rotation;
-		inInputStream.Read(rotation);
-		SetRotation(rotation);
-	}
-
-
-	inInputStream.Read(stateBit);
-	if (stateBit)
-	{
-		Vector3 color;
-		inInputStream.Read(color);
-		SetColor(color);
-	}
-}
 
 

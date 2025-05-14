@@ -35,7 +35,8 @@ const int SOCKET_ERROR = -1;
 #include "deque"
 #include "unordered_set"
 #include "cassert"
-
+#include <iostream>
+#include <algorithm>
 using std::shared_ptr;
 using std::unique_ptr;
 using std::vector;
@@ -45,6 +46,7 @@ using std::deque;
 using std::unordered_map;
 using std::string;
 using std::unordered_set;
+
 
 class RoboCat;
 class GameObject;
@@ -91,3 +93,4 @@ class GameObject;
 #include "ReplicationCommand.hpp"
 #include "NetworkManager.hpp"
 #include "Engine.hpp"
+#include "Moveable.h"

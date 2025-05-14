@@ -164,6 +164,7 @@
     <ClInclude Include="MemoryBitStream.hpp" />
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Move.hpp" />
+    <ClInclude Include="Moveable.h" />
     <ClInclude Include="MoveList.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
     <ClInclude Include="ReplicationCommand.hpp" />
