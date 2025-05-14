@@ -13,7 +13,27 @@ void YarnServer::HandleDying()
 	NetworkManagerServer::sInstance->UnregisterGameObject(this);
 }
 
-
+bool YarnServer::HandleCollisionWithMouse(Mouse* inMouse)
+{
+	Vector3 initMouseVel = inMouse->GetVelocity();
+	sf::Vector2f mouseVelocity = sf::Vector2f(initMouseVel.GetX(), initMouseVel.GetY());
+	Vector3 localMouseVel = GetVelocity();
+	sf::Vector2f localVelocity = sf::Vector2f(initMouseVel.GetX(), initMouseVel.GetY());
+	// Simple elastic-ish collision response
+	if (localVelocity == sf::Vector2f(0.f, 0.f))
+	{
+		sf::Vector2f convert = localVelocity / 2.f;
+		Vector3 result(convert.x, convert.y, 0);
+		SetVelocity(result); // mouse gets pushed slightly
+	}
+	else
+	{
+		sf::Vector2f convert = localVelocity + mouseVelocity * 0.5f;
+		Vector3 result(convert.x, convert.y, 0);
+		SetVelocity(result); // combine velocity influence
+	}
+	return true;
+}
 void YarnServer::Update()
 {
 
@@ -27,6 +47,7 @@ void YarnServer::Update()
 
 }
 
+/*
 bool YarnServer::HandleCollisionWithCat(RoboCat* inCat)
 {
 	if (inCat->GetPlayerId() != GetPlayerId())
@@ -39,7 +60,7 @@ bool YarnServer::HandleCollisionWithCat(RoboCat* inCat)
 	}
 
 	return false;
-}
+}*/
 
 
 

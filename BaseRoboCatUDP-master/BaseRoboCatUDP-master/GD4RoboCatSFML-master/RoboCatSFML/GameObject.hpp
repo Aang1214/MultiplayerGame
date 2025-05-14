@@ -11,7 +11,7 @@ public:
 
 	GameObject();
 	virtual ~GameObject() {}
-
+	virtual Mouse* GetAsMouse() { return nullptr; }
 	virtual RoboCat* GetAsCat() { return nullptr; }
 
 	virtual uint32_t GetAllStateMask() const { return 0; }

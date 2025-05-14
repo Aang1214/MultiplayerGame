@@ -10,7 +10,7 @@ public:
 
 		EMRS_AllState = EMRS_Pose | EMRS_Color
 	};
-	
+
 	static	GameObject* StaticCreate() { return new Mouse(); }
 	void SetVelocity(Vector3 velocity);
 	void Update();
@@ -26,9 +26,10 @@ public:
 
 	virtual bool HandleCollisionWithMouse(Mouse* inMouse) override;
 	const Vector3& GetVelocity()						const { return mVelocity; }
+	//void ProcessCollisions();
 	void ProcessCollisionsWithScreenWalls();
 private:
-
+	float				mWallRestitution;
 	Vector3				mVelocity;
 	
 	int			mPlayerId;

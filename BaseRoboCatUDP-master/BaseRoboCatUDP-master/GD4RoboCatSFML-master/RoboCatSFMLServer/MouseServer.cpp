@@ -53,6 +53,34 @@ bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
 
     return true;
 }
+bool MouseServer::HandleCollisionWithMouse(Mouse* inMouse)
+{
+    
+    Vector3 initMouseVel = inMouse->GetVelocity();
+    sf::Vector2f mouseVelocity = sf::Vector2f(initMouseVel.GetX(), initMouseVel.GetY());
+    Vector3 localMouseVel = GetVelocity();
+    sf::Vector2f localVelocity = sf::Vector2f(localMouseVel.GetX(), localMouseVel.GetY());
+    // Simple elastic-ish collision response
+    if (mouseVelocity == sf::Vector2f(0.f, 0.f))
+    {
+        sf::Vector2f convert = mouseVelocity / 2.f;
+        Vector3 result(convert.x, convert.y, 0);
+        SetVelocity(result); // mouse gets pushed slightly
+    }
+    else
+    {
+        sf::Vector2f convert = localVelocity + mouseVelocity * 0.5f;
+        Vector3 result(convert.x, convert.y, 0);
+        SetVelocity(result); // combine velocity influence
+    }
+    return true;
+    // Mouse "dies"
+   // SetDoesWantToDie(true);
+
+    // Update score
+   // ScoreBoardManager::sInstance->IncScore(inCat->GetPlayerId(), 1);
+
+}
 void MouseServer::Update()
 {
     Mouse::Update();
@@ -61,7 +89,7 @@ void MouseServer::Update()
     //LOG("Velocity is %f, %f", GetVelocity().GetX(), GetVelocity().GetY());
     //SetVelocity(sf::Vector2f(10, 10));
     //LOG("Location %f, %f", GetLocation().mX, GetLocation().mY);
-    Vector3 newPos = GetLocation() + Vector3(10, 10, 0) * deltaTime;
+    Vector3 newPos = GetLocation() + Vector3(0, 0, 0) * deltaTime;
     SetLocation(newPos);
     NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), EMRS_Pose);
     //LOG("NEW Location %f, %f", newPos.mX, newPos.mY);

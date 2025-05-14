@@ -19,14 +19,15 @@ void Mouse::SetVelocity(Vector3 velocity)
 
 void Mouse::Update()
 {
-	
+	ProcessCollisionsWithScreenWalls();
+	//ProcessCollisions();
 	float deltaTime = Timing::sInstance.GetDeltaTime();
 	// position += velocity * deltaTime
 	Vector3 newPos = GetLocation() + mVelocity * deltaTime;
 	SetLocation(newPos);
 
 	// Optional: friction
-	//mVelocity = mVelocity * 0.98f; // slow down slightly
+	mVelocity = mVelocity * 0.98f; // slow down slightly
 }
 
 bool Mouse::HandleCollisionWithCat(RoboCat* inCat)
@@ -40,6 +41,65 @@ bool Mouse::HandleCollisionWithMouse(Mouse* inMouse)
 	(void)inMouse;
 	return false;
 }
+
+/*void Mouse::ProcessCollisions()
+{
+	ProcessCollisionsWithScreenWalls();
+
+	float sourceRadius = GetCollisionRadius();
+	Vector3 sourceLocation = GetLocation();
+
+	for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
+	{
+		GameObject* target = goIt->get();
+		if (target != this && !target->DoesWantToDie())
+		{
+			// Only collide with other mice
+			Mouse* targetMouse = target->GetAsMouse();
+			if (!targetMouse)
+			{
+				continue;
+			}
+
+			Vector3 targetLocation = targetMouse->GetLocation();
+			float targetRadius = targetMouse->GetCollisionRadius();
+
+			Vector3 delta = targetLocation - sourceLocation;
+			float distSq = delta.LengthSq2D();
+			float collisionDist = (sourceRadius + targetRadius);
+
+			if (distSq < (collisionDist * collisionDist))
+			{
+				// Let both mice know a collision occurred
+				bool thisHandled = HandleCollisionWithMouse(targetMouse);
+				bool otherHandled = targetMouse->HandleCollisionWithMouse(this);
+
+				if (thisHandled || otherHandled)
+				{
+					Vector3 dirToTarget = delta;
+					dirToTarget.Normalize2D();
+					Vector3 acceptableDelta = dirToTarget * collisionDist;
+					SetLocation(targetLocation - acceptableDelta);
+
+					Vector3 relVel = mVelocity - targetMouse->GetVelocity();
+					float relVelDotDir = Dot2D(relVel, dirToTarget);
+
+					if (relVelDotDir > 0.f)
+					{
+						Vector3 impulse = relVelDotDir * dirToTarget;
+
+						// Apply equal and opposite impulses
+						mVelocity -= impulse;
+						mVelocity *= mWallRestitution; // Or mMouseRestitution if defined
+
+						targetMouse->mVelocity += impulse;
+						targetMouse->mVelocity *= mWallRestitution;
+					}
+				}
+			}
+		}
+	}
+}*/
 
 void Mouse::ProcessCollisionsWithScreenWalls()
 {
@@ -87,9 +147,9 @@ void Mouse::ProcessCollisionsWithScreenWalls()
 	float radius = GetCollisionRadius();
 
 	// Define boundaries
-	float left = 0.f + radius;
+	float left = radius;
 	float right = WORLD_WIDTH - radius;
-	float top = 0.f + radius;
+	float top = radius;
 	float bottom = WORLD_HEIGHT - radius;
 
 	// Horizontal bounce (left/right walls)
