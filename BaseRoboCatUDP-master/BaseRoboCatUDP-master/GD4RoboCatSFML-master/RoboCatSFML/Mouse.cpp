@@ -26,7 +26,7 @@ void Mouse::Update()
 	SetLocation(newPos);
 
 	// Optional: friction
-	mVelocity = mVelocity * 0.98f; // slow down slightly
+	//mVelocity = mVelocity * 0.98f; // slow down slightly
 }
 
 bool Mouse::HandleCollisionWithCat(RoboCat* inCat)

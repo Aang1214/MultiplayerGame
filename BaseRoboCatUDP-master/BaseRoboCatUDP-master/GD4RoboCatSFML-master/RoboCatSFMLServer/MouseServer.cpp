@@ -13,7 +13,7 @@ void MouseServer::HandleDying()
 
 
 bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
-{
+{/**/
 	//kill yourself!
 	//SetDoesWantToDie(true);
 	//ScoreBoardManager::sInstance->IncScore(inCat->GetPlayerId(), 1);
@@ -56,6 +56,18 @@ bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
 void MouseServer::Update()
 {
     Mouse::Update();
+    float deltaTime = Timing::sInstance.GetDeltaTime();
+    // position += velocity * deltaTime
+    //LOG("Velocity is %f, %f", GetVelocity().GetX(), GetVelocity().GetY());
+    //SetVelocity(sf::Vector2f(10, 10));
+    //LOG("Location %f, %f", GetLocation().mX, GetLocation().mY);
+    Vector3 newPos = GetLocation() + Vector3(10, 10, 0) * deltaTime;
+    SetLocation(newPos);
+    NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), EMRS_Pose);
+    //LOG("NEW Location %f, %f", newPos.mX, newPos.mY);
+
+    // Optional: friction
+    //mVelocity = mVelocity * 0.98f; // slow down slightly
 
 
 
