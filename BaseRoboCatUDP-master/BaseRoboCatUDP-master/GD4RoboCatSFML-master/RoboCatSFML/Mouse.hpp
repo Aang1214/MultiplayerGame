@@ -26,10 +26,11 @@ public:
 
 	virtual bool HandleCollisionWithMouse(Mouse* inMouse) override;
 	const Vector3& GetVelocity()						const { return mVelocity; }
-	//void ProcessCollisions();
+	void ProcessCollisions();
 	void ProcessCollisionsWithScreenWalls();
 private:
 	float				mWallRestitution;
+	float				mMouseRestitution;
 	Vector3				mVelocity;
 	
 	int			mPlayerId;

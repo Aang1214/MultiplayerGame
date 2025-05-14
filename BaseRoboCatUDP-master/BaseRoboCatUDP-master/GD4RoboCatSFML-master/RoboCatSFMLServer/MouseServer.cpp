@@ -63,14 +63,14 @@ bool MouseServer::HandleCollisionWithMouse(Mouse* inMouse)
     // Simple elastic-ish collision response
     if (mouseVelocity == sf::Vector2f(0.f, 0.f))
     {
-        sf::Vector2f convert = mouseVelocity / 2.f;
-        Vector3 result(convert.x, convert.y, 0);
+        sf::Vector2f convert = mouseVelocity / 1.5f;
+        Vector3 result(convert.x, convert.y, 0.f);
         SetVelocity(result); // mouse gets pushed slightly
     }
     else
     {
         sf::Vector2f convert = localVelocity + mouseVelocity * 0.5f;
-        Vector3 result(convert.x, convert.y, 0);
+        Vector3 result(convert.x, convert.y, 0.f);
         SetVelocity(result); // combine velocity influence
     }
     return true;
