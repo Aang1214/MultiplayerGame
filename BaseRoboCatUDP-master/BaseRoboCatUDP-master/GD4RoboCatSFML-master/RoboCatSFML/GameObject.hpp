@@ -1,4 +1,5 @@
 class Mouse;
+class Yarn;
 #define CLASS_IDENTIFICATION(in_code, in_class) \
 enum {kClassId = in_code}; \
 virtual uint32_t GetClassId() const {return kClassId;} \
@@ -13,6 +14,7 @@ public:
 	virtual ~GameObject() {}
 	virtual Mouse* GetAsMouse() { return nullptr; }
 	virtual RoboCat* GetAsCat() { return nullptr; }
+	virtual Yarn* GetAsYarn() { return nullptr; }
 
 	virtual uint32_t GetAllStateMask() const { return 0; }
 

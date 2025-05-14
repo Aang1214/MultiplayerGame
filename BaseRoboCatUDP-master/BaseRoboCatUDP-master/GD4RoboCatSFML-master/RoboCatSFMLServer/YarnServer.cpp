@@ -15,23 +15,15 @@ void YarnServer::HandleDying()
 
 bool YarnServer::HandleCollisionWithMouse(Mouse* inMouse)
 {
-	Vector3 initMouseVel = inMouse->GetVelocity();
-	sf::Vector2f mouseVelocity = sf::Vector2f(initMouseVel.GetX(), initMouseVel.GetY());
-	Vector3 localMouseVel = GetVelocity();
-	sf::Vector2f localVelocity = sf::Vector2f(initMouseVel.GetX(), initMouseVel.GetY());
-	// Simple elastic-ish collision response
-	if (localVelocity == sf::Vector2f(0.f, 0.f))
-	{
-		sf::Vector2f convert = localVelocity / 2.f;
-		Vector3 result(convert.x, convert.y, 0);
-		SetVelocity(result); // mouse gets pushed slightly
-	}
-	else
-	{
-		sf::Vector2f convert = localVelocity + mouseVelocity * 0.5f;
-		Vector3 result(convert.x, convert.y, 0);
-		SetVelocity(result); // combine velocity influence
-	}
+	// Get the current velocity of the Yarn
+	Vector3 yarnVelocity = GetVelocity();
+
+	// Transfer the Yarn's velocity to the Mouse
+	inMouse->SetVelocity(yarnVelocity);
+
+	// Destroy the Yarn
+	SetDoesWantToDie(true);
+
 	return true;
 }
 void YarnServer::Update()

@@ -70,37 +70,9 @@ void Mouse::ProcessCollisions()
 
 			if (distSq < (collisionDist * collisionDist))
 			{
-				// Let both mice know a collision occurred
-				
 				if (target->HandleCollisionWithMouse(this))
 				{
-					Vector3 dirToTarget = delta;
-					dirToTarget.Normalize2D();
-					Vector3 acceptableDelta = dirToTarget * collisionDist;
-					SetLocation(targetLocation - acceptableDelta);
-
-					Vector3 relVel = mVelocity;
-
-					Mouse* targetMouse = target->GetAsMouse();
-
-					float relVelDotDir = Dot2D(relVel, dirToTarget);
-
-					if (relVelDotDir > 0.f)
-					{
-						Vector3 impulse = relVelDotDir * dirToTarget;
-
-						// Apply equal and opposite impulses
-						if (targetMouse)
-						{
-							mVelocity -= impulse;
-							mVelocity *= mMouseRestitution;
-						}
-						else
-						{
-							mVelocity -= impulse * 2.f;
-							mVelocity *= mWallRestitution;
-						}
-					}
+					
 				}
 			}
 		}

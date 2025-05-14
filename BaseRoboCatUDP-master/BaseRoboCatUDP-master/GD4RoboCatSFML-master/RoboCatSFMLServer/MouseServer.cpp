@@ -53,34 +53,7 @@ bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
 
     return true;
 }
-bool MouseServer::HandleCollisionWithMouse(Mouse* inMouse)
-{
-    
-    Vector3 initMouseVel = inMouse->GetVelocity();
-    sf::Vector2f mouseVelocity = sf::Vector2f(initMouseVel.GetX(), initMouseVel.GetY());
-    Vector3 localMouseVel = GetVelocity();
-    sf::Vector2f localVelocity = sf::Vector2f(localMouseVel.GetX(), localMouseVel.GetY());
-    // Simple elastic-ish collision response
-    if (mouseVelocity == sf::Vector2f(0.f, 0.f))
-    {
-        sf::Vector2f convert = mouseVelocity / 1.5f;
-        Vector3 result(convert.x, convert.y, 0.f);
-        SetVelocity(result); // mouse gets pushed slightly
-    }
-    else
-    {
-        sf::Vector2f convert = localVelocity + mouseVelocity * 0.5f;
-        Vector3 result(convert.x, convert.y, 0.f);
-        SetVelocity(result); // combine velocity influence
-    }
-    return true;
-    // Mouse "dies"
-   // SetDoesWantToDie(true);
 
-    // Update score
-   // ScoreBoardManager::sInstance->IncScore(inCat->GetPlayerId(), 1);
-
-}
 void MouseServer::Update()
 {
     Mouse::Update();

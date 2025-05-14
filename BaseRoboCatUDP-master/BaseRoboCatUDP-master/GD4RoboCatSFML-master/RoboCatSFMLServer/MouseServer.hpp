@@ -8,7 +8,6 @@ public:
 
 	virtual bool HandleCollisionWithCat(RoboCat* inCat) override;
 	//bool HandleCollisionWithYarn(Yarn* inYarn);
-	virtual bool HandleCollisionWithMouse(Mouse* inMouse) override;
 	void Update();
 protected:
 	MouseServer();
