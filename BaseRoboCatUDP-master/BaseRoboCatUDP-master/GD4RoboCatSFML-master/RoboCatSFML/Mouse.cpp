@@ -6,7 +6,7 @@ mVelocity(Vector3::Zero),
 mPlayerId(0)
 {
 	SetScale(GetScale() * 2.f);
-	SetCollisionRadius(40.f);
+	SetCollisionRadius(55.f);
 }
 
 
