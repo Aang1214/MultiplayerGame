@@ -32,7 +32,7 @@ void HUD::RenderHealth()
 	if (mHealth > 0)
 	{
 		string healthString = StringUtils::Sprintf("Health %d", mHealth);
-		RenderText(healthString, mHealthOffset, Colors::Red);
+		RenderText(healthString, mHealthOffset, Colors::TRed);
 	}
 }
 
@@ -41,7 +41,7 @@ void HUD::RenderBandWidth()
 	string bandwidth = StringUtils::Sprintf("In %d  Bps, Out %d Bps",
 		static_cast<int>(NetworkManagerClient::sInstance->GetBytesReceivedPerSecond().GetValue()),
 		static_cast<int>(NetworkManagerClient::sInstance->GetBytesSentPerSecond().GetValue()));
-	RenderText(bandwidth, mBandwidthOrigin, Colors::White);
+	RenderText(bandwidth, mBandwidthOrigin, Colors::TWhite);
 }
 
 void HUD::RenderRoundTripTime()
@@ -49,7 +49,7 @@ void HUD::RenderRoundTripTime()
 	float rttMS = NetworkManagerClient::sInstance->GetAvgRoundTripTime().GetValue() * 1000.f;
 
 	string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int)rttMS);
-	RenderText(roundTripTime, mRoundTripTimeOrigin, Colors::White);
+	RenderText(roundTripTime, mRoundTripTimeOrigin, Colors::TWhite);
 }
 
 void HUD::RenderScoreBoard()

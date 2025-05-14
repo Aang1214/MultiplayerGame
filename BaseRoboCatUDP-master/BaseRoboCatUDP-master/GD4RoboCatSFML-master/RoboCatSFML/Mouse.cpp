@@ -5,8 +5,8 @@ Mouse::Mouse() :
 mVelocity(Vector3::Zero),
 mPlayerId(0)
 {
-	SetScale(GetScale() * 0.5f);
-	SetCollisionRadius(20.f);
+	SetScale(GetScale() * 2.f);
+	SetCollisionRadius(40.f);
 }
 
 

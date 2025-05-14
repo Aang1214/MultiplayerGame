@@ -6,7 +6,7 @@ GameObject::GameObject() :
 	mDoesWantToDie(false),
 	mRotation(0.f),
 	mNetworkId(0),
-	mColor(Colors::White),
+	mColor(Colors::TWhite),
 	mScale(1.0f)
 {
 }

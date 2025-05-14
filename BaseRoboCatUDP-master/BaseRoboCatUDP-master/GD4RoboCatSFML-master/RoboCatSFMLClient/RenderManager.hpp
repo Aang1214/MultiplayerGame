@@ -22,6 +22,7 @@ private:
 	//this can't be only place that holds on to component- it has to live inside a GameObject in the world
 	vector< SpriteComponent* >		mComponents;
 
+	sf::Sprite mBackgroundSprite;
 	sf::View view;
 
 

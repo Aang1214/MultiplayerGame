@@ -55,12 +55,25 @@ namespace
 	void CreateRandomMice(int inMouseCount)
 	{
 		Vector3 mouseMin(100.f, 100.f, 0.f);
-		Vector3 mouseMax(1180.f, 620.f, 0.f);
+		Vector3 mouseMax(1820.f, 980.f, 0.f);
+
+		// Center exclusion zone (400x400 box in the middle of a 1920x1080 screen)
+		Vector3 centerMin(760.f, 340.f, 0.f);  
+		Vector3 centerMax(1160.f, 740.f, 0.f); 
+
 		GameObjectPtr go;
 
-		//make a mouse somewhere- where will these come from?
-		for (int i = 0; i < inMouseCount; ++i)
+		int gridCols = static_cast<int>(ceilf(sqrtf(inMouseCount)));
+		int gridRows = static_cast<int>(ceilf(inMouseCount / static_cast<float>(gridCols)));
+
+		float cellWidth = (mouseMax.mX - mouseMin.mX) / gridCols;
+		float cellHeight = (mouseMax.mY - mouseMin.mY) / gridRows;
+
+		int spawned = 0;
+
+		for (int row = 0; row < gridRows && spawned < inMouseCount; ++row)
 		{
+
 			
 			go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
 			Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
@@ -125,13 +138,14 @@ namespace
 	}
 
 
+
 }
 
 
 void Server::SetupWorld()
 {
 	//spawn some random mice
-	CreateRandomMice(10);
+	CreateRandomMice(30);
 
 	//spawn more random mice!
 	//CreateRandomMice(10);
@@ -143,7 +157,7 @@ void Server::DoFrame()
 
 	NetworkManagerServer::sInstance->CheckForDisconnects();
 
-	NetworkManagerServer::sInstance->RespawnCats();
+	//NetworkManagerServer::sInstance->RespawnCats();
 
 	Engine::DoFrame();
 
@@ -162,11 +176,16 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
-	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
+	if (inPlayerId == 0)
+		return;
+
+	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(
+		GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
+
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
-	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+
+	cat->SetLocation(RoboMath::GetPlayerSpawnPosition(inPlayerId));
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)
