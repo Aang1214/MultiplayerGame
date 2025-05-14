@@ -1,7 +1,8 @@
 #include "RoboCatPCH.hpp"
 
 Mouse::Mouse() :
-mVelocity(Vector3::Zero)
+mVelocity(Vector3::Zero),
+mPlayerId(0)
 {
 	SetScale(GetScale() * 0.5f);
 	SetCollisionRadius(20.f);
@@ -56,7 +57,9 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 		inOutputStream.Write(location.mX);
 		inOutputStream.Write(location.mY);
 
-		inOutputStream.Write(GetRotation());
+		Vector3 velocity = GetVelocity();
+		inOutputStream.Write(velocity.mX);
+		inOutputStream.Write(velocity.mY);
 
 		writtenState |= EMRS_Pose;
 	}
@@ -64,7 +67,7 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 	{
 		inOutputStream.Write((bool)false);
 	}
-
+	/**/
 	if (inDirtyState & EMRS_Color)
 	{
 		inOutputStream.Write((bool)true);
@@ -77,7 +80,7 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 	{
 		inOutputStream.Write((bool)false);
 	}
-
+	
 
 	return writtenState;
 }

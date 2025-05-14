@@ -21,7 +21,7 @@
 
 	}
 
-
+	
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
@@ -29,7 +29,7 @@
 		inInputStream.Read(color);
 		SetColor(color);
 	}
-
+	
 	
 }
 

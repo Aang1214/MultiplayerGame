@@ -19,12 +19,16 @@ public:
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
+	void		SetPlayerId(int inPlayerId) { mPlayerId = inPlayerId; }
+	int			GetPlayerId() const { return mPlayerId; }
+
 	virtual bool HandleCollisionWithCat(RoboCat* inCat) override;
 
 	virtual bool HandleCollisionWithMouse(Mouse* inMouse) override;
 	const Vector3& GetVelocity()						const { return mVelocity; }
 private:
 	Vector3				mVelocity;
+	int			mPlayerId;
 protected:
 	Mouse();
 };

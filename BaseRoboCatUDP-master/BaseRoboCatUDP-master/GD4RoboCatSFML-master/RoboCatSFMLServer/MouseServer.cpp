@@ -31,6 +31,15 @@ bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
         SetVelocity(catVelocity + mouseVelocity * 0.5f); // combine velocity influence
     }
 
+    if (inCat->GetPlayerId() != GetPlayerId())
+    {
+        //kill yourself!
+        //SetDoesWantToDie(true);
+
+        static_cast<RoboCatServer*>(inCat)->TakeDamage(GetPlayerId());
+
+    }
+
     // Mouse "dies"
    // SetDoesWantToDie(true);
 
