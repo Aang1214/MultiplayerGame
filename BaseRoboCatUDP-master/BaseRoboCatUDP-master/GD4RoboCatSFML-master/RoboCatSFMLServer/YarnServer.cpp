@@ -19,7 +19,7 @@ bool YarnServer::HandleCollisionWithMouse(Mouse* inMouse)
 	Vector3 yarnVelocity = GetVelocity();
 
 	// Transfer the Yarn's velocity to the Mouse
-	inMouse->SetVelocity(yarnVelocity);
+	inMouse->SetVelocity(yarnVelocity * 2);
 
 	// Destroy the Yarn
 	SetDoesWantToDie(true);
