@@ -28,3 +28,42 @@ Vector3 RoboMath::GetRandomVector(const Vector3& inMin, const Vector3& inMax)
 	Vector3 r = Vector3(GetRandomFloat(), GetRandomFloat(), GetRandomFloat());
 	return inMin + (inMax - inMin) * r;
 }
+
+
+Vector3 RoboMath::GetPlayerSpawnPosition(int playerId) 
+{
+	// Skip player 0
+	if (playerId == 0)
+	{
+		return Vector3(960.f, 540.f, 0.f); // Optional fallback (center)
+	}
+
+	const float centerX = 960.f;
+	const float centerY = 540.f;
+	const float baseRadius = 120.f;
+	const float radiusIncrement = 30.f;
+	const float angleStep = 18.f;
+
+	// Adjust index to account for skipping player 0
+	int spawnIndex = playerId - 1;
+
+	// Start at -90° (top / 12 o'clock)
+	float degrees = -90.f + spawnIndex * angleStep;
+
+	// Normalize angle to [0, 360)
+	float angleDeg = fmodf(degrees, 360.f);
+	if (angleDeg < 0.f)
+		angleDeg += 360.f;
+
+	// Determine which ring to use
+	int ring = static_cast<int>(floorf(spawnIndex * angleStep / 360.f));
+	float radius = baseRadius + ring * radiusIncrement;
+
+	// Calculate position
+	float angleRad = RoboMath::ToRadians(angleDeg);
+	float x = centerX + radius * cosf(angleRad);
+	float y = centerY + radius * sinf(angleRad);
+
+	return Vector3(x, y, 0.f);
+}
+

@@ -173,6 +173,7 @@ namespace RoboMath
 	float GetRandomFloat();
 
 	Vector3 GetRandomVector(const Vector3& inMin, const Vector3& inMax);
+	Vector3 GetPlayerSpawnPosition(int playerId); 
 
 	inline bool	Is2DVectorEqual(const Vector3& inA, const Vector3& inB)
 	{

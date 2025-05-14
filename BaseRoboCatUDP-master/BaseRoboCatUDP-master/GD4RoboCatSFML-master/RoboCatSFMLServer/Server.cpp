@@ -54,48 +54,48 @@ namespace
 
 	void CreateRandomMice(int inMouseCount)
 	{
-		Vector3 centerMin(760.f, 390.f, 0.f);
-		Vector3 centerMax(1160.f, 690.f, 0.f);
 		Vector3 mouseMin(100.f, 100.f, 0.f);
 		Vector3 mouseMax(1820.f, 980.f, 0.f);
+
+		// Center exclusion zone (400x300 box in the middle of a 1920x1080 screen)
+		Vector3 centerMin(760.f, 390.f, 0.f);
+		Vector3 centerMax(1160.f, 690.f, 0.f);
+
 		GameObjectPtr go;
 
-		// Estimate a grid size based on inMouseCount
-		int gridCols = static_cast<int>(std::ceil(std::sqrt(inMouseCount * 1.5f))); // slightly more columns to avoid center
-		int gridRows = static_cast<int>(std::ceil(static_cast<float>(inMouseCount) / gridCols));
+		// Compute grid dimensions
+		int gridCols = static_cast<int>(ceilf(sqrtf(inMouseCount)));
+		int gridRows = static_cast<int>(ceilf(inMouseCount / static_cast<float>(gridCols)));
 
-		// Get cell size
-		float totalWidth = mouseMax.mX - mouseMin.mX;
-		float totalHeight = mouseMax.mY - mouseMin.mY;
-		float cellWidth = totalWidth / gridCols;
-		float cellHeight = totalHeight / gridRows;
+		float cellWidth = (mouseMax.mX - mouseMin.mX) / gridCols;
+		float cellHeight = (mouseMax.mY - mouseMin.mY) / gridRows;
 
 		int spawned = 0;
+
 		for (int row = 0; row < gridRows && spawned < inMouseCount; ++row)
 		{
 			for (int col = 0; col < gridCols && spawned < inMouseCount; ++col)
 			{
-				// Center of the current cell
-				float x = mouseMin.mX + col * cellWidth + cellWidth / 2;
-				float y = mouseMin.mY + row * cellHeight + cellHeight / 2;
+				// Diagonal offset for every other row
+				float offsetX = (row % 2 == 1) ? (cellWidth / 2.0f) : 0.0f;
 
-				// Skip if in the center no-spawn zone
+				float x = mouseMin.mX + col * cellWidth + cellWidth / 2.0f + offsetX;
+				float y = mouseMin.mY + row * cellHeight + cellHeight / 2.0f;
+
+				// Skip if inside center exclusion zone
 				if (x > centerMin.mX && x < centerMax.mX &&
 					y > centerMin.mY && y < centerMax.mY)
 				{
 					continue;
 				}
 
-				// Spawn mouse
+				// Create and place the mouse
 				go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
 				go->SetLocation(Vector3(x, y, 0.f));
 				++spawned;
 			}
 		}
 	}
-
-
-
 }
 
 
@@ -114,7 +114,7 @@ void Server::DoFrame()
 
 	NetworkManagerServer::sInstance->CheckForDisconnects();
 
-	NetworkManagerServer::sInstance->RespawnCats();
+	//NetworkManagerServer::sInstance->RespawnCats();
 
 	Engine::DoFrame();
 
@@ -133,11 +133,16 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
-	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
+	if (inPlayerId == 0)
+		return;
+
+	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(
+		GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
+
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
-	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+
+	cat->SetLocation(RoboMath::GetPlayerSpawnPosition(inPlayerId));
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)
