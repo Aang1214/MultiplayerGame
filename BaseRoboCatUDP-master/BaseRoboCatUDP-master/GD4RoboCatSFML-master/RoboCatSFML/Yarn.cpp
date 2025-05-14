@@ -1,4 +1,6 @@
 #include "RoboCatPCH.hpp"
+const float WORLD_HEIGHT = 1080.f;
+const float WORLD_WIDTH = 1920.f;
 
 Yarn::Yarn() :
 	mMuzzleSpeed(300.f),
@@ -74,6 +76,86 @@ bool Yarn::HandleCollisionWithCat(RoboCat* inCat)
 	return false;
 }
 
+void Yarn::ProcessCollisionsWithScreenWalls()
+{
+	/*Vector3 location = GetLocation();
+	float x = location.mX;
+	float y = location.mY;
+
+	float vx = mVelocity.mX;
+	float vy = mVelocity.mY;
+
+	float radius = GetCollisionRadius();
+
+	//if the cat collides against a wall, the quick solution is to push it off
+	if ((y + radius) >= WORLD_HEIGHT && vy > 0)
+	{
+		mVelocity.mY = -vy * mWallRestitution;
+		location.mY = WORLD_HEIGHT - radius;
+		SetLocation(location);
+	}
+	else if (y - radius <= 0 && vy < 0)
+	{
+		mVelocity.mY = -vy * mWallRestitution;
+		location.mY = radius;
+		SetLocation(location);
+	}
+
+	if ((x + radius) >= WORLD_WIDTH && vx > 0)
+	{
+		mVelocity.mX = -vx * mWallRestitution;
+		location.mX = WORLD_WIDTH - radius;
+		SetLocation(location);
+	}
+	else if (x - radius <= 0 && vx < 0)
+	{
+		mVelocity.mX = -vx * mWallRestitution;
+		location.mX = radius;
+		SetLocation(location);
+	}*/
+
+	Vector3 location = GetLocation();
+	Vector3 velocity = mVelocity;
+	float radius = GetCollisionRadius();
+
+	bool bounced = false;
+
+	// Bottom Wall
+	if (location.mY + radius >= WORLD_HEIGHT && velocity.mY > 0)
+	{
+		location.mY = WORLD_HEIGHT - radius;
+		velocity.mY = -velocity.mY * mWallRestitution;
+		bounced = true;
+	}
+	// Top Wall
+	else if (location.mY - radius <= 0 && velocity.mY < 0)
+	{
+		location.mY = radius;
+		velocity.mY = -velocity.mY * mWallRestitution;
+		bounced = true;
+	}
+
+	// Right Wall
+	if (location.mX + radius >= WORLD_WIDTH && velocity.mX > 0)
+	{
+		location.mX = WORLD_WIDTH - radius;
+		velocity.mX = -velocity.mX * mWallRestitution;
+		bounced = true;
+	}
+	// Left Wall
+	else if (location.mX - radius <= 0 && velocity.mX < 0)
+	{
+		location.mX = radius;
+		velocity.mX = -velocity.mX * mWallRestitution;
+		bounced = true;
+	}
+
+	if (bounced)
+	{
+		SetLocation(location);
+		SetVelocity(velocity);
+	}
+}
 
 void Yarn::InitFromShooter(RoboCat* inShooter)
 {
@@ -89,7 +171,7 @@ void Yarn::InitFromShooter(RoboCat* inShooter)
 
 void Yarn::Update()
 {
-
+	ProcessCollisionsWithScreenWalls(); 
 	float deltaTime = Timing::sInstance.GetDeltaTime();
 
 	SetLocation(GetLocation() + mVelocity * deltaTime);

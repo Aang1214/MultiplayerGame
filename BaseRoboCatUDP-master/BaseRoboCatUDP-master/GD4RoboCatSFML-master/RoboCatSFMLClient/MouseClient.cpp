@@ -1,5 +1,14 @@
 #include "RoboCatClientPCH.hpp"
+MouseClient::MouseClient()
+{
+	mSpriteComponent.reset(new SpriteComponent(this));
+	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("mouse"));
+}
+void MouseClient::Update()
+{
+	Mouse::Update();
 
+}
 /**/void MouseClient::Read(InputMemoryBitStream& inInputStream)
 {
 	bool stateBit;
@@ -33,8 +42,4 @@
 	
 }
 
-MouseClient::MouseClient()
-{
-	mSpriteComponent.reset(new SpriteComponent(this));
-	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("mouse"));
-}
+

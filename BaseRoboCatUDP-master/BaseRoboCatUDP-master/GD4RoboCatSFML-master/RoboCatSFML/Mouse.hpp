@@ -33,3 +33,5 @@ protected:
 	Mouse();
 };
 
+typedef shared_ptr< Mouse >	MousePtr;
+

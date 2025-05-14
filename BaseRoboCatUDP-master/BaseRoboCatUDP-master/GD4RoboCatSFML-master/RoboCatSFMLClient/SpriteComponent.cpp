@@ -33,3 +33,8 @@ sf::Sprite& SpriteComponent::GetSprite()
 	return m_sprite;
 }
 
+void SpriteComponent::SetPosition(const Vector3& inPosition)
+{
+	m_sprite.setPosition(inPosition.mX, inPosition.mY);
+}
+

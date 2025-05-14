@@ -21,6 +21,8 @@ public:
 
 	virtual bool HandleCollisionWithMouse(Mouse* inMouse) { (void)inMouse; return true; }
 
+
+
 	virtual void Update();
 
 	virtual void HandleDying() {}
